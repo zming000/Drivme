@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TouristLogin"
+    android:background="@drawable/bg_tourist_login">
+
+    <ImageView
+        android:id="@+id/appLogo"
+        android:layout_width="233dp"
+        android:layout_height="237dp"
+        android:src="@drawable/app_logo_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTouristLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:layout_marginTop="12dp"
+        android:text="Tourist Login"
+        android:textColor="@color/primary"
+        android:textSize="31dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.09"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appLogo" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilLoginTouristID"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Tourist ID"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTouristLogin"
+        app:startIconDrawable="@drawable/ic_person">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLoginTouristID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilLoginTouristPW"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Password"
+        app:endIconMode="password_toggle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilLoginTouristID"
+        app:startIconDrawable="@drawable/ic_lock">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLoginTouristPW"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvTouristForgotPW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/underline_text_fp"
+        android:textColor="@color/text_blue"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.892"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilLoginTouristPW" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnTouristLogin"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/roundedbtn"
+        android:text="Login"
+        android:textAllCaps="false"
+        android:textColor="@color/primary"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTouristForgotPW" />
+
+    <TextView
+        android:id="@+id/tvText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Don't have an account?"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.406"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnTouristLogin" />
+
+    <TextView
+        android:id="@+id/tvTouristSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="@string/underline_text_signup"
+        android:textColor="@color/text_blue"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvText"
+        app:layout_constraintStart_toEndOf="@+id/tvText"
+        app:layout_constraintTop_toBottomOf="@+id/btnTouristLogin"
+        app:layout_constraintVertical_bias="1.0"
+        android:onClick="signupTourist"/>
+
+    <TextView
+        android:id="@+id/tvTextOr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="or"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvText" />
+
+    <LinearLayout
+        android:id="@+id/btnTouristGoogleLogin"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/roundedbtn"
+        android:elevation="3dp"
+        android:gravity="center"
+        android:onClick="googleLogin"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTextOr">
+
+        <TextView
+            android:id="@+id/tvTouristGoogleLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:text="Login with"
+            android:textAllCaps="false"
+            android:textColor="@color/primary"
+            android:textSize="25dp" />
+
+        <ImageView
+            android:id="@+id/googleLogo"
+            android:layout_width="37dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/logo_google" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

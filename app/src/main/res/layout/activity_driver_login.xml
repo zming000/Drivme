@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DriverLogin"
+    android:background="@drawable/bg_driver_login">
+
+    <ImageView
+        android:id="@+id/appLogo"
+        android:layout_width="233dp"
+        android:layout_height="237dp"
+        android:src="@drawable/app_logo_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvDriverLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logo"
+        android:layout_marginTop="50dp"
+        android:text="Driver Login"
+        android:textColor="@color/primary"
+        android:textSize="31dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.09"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appLogo" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilLoginDriverID"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Driver ID"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDriverLogin"
+        app:startIconDrawable="@drawable/ic_person">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLoginDriverID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilLoginDriverPW"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Password"
+        app:endIconMode="password_toggle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilLoginDriverID"
+        app:startIconDrawable="@drawable/ic_lock">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLoginDriverPW"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvDriverForgotPW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/underline_text_fp"
+        android:textColor="@color/text_blue"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.892"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilLoginDriverPW" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnDriverLogin"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/roundedbtn"
+        android:text="Login"
+        android:textAllCaps="false"
+        android:textColor="@color/primary"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDriverForgotPW" />
+
+    <TextView
+        android:id="@+id/tvText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Don't have an account?"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.406"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnDriverLogin" />
+
+    <TextView
+        android:id="@+id/tvDriverSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="@string/underline_text_signup"
+        android:textColor="@color/text_blue"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvText"
+        app:layout_constraintStart_toEndOf="@+id/tvText"
+        app:layout_constraintTop_toBottomOf="@+id/btnDriverLogin"
+        app:layout_constraintVertical_bias="1.0"
+        android:onClick="signupDriver"/>
+
+    <TextView
+        android:id="@+id/tvText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Register as a Drivme drive now!"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.406"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvText" />
+
+    <TextView
+        android:id="@+id/tvDriverJoinUs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="@string/underline_text_joinus"
+        android:textColor="@color/text_blue"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvText2"
+        app:layout_constraintStart_toEndOf="@+id/tvText2"
+        app:layout_constraintTop_toBottomOf="@+id/tvDriverSignUp"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

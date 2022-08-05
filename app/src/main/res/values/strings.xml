@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Drivme</string>
+    <string name="underline_text_fp"><u>Forgot Password?</u></string>
+    <string name="underline_text_signup"><u>Sign Up</u></string>
+    <string name="underline_text_login"><u>Login</u></string>
+    <string name="underline_text_joinus"><u>Join Us</u></string>
+</resources>
