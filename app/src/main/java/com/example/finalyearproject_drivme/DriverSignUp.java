@@ -14,12 +14,14 @@ public class DriverSignUp extends AppCompatActivity {
         setContentView(R.layout.activity_driver_sign_up);
     }
 
+    //driver sign up -> driver option
     @Override
     public void onBackPressed() {
         startActivity(new Intent(DriverSignUp.this, DriverOption.class));
         finish();
     }
 
+    //driver sign up -> driver login
     public void loginDriver(View view) {
         startActivity(new Intent(DriverSignUp.this, DriverLogin.class));
         finish();

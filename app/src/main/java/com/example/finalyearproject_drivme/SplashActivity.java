@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SplashActivity extends AppCompatActivity {
-
+    //declare variables
     Animation rotateAnim, topAnim, btmAnim;
     ImageView ivWheel;
     TextView mtvDriv, mtvSlogan;
@@ -22,14 +22,17 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        //obtaining the View with specific ID
         ivWheel = findViewById(R.id.wheelImg);
         mtvDriv = findViewById(R.id.tvDriv);
         mtvSlogan = findViewById(R.id.tvSlogan);
 
+        //load animation
         rotateAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
         topAnim = AnimationUtils.loadAnimation(this, R.anim.top_anim);
         btmAnim = AnimationUtils.loadAnimation(this, R.anim.btm_anim);
 
+        //add animation into the widgets
         AnimationSet setAnim = new AnimationSet(false);//do not share interpolators if false
         setAnim.addAnimation(rotateAnim);
         setAnim.addAnimation(topAnim);
@@ -39,16 +42,9 @@ public class SplashActivity extends AppCompatActivity {
 
         //display a loading screen for 3 second
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(SplashActivity.this, Role.class));
-                finish();
-            }
+        handler.postDelayed(() -> {
+            startActivity(new Intent(SplashActivity.this, Role.class));
+            finish();
         },3000);
-
-
-
-
     }
 }

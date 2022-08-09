@@ -12,19 +12,16 @@
         <activity android:name=".DriverSignUp"/>
         <activity android:name=".DriverLogin" />
         <activity android:name=".DriverOption" />
-        <activity android:name=".TouristLogin" />
-        <activity android:name=".TouristSignUp" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".TouristLogin" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
+        <activity android:name=".TouristSignUp" />
         <activity android:name=".Role" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".SplashActivity">
-
-        </activity>
+        <activity android:name=".SplashActivity"/>
     </application>
 
 </manifest>
