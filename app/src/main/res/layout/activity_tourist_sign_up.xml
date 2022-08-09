@@ -192,14 +192,15 @@
         android:id="@+id/tvText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="Already have an account?"
         android:textColor="@color/black"
         android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.406"
+        app:layout_constraintHorizontal_bias="0.43"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnTouristSignUp" />
+        app:layout_constraintTop_toBottomOf="@+id/btnTouristSignUp"
+        app:layout_constraintVertical_bias="0.164" />
 
     <TextView
         android:id="@+id/tvTouristLogin"
