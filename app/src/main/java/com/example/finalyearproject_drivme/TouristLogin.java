@@ -11,6 +11,8 @@ import android.widget.Button;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
@@ -73,6 +75,38 @@ public class TouristLogin extends AppCompatActivity {
             }
             else if(Objects.requireNonNull(metLoginTouristPW.getText()).toString().trim().isEmpty()){
                 mtilLoginTouristPW.setError("Field cannot be empty!");
+            }
+            else{
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                String id = metLoginTouristID.getText().toString();
+                String pw = metLoginTouristPW.getText().toString();
+
+                db.collection("Tourists Account Details")
+                        .document(id)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+
+                                if (document != null) {
+                                    //check the existence of document ID
+                                    if (document.exists()) {
+                                        String pw2 = document.getString("Tourist Password");
+
+                                        if(pw.matches(pw2)){
+                                            startActivity(new Intent(TouristLogin.this, Role.class));
+                                            finish();
+                                        }
+                                        else{
+                                            mtilLoginTouristPW.setError("Wrong password!");
+                                        }
+                                    }
+                                    else{
+                                        mtilLoginTouristID.setError("ID does not exist!");
+                                    }
+                                }
+                            }
+                        });
             }
         });
     }
