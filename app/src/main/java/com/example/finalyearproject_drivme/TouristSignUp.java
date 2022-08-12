@@ -255,56 +255,56 @@ public class TouristSignUp extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
 
-                        if (document != null) {
-                            //check the existence of document ID
-                            if(document.exists()){
-                                mtilTouristID.setError("ID have been used!");
-                            }
-                            else{
-                                Map<String,Object> touristAcc = new HashMap<>();
-                                touristAcc.put("Tourist ID", metTouristID.getText().toString());
-                                touristAcc.put("Tourist First Name", Objects.requireNonNull(metTouristFName.getText()).toString().toUpperCase());
-                                touristAcc.put("Tourist Last Name", Objects.requireNonNull(metTouristLName.getText()).toString().toUpperCase());
-                                touristAcc.put("Tourist Email", Objects.requireNonNull(metTouristEmail.getText()).toString());
-                                touristAcc.put("Tourist Password", Objects.requireNonNull(metTouristPassword.getText()).toString());
+                        //check the existence of document ID
+                        if(document.exists()){
+                            mtilTouristID.setError("ID have been used!");
+                        }
+                        else{
+                            //insert tourist details into firestore
+                            Map<String,Object> touristAcc = new HashMap<>();
+                            touristAcc.put("Tourist ID", metTouristID.getText().toString());
+                            touristAcc.put("Tourist First Name", Objects.requireNonNull(metTouristFName.getText()).toString().toUpperCase());
+                            touristAcc.put("Tourist Last Name", Objects.requireNonNull(metTouristLName.getText()).toString().toUpperCase());
+                            touristAcc.put("Tourist Email", Objects.requireNonNull(metTouristEmail.getText()).toString());
+                            touristAcc.put("Tourist Password", Objects.requireNonNull(metTouristPassword.getText()).toString());
 
-                                db.collection("Tourists Account Details")
-                                        .document(value)
-                                        .set(touristAcc)
-                                        .addOnSuccessListener(unused -> {
-                                            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristSignUp.this);
-                                            alertDialogBuilder.setTitle("Created Account Successfully!");
-                                            alertDialogBuilder
-                                                    .setMessage("Let's try to login!")
-                                                    .setCancelable(false)
-                                                    .setPositiveButton("Yes", (dialog, id) -> {
-                                                        startActivity(new Intent(TouristSignUp.this, TouristLogin.class));
-                                                        finish();
-                                                    });
+                            db.collection("Tourists Account Details")
+                                    .document(value)
+                                    .set(touristAcc)
+                                    .addOnSuccessListener(unused -> {
+                                        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristSignUp.this);
+                                        alertDialogBuilder.setTitle("Created Account Successfully!");
+                                        alertDialogBuilder
+                                                .setMessage("Let's try to login!")
+                                                .setCancelable(false)
+                                                .setPositiveButton("Yes", (dialog, id) -> {
+                                                    startActivity(new Intent(TouristSignUp.this, TouristLogin.class));
+                                                    finish();
+                                                });
 
-                                            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-                                            alertDialog.show();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristSignUp.this);
-                                            alertDialogBuilder.setTitle("Fail to create account!");
-                                            alertDialogBuilder
-                                                    .setMessage("Please try again!")
-                                                    .setCancelable(false)
-                                                    .setPositiveButton("OK",
-                                                            (dialog, id) -> {
-                                                                metTouristID.getText().clear();
-                                                                metTouristFName.getText().clear();
-                                                                metTouristLName.getText().clear();
-                                                                metTouristEmail.getText().clear();
-                                                                metTouristPassword.getText().clear();
-                                                                metTouristCPassword.getText().clear();
-                                                            });
+                                        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+                                        alertDialog.show();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristSignUp.this);
+                                        alertDialogBuilder.setTitle("Fail to create account!");
+                                        alertDialogBuilder
+                                                .setMessage("Please try again!")
+                                                .setCancelable(false)
+                                                .setPositiveButton("OK",
+                                                        (dialog, id) -> {
+                                                            metTouristID.getText().clear();
+                                                            metTouristFName.getText().clear();
+                                                            metTouristLName.getText().clear();
+                                                            metTouristEmail.getText().clear();
+                                                            metTouristPassword.getText().clear();
+                                                            metTouristCPassword.getText().clear();
+                                                        });
 
-                                            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-                                            alertDialog.show();
-                                        });
-                            }
+                                        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+                                        alertDialog.show();
+                                    });
+
                         }
                     }
                 });

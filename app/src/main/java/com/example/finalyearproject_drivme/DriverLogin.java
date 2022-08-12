@@ -11,6 +11,8 @@ import android.widget.Button;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
@@ -75,7 +77,37 @@ public class DriverLogin extends AppCompatActivity {
                 mtilLoginDriverPW.setError("Field cannot be empty!");
             }
             else{
-                //database
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                String id = metLoginDriverID.getText().toString();
+                String pw = metLoginDriverPW.getText().toString();
+
+                db.collection("Drivers Account Details")
+                        .document(id)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+
+                                if (document != null) {
+                                    //check the existence of document/driver ID
+                                    if (document.exists()) {
+                                        String pw2 = document.getString("Driver Password");
+
+                                        //check if password matched
+                                        if(pw.matches(pw2)){
+                                            startActivity(new Intent(DriverLogin.this, Role.class));
+                                            finish();
+                                        }
+                                        else{
+                                            mtilLoginDriverPW.setError("Wrong password!");
+                                        }
+                                    }
+                                    else{
+                                        mtilLoginDriverID.setError("ID does not exist!");
+                                    }
+                                }
+                            }
+                        });
             }
         });
     }

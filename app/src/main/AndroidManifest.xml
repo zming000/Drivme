@@ -9,18 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalYearProjectDrivme">
-        <activity android:name=".DriverSignUp"/>
-        <activity android:name=".DriverLogin" />
-        <activity android:name=".DriverOption" />
-        <activity android:name=".TouristLogin" />
-
-        <activity android:name=".TouristSignUp" >
+        <activity android:name=".DriverSignUp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".DriverLogin" />
+        <activity android:name=".DriverOption" />
+        <activity android:name=".TouristLogin" />
+        <activity android:name=".TouristSignUp" />
         <activity android:name=".Role" />
         <activity android:name=".SplashActivity"/>
     </application>

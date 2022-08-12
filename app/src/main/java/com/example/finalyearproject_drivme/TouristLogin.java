@@ -89,10 +89,11 @@ public class TouristLogin extends AppCompatActivity {
                                 DocumentSnapshot document = task.getResult();
 
                                 if (document != null) {
-                                    //check the existence of document ID
+                                    //check the existence of document/tourist ID
                                     if (document.exists()) {
                                         String pw2 = document.getString("Tourist Password");
 
+                                        //check if the password matched
                                         if(pw.matches(pw2)){
                                             startActivity(new Intent(TouristLogin.this, Role.class));
                                             finish();
