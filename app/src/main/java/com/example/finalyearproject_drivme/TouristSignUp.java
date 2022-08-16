@@ -8,23 +8,21 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class TouristSignUp extends AppCompatActivity {
     //declare variables
     TextInputLayout mtilTouristID, mtilTFName, mtilTLName, mtilTEmail, mtilTPassword, mtilTCPassword;
     TextInputEditText metTouristID, metTouristFName, metTouristLName, metTouristEmail, metTouristPassword, metTouristCPassword;
-    Button mbtnTouristSignUp;
-
-
+    Button mbtnTouristNext;
+    Boolean statusID, statusFName, statusLName, statusEmail, statusPassword, statusCPassword, statusVerification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,33 +42,17 @@ public class TouristSignUp extends AppCompatActivity {
         metTouristEmail = findViewById(R.id.etSignUpTouristEmail);
         metTouristPassword = findViewById(R.id.etSignUpTouristPassword);
         metTouristCPassword = findViewById(R.id.etSignUpTouristCPassword);
-        mbtnTouristSignUp = findViewById(R.id.btnTouristSignUp);
+        mbtnTouristNext = findViewById(R.id.btnTouristNext);
 
-        validationOnEachFields();
+        errorChangeOnEachFields();
 
-        mbtnTouristSignUp.setOnClickListener(v -> {
-
-            //check condition (fields not empty) before proceed to database
-            if(Objects.requireNonNull(metTouristID.getText()).toString().trim().isEmpty()){
-                mtilTouristID.setError("Field cannot be empty!");
-            }
-            else if(Objects.requireNonNull(metTouristFName.getText()).toString().trim().isEmpty()){
-                mtilTFName.setError("Field cannot be empty!");
-            }
-            else if(Objects.requireNonNull(metTouristLName.getText()).toString().trim().isEmpty()){
-                mtilTLName.setError("Field cannot be empty!");
-            }
-            else if(Objects.requireNonNull(metTouristEmail.getText()).toString().trim().isEmpty()){
-                mtilTEmail.setError("Field cannot be empty!");
-            }
-            else if(Objects.requireNonNull(metTouristPassword.getText()).toString().trim().isEmpty()){
-                mtilTPassword.setError("Field cannot be empty!");
-            }
-            else if(Objects.requireNonNull(metTouristCPassword.getText()).toString().trim().isEmpty()){
-                mtilTCPassword.setError("Field cannot be empty!");
+        mbtnTouristNext.setOnClickListener(v -> {
+            statusVerification = validationOnEachFields();
+            if(statusVerification) {
+                checkID();
             }
             else{
-                addInfoToFirestore();
+                Toast.makeText(TouristSignUp.this, "Please ensure each field input correctly!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -88,8 +70,8 @@ public class TouristSignUp extends AppCompatActivity {
         finish();
     }
 
-    private void validationOnEachFields(){
-        //Validations on each field to ensure correct input
+    //Set error message on each field to ensure correct input
+    private void errorChangeOnEachFields(){
         metTouristID.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -243,8 +225,39 @@ public class TouristSignUp extends AppCompatActivity {
         });
     }
 
+    //Validations on each field to ensure correct input
+    private boolean validationOnEachFields(){
+
+        //check input conditions (no whitespace, with letters, with digit, no uppercase)
+        statusID = !Objects.requireNonNull(metTouristID.getText()).toString().contains(" ") &&
+                metTouristID.getText().toString().matches(".*[a-zA-Z]+.*") &&
+                digitExist(metTouristID.getText().toString()) &&
+                !uppercaseExist(metTouristID.getText().toString());
+
+        //check input condition (without digit)
+        statusFName = !digitExist(Objects.requireNonNull(metTouristFName.getText()).toString());
+
+        //check input condition (without digit)
+        statusLName = !digitExist(Objects.requireNonNull(metTouristLName.getText()).toString().trim());
+
+        //check input condition (valid format)
+        statusEmail = Objects.requireNonNull(metTouristEmail.getText()).toString().matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+");
+
+        //check input conditions (no whitespace, strong password)
+        statusPassword = !whitespaceExist(Objects.requireNonNull(metTouristPassword.getText()).toString()) &&
+                metTouristPassword.getText().toString().length() >= 8 &&
+                digitExist(metTouristPassword.getText().toString()) &&
+                uppercaseExist(metTouristPassword.getText().toString());
+
+        //check input condition (match password)
+        statusCPassword = Objects.requireNonNull(metTouristCPassword.getText()).toString()
+                .matches(Objects.requireNonNull(metTouristPassword.getText()).toString());
+
+        return statusID && statusFName && statusLName && statusEmail && statusPassword && statusCPassword;
+    }
+
     //add tourists details into firestore
-    private void addInfoToFirestore(){
+    private void checkID(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String value = Objects.requireNonNull(metTouristID.getText()).toString();
 
@@ -260,51 +273,15 @@ public class TouristSignUp extends AppCompatActivity {
                             mtilTouristID.setError("ID have been used!");
                         }
                         else{
-                            //insert tourist details into firestore
-                            Map<String,Object> touristAcc = new HashMap<>();
-                            touristAcc.put("Tourist ID", metTouristID.getText().toString());
-                            touristAcc.put("Tourist First Name", Objects.requireNonNull(metTouristFName.getText()).toString().toUpperCase());
-                            touristAcc.put("Tourist Last Name", Objects.requireNonNull(metTouristLName.getText()).toString().toUpperCase());
-                            touristAcc.put("Tourist Email", Objects.requireNonNull(metTouristEmail.getText()).toString());
-                            touristAcc.put("Tourist Password", Objects.requireNonNull(metTouristPassword.getText()).toString());
+                            Intent intent = new Intent(TouristSignUp.this, TouristPhoneNumber.class);
+                            intent.putExtra("tIDNext", metTouristID.getText().toString());
+                            intent.putExtra("tFNameNext", Objects.requireNonNull(metTouristFName.getText()).toString().toUpperCase());
+                            intent.putExtra("tLNameNext", Objects.requireNonNull(metTouristLName.getText()).toString().toUpperCase());
+                            intent.putExtra("tEmailNext", Objects.requireNonNull(metTouristEmail.getText()).toString());
+                            intent.putExtra("tPasswordNext", Objects.requireNonNull(metTouristPassword.getText()).toString());
 
-                            db.collection("Tourists Account Details")
-                                    .document(value)
-                                    .set(touristAcc)
-                                    .addOnSuccessListener(unused -> {
-                                        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristSignUp.this);
-                                        alertDialogBuilder.setTitle("Created Account Successfully!");
-                                        alertDialogBuilder
-                                                .setMessage("Let's try to login!")
-                                                .setCancelable(false)
-                                                .setPositiveButton("Yes", (dialog, id) -> {
-                                                    startActivity(new Intent(TouristSignUp.this, TouristLogin.class));
-                                                    finish();
-                                                });
-
-                                        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-                                        alertDialog.show();
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristSignUp.this);
-                                        alertDialogBuilder.setTitle("Fail to create account!");
-                                        alertDialogBuilder
-                                                .setMessage("Please try again!")
-                                                .setCancelable(false)
-                                                .setPositiveButton("OK",
-                                                        (dialog, id) -> {
-                                                            metTouristID.getText().clear();
-                                                            metTouristFName.getText().clear();
-                                                            metTouristLName.getText().clear();
-                                                            metTouristEmail.getText().clear();
-                                                            metTouristPassword.getText().clear();
-                                                            metTouristCPassword.getText().clear();
-                                                        });
-
-                                        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-                                        alertDialog.show();
-                                    });
-
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         }
                     }
                 });
