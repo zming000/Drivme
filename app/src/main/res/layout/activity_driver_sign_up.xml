@@ -7,16 +7,21 @@
     tools:context=".DriverSignUp"
     android:background="@drawable/bg_driver_signup">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
     <ImageView
         android:id="@+id/ivRotatedLogoSignUp"
         android:layout_width="64dp"
         android:layout_height="230dp"
         android:layout_marginTop="4dp"
-        android:src="@drawable/app_logo_rotated"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/app_logo_rotated" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tvDriverSignUp"
@@ -38,9 +43,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="325dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="32dp"
         android:hint="Driver ID"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,14 +65,10 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="325dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="32dp"
         android:hint="First Name"
         app:endIconMode="clear_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tilSignUpDriverID"
+        app:layout_constraintStart_toStartOf="@+id/tilSignUpDriverID"
         app:layout_constraintTop_toBottomOf="@+id/tilSignUpDriverID"
         app:startIconDrawable="@drawable/ic_name">
 
@@ -84,14 +84,10 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="325dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="32dp"
         android:hint="Last Name"
         app:endIconMode="clear_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tilSignUpDriverFName"
+        app:layout_constraintStart_toStartOf="@+id/tilSignUpDriverFName"
         app:layout_constraintTop_toBottomOf="@+id/tilSignUpDriverFName"
         app:startIconDrawable="@drawable/ic_name">
 
@@ -107,14 +103,10 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="325dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="32dp"
         android:hint="Email"
         app:endIconMode="clear_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tilSignUpDriverLName"
+        app:layout_constraintStart_toStartOf="@+id/tilSignUpDriverLName"
         app:layout_constraintTop_toBottomOf="@+id/tilSignUpDriverLName"
         app:startIconDrawable="@drawable/ic_email">
 
@@ -130,14 +122,10 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="325dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="32dp"
         android:hint="Password"
         app:endIconMode="password_toggle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tilSignUpDriverEmail"
+        app:layout_constraintStart_toStartOf="@+id/tilSignUpDriverEmail"
         app:layout_constraintTop_toBottomOf="@+id/tilSignUpDriverEmail"
         app:startIconDrawable="@drawable/ic_lock">
 
@@ -154,14 +142,10 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="325dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="32dp"
         android:hint="Confirm Password"
         app:endIconMode="password_toggle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tilSignUpDriverPassword"
+        app:layout_constraintStart_toStartOf="@+id/tilSignUpDriverPassword"
         app:layout_constraintTop_toBottomOf="@+id/tilSignUpDriverPassword"
         app:startIconDrawable="@drawable/ic_lock">
 
@@ -178,15 +162,11 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="325dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="32dp"
         android:hint="Reference Code"
         app:helperText="Reminder: Obtain reference code after interviewed"
         app:helperTextTextColor="@color/red"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tilSignUpDriverCPassword"
+        app:layout_constraintStart_toStartOf="@+id/tilSignUpDriverCPassword"
         app:layout_constraintTop_toBottomOf="@+id/tilSignUpDriverCPassword"
         app:startIconDrawable="@drawable/ic_key">
 
@@ -220,10 +200,12 @@
         android:text="Already have an account?"
         android:textColor="@color/black"
         android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.406"
+        app:layout_constraintHorizontal_bias="0.456"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnDriverSignUp" />
+        app:layout_constraintTop_toBottomOf="@+id/btnDriverSignUp"
+        app:layout_constraintVertical_bias="0.012" />
 
     <TextView
         android:id="@+id/tvDriverLogin"

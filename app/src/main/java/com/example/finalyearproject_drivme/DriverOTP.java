@@ -23,38 +23,38 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class TouristOTP extends AppCompatActivity {
+public class DriverOTP extends AppCompatActivity {
     //declare variables
-    TextView mtvTouristPhoneText;
-    PinView mpvTOTP;
-    Button mbtnTouristVerify;
+    TextView mtvDriverPhoneText;
+    PinView mpvDOTP;
+    Button mbtnDriverVerify;
     FirebaseAuth mAuth;
     String verificationID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tourist_otp);
+        setContentView(R.layout.activity_driver_otp);
 
         //obtaining the View with specific ID
-        mtvTouristPhoneText = findViewById(R.id.tvTouristPhoneText);
-        mpvTOTP = findViewById(R.id.pvOTP);
-        mbtnTouristVerify = findViewById(R.id.btnTouristVerify);
+        mtvDriverPhoneText = findViewById(R.id.tvDriverPhoneText);
+        mpvDOTP = findViewById(R.id.pvDriverOTP);
+        mbtnDriverVerify = findViewById(R.id.btnDriverVerify);
 
         //return instance of the class
         mAuth = FirebaseAuth.getInstance();
 
-        //get tourist phone number
-        String phNumT = getIntent().getStringExtra("tPhoneNumber");
-        mtvTouristPhoneText.setText(phNumT);
+        //get driver phone number
+        String phNumD = getIntent().getStringExtra("dPhoneNumber");
+        mtvDriverPhoneText.setText(phNumD);
 
         //send otp
-        sendOTP(phNumT);
+        sendOTP(phNumD);
 
-        mbtnTouristVerify.setOnClickListener(v -> {
-            String value = mpvTOTP.getText().toString();
+        mbtnDriverVerify.setOnClickListener(v -> {
+            String value = mpvDOTP.getText().toString();
             if(value.isEmpty()){
-                Toast.makeText(TouristOTP.this, "Invalid OTP Code!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DriverOTP.this, "Invalid OTP Code!", Toast.LENGTH_SHORT).show();
             }
             else {
                 verifyCode(value);
@@ -64,11 +64,11 @@ public class TouristOTP extends AppCompatActivity {
 
     private void sendOTP(String phNum) {
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
-                        .setPhoneNumber(phNum)       // Phone number to verify
-                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                        .setActivity(this)                 // Activity (for callback binding)
-                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
-                        .build();
+                .setPhoneNumber(phNum)       // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                .setActivity(this)                 // Activity (for callback binding)
+                .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
 
@@ -78,24 +78,24 @@ public class TouristOTP extends AppCompatActivity {
 
         @Override
         public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-            String codeT = credential.getSmsCode();
-            mpvTOTP.setText(codeT);
+            String codeD = credential.getSmsCode();
+            mpvDOTP.setText(codeD);
 
-            if(codeT != null){
-                verifyCode(codeT);
+            if(codeD != null){
+                verifyCode(codeD);
             }
         }
 
         @Override
         public void onVerificationFailed(@NonNull FirebaseException e) {
-            Toast.makeText(TouristOTP.this, "Verification Failed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DriverOTP.this, "Verification Failed!", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onCodeSent(@NonNull String s,
                                @NonNull PhoneAuthProvider.ForceResendingToken token) {
             super.onCodeSent(s, token);
-            Toast.makeText(TouristOTP.this, "OTP Sent!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DriverOTP.this, "OTP sent!", Toast.LENGTH_SHORT).show();
             verificationID = s;
         }
     };
@@ -114,36 +114,45 @@ public class TouristOTP extends AppCompatActivity {
                     }
                     else{
                         if(task.getException() instanceof FirebaseAuthInvalidCredentialsException){
-                            Toast.makeText(TouristOTP.this, "Verification Failed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DriverOTP.this, "Verification Failed!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    //add tourist details into firestore
+    //add driver details into firestore
     private void addInfoToFirestore(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String value = getIntent().getStringExtra("tID");
+        String value = getIntent().getStringExtra("dID");
+        String code = getIntent().getStringExtra("dRefCode");
 
-        //tourist details to insert into firestore
-        Map<String,Object> touristAcc = new HashMap<>();
-        touristAcc.put("Tourist ID", value);
-        touristAcc.put("Tourist First Name", getIntent().getStringExtra("tFName"));
-        touristAcc.put("Tourist Last Name", getIntent().getStringExtra("tLName"));
-        touristAcc.put("Tourist Phone Number", getIntent().getStringExtra("tPhoneNumber"));
-        touristAcc.put("Tourist Email", getIntent().getStringExtra("tEmail"));
-        touristAcc.put("Tourist Password", getIntent().getStringExtra("tPassword"));
+        //update reference code details and insert driver details into firestore
+        Map<String,Object> refCode = new HashMap<>();
+        refCode.put("Driver ID", value);
+        refCode.put("Status", "N/A");
 
-        db.collection("Tourists Account Details").document(value)
-                .set(touristAcc)
+        //driver details to insert into firestore
+        Map<String,Object> driverAcc = new HashMap<>();
+        driverAcc.put("Driver ID", value);
+        driverAcc.put("Driver First Name", getIntent().getStringExtra("dFName"));
+        driverAcc.put("Driver Last Name", getIntent().getStringExtra("dLName"));
+        driverAcc.put("Driver Phone Number", getIntent().getStringExtra("dPhoneNumber"));
+        driverAcc.put("Driver Email", getIntent().getStringExtra("dEmail"));
+        driverAcc.put("Driver Password", getIntent().getStringExtra("dPassword"));
+
+        db.collection("Reference Code Details").document(code)
+                .update(refCode);
+
+        db.collection("Drivers Account Details").document(value)
+                .set(driverAcc)
                 .addOnSuccessListener(unused -> {
-                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristOTP.this);
+                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverOTP.this);
                     alertDialogBuilder.setTitle("Created Account Successfully!");
                     alertDialogBuilder
                             .setMessage("Let's try to login!")
                             .setCancelable(false)
                             .setPositiveButton("Yes", (dialog, id) -> {
-                                startActivity(new Intent(TouristOTP.this, TouristLogin.class));
+                                startActivity(new Intent(DriverOTP.this, DriverLogin.class));
                                 finish();
                             });
 
@@ -151,14 +160,14 @@ public class TouristOTP extends AppCompatActivity {
                     alertDialog.show();
                 })
                 .addOnFailureListener(e -> {
-                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristOTP.this);
+                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverOTP.this);
                     alertDialogBuilder.setTitle("Fail to create account!");
                     alertDialogBuilder
                             .setMessage("Please try again!")
                             .setCancelable(false)
                             .setPositiveButton("OK",
                                     (dialog, id) -> {
-                                        startActivity(new Intent(TouristOTP.this, TouristSignUp.class));
+                                        startActivity(new Intent(DriverOTP.this, DriverSignUp.class));
                                         finish();
                                     });
 
@@ -167,8 +176,8 @@ public class TouristOTP extends AppCompatActivity {
                 });
     }
 
-    public void resendTOTP(View view) {
-        String num = getIntent().getStringExtra("tPhoneNumber");
-        sendOTP(num);
+    public void resendDOTP(View view) {
+        String numD = getIntent().getStringExtra("dPhoneNumber");
+        sendOTP(numD);
     }
 }

@@ -14,9 +14,11 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Objects;
 
 public class TouristPhoneNumber extends AppCompatActivity {
+    //declare variables
     TextInputLayout mtilTPhoneNumber;
     TextInputEditText metTPhoneNumber;
     Button mbtnTouristOTP;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +29,7 @@ public class TouristPhoneNumber extends AppCompatActivity {
         metTPhoneNumber = findViewById(R.id.etSignUpTouristPhoneNumber);
         mbtnTouristOTP = findViewById(R.id.btnTouristOTP);
 
+        //change error message
         metTPhoneNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -45,12 +48,12 @@ public class TouristPhoneNumber extends AppCompatActivity {
         });
 
         mbtnTouristOTP.setOnClickListener(v -> {
-
             //check condition (fields not empty) before proceed to next page
             if(Objects.requireNonNull(metTPhoneNumber.getText()).toString().trim().isEmpty()){
                 mtilTPhoneNumber.setError("Field cannot be empty!");
             }
             else{
+                //proceed to verify otp
                 Intent intent = new Intent(TouristPhoneNumber.this, TouristOTP.class);
                 intent.putExtra("tID", getIntent().getStringExtra("tIDNext"));
                 intent.putExtra("tFName", getIntent().getStringExtra("tFNameNext"));

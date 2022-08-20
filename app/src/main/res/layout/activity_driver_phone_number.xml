@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TouristPhoneNumber"
-    android:background="@drawable/bg_tourist_signup">
+    tools:context=".DriverPhoneNumber"
+    android:background="@drawable/bg_driver_signup">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,26 +21,32 @@
             android:layout_gravity="center"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/ivSideLogoSignUp"
-                android:layout_width="237dp"
-                android:layout_height="78dp"
-                android:layout_gravity="right"
-                android:src="@drawable/app_logo_side"/>
-
-            <TextView
-                android:id="@+id/tvTouristSignUp"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
-                android:layout_marginLeft="14dp"
-                android:text="Tourist Sign Up"
-                android:textColor="@color/primary"
-                android:textSize="31sp"
-                android:textStyle="bold" />
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/tvDriverSignUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginTop="30dp"
+                    android:text="Driver Sign Up"
+                    android:textColor="@color/primary"
+                    android:textSize="31sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/ivRotatedLogoSignUp"
+                    android:layout_width="64dp"
+                    android:layout_height="230dp"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/app_logo_rotated" />
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/tvTouristOTPVerification"
+                android:id="@+id/tvDriverOTPVerification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -51,7 +57,7 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/tvTouristText"
+                android:id="@+id/tvDriverText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -61,13 +67,13 @@
                 android:textAlignment="center"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilSignUpTouristPhoneNumber"
+                android:id="@+id/tilSignUpDriverPhoneNumber"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="340dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
-                android:hint="Tourist Phone Number"
+                android:hint="Driver Phone Number"
                 app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_phone"
                 app:counterEnabled="true"
@@ -75,7 +81,7 @@
                 app:prefixText="+60">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etSignUpTouristPhoneNumber"
+                    android:id="@+id/etSignUpDriverPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLength="10"
@@ -84,10 +90,10 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnTouristOTP"
+                android:id="@+id/btnDriverOTP"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="190dp"
+                android:layout_marginTop="150dp"
                 android:layout_marginBottom="10dp"
                 android:layout_gravity="center"
                 android:background="@drawable/roundedbtn"

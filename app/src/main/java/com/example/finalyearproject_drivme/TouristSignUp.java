@@ -44,9 +44,11 @@ public class TouristSignUp extends AppCompatActivity {
         metTouristCPassword = findViewById(R.id.etSignUpTouristCPassword);
         mbtnTouristNext = findViewById(R.id.btnTouristNext);
 
+        //change error messages
         errorChangeOnEachFields();
 
         mbtnTouristNext.setOnClickListener(v -> {
+            //validate each field
             statusVerification = validationOnEachFields();
             if(statusVerification) {
                 checkID();
@@ -227,7 +229,6 @@ public class TouristSignUp extends AppCompatActivity {
 
     //Validations on each field to ensure correct input
     private boolean validationOnEachFields(){
-
         //check input conditions (no whitespace, with letters, with digit, no uppercase)
         statusID = !Objects.requireNonNull(metTouristID.getText()).toString().contains(" ") &&
                 metTouristID.getText().toString().matches(".*[a-zA-Z]+.*") &&
@@ -256,14 +257,12 @@ public class TouristSignUp extends AppCompatActivity {
         return statusID && statusFName && statusLName && statusEmail && statusPassword && statusCPassword;
     }
 
-    //add tourists details into firestore
+    //check if ID existed
     private void checkID(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String value = Objects.requireNonNull(metTouristID.getText()).toString();
 
-        db.collection("Tourists Account Details")
-                .document(value)
-                .get()
+        db.collection("Tourists Account Details").document(value).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();

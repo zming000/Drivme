@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -99,7 +100,7 @@ public class TouristLogin extends AppCompatActivity {
                                             finish();
                                         }
                                         else{
-                                            mtilLoginTouristPW.setError("Wrong password!");
+                                            Toast.makeText(TouristLogin.this, "Wrong ID or Password!", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                     else{

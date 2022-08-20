@@ -1,6 +1,5 @@
 package com.example.finalyearproject_drivme;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,14 +8,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class DriverSignUp extends AppCompatActivity {
@@ -24,6 +22,7 @@ public class DriverSignUp extends AppCompatActivity {
     TextInputLayout mtilDriverID, mtilDFName, mtilDLName, mtilDEmail, mtilDPassword, mtilDCPassword, mtilDriverRC;
     TextInputEditText metDriverID, metDriverFName, metDriverLName, metDriverEmail, metDriverPassword, metDriverCPassword, metDriverRC;
     Button mbtnDriverSignUp;
+    Boolean statusDID, statusDFName, statusDLName, statusDEmail, statusDPassword, statusDCPassword, statusDVerification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,34 +46,18 @@ public class DriverSignUp extends AppCompatActivity {
         metDriverRC = findViewById(R.id.etSignUpDriverReferenceCode);
         mbtnDriverSignUp = findViewById(R.id.btnDriverSignUp);
 
-        validationOnEachFields();
+        //change error messages
+        errorChangeOnEachFields();
 
         mbtnDriverSignUp.setOnClickListener(v -> {
-
-            //check condition (fields not empty) before proceed to database
-            if(Objects.requireNonNull(metDriverID.getText()).toString().trim().isEmpty()){
-                mtilDriverID.setError("Field cannot be empty!");
-            }
-            else if(Objects.requireNonNull(metDriverFName.getText()).toString().trim().isEmpty()){
-                mtilDFName.setError("Field cannot be empty!");
-            }
-            else if(Objects.requireNonNull(metDriverLName.getText()).toString().trim().isEmpty()){
-                mtilDLName.setError("Field cannot be empty!");
-            }
-            else if(Objects.requireNonNull(metDriverEmail.getText()).toString().trim().isEmpty()){
-                mtilDEmail.setError("Field cannot be empty!");
-            }
-            else if(Objects.requireNonNull(metDriverPassword.getText()).toString().trim().isEmpty()){
-                mtilDPassword.setError("Field cannot be empty!");
-            }
-            else if(Objects.requireNonNull(metDriverCPassword.getText()).toString().trim().isEmpty()){
-                mtilDCPassword.setError("Field cannot be empty!");
-            }
-            else if(Objects.requireNonNull(metDriverRC.getText()).toString().trim().isEmpty()){
-                mtilDriverRC.setError("Field cannot be empty!");
+            //validate each field
+            statusDVerification = validationOnEachFields();
+            if(statusDVerification){
+                checkID();
             }
             else{
-                addInfoToFirestore();
+                Toast.makeText(DriverSignUp.this, "Please ensure each field input correctly!", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -92,8 +75,8 @@ public class DriverSignUp extends AppCompatActivity {
         finish();
     }
 
-    private void validationOnEachFields(){
-        //Validations on each field to ensure correct input
+    //Set error message on each field to ensure correct input
+    private void errorChangeOnEachFields(){
         metDriverID.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -232,7 +215,7 @@ public class DriverSignUp extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //check input condition (match password)
                 if(!Objects.requireNonNull(metDriverCPassword.getText()).toString()
-                        .matches(Objects.requireNonNull(metDriverCPassword.getText()).toString())){
+                        .matches(Objects.requireNonNull(metDriverPassword.getText()).toString())){
                     mtilDCPassword.setError("Password not match!");
                 }
                 else{
@@ -264,8 +247,38 @@ public class DriverSignUp extends AppCompatActivity {
         });
     }
 
-    //add driver details into firestore
-    private void addInfoToFirestore(){
+    //Validations on each field to ensure correct input
+    private boolean validationOnEachFields(){
+        //check input conditions (no whitespace, with letters, with digit, no uppercase)
+        statusDID = !Objects.requireNonNull(metDriverID.getText()).toString().contains(" ") &&
+                metDriverID.getText().toString().matches(".*[a-zA-Z]+.*") &&
+                digitExist(metDriverID.getText().toString()) &&
+                !uppercaseExist(metDriverID.getText().toString());
+
+        //check input condition (without digit)
+        statusDFName = !digitExist(Objects.requireNonNull(metDriverFName.getText()).toString());
+
+        //check input condition (without digit)
+        statusDLName = !digitExist(Objects.requireNonNull(metDriverLName.getText()).toString().trim());
+
+        //check input condition (valid format)
+        statusDEmail = Objects.requireNonNull(metDriverEmail.getText()).toString().matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+");
+
+        //check input conditions (no whitespace, strong password)
+        statusDPassword = !whitespaceExist(Objects.requireNonNull(metDriverPassword.getText()).toString()) &&
+                metDriverPassword.getText().toString().length() >= 8 &&
+                digitExist(metDriverPassword.getText().toString()) &&
+                uppercaseExist(metDriverPassword.getText().toString());
+
+        //check input condition (match password)
+        statusDCPassword = Objects.requireNonNull(metDriverCPassword.getText()).toString()
+                .matches(Objects.requireNonNull(metDriverPassword.getText()).toString());
+
+        return statusDID && statusDFName && statusDLName && statusDEmail && statusDPassword && statusDCPassword;
+    }
+
+    //check if ID existed
+    private void checkID(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String value = Objects.requireNonNull(metDriverID.getText()).toString();
         String code = Objects.requireNonNull(metDriverRC.getText()).toString();
@@ -275,80 +288,38 @@ public class DriverSignUp extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
 
-                        if (document != null) {
-                            //check the existence of document ID
-                            if(document.exists()){
-                                mtilDriverID.setError("ID have been used!");
-                            }
-                            else{
-                                db.collection("Reference Code Details").document(code).get()
-                                        .addOnCompleteListener(task2 -> {
-                                            if (task2.isSuccessful()) {
-                                                DocumentSnapshot document2 = task2.getResult();
-                                                String codeStatus = document2.getString("Status");
-                                                //check the existence of reference code
-                                                if (!document2.exists()) {
-                                                    mtilDriverRC.setError("Invalid Reference Code!");
-                                                }
-                                                else if(codeStatus.matches("N/A")){ //check if the reference code available
-                                                    mtilDriverRC.setError("Reference Code Not Available!");
-                                                }
-                                                else{
-                                                    //update reference code details and insert driver details into firestore
-                                                    Map<String,Object> refCode = new HashMap<>();
-                                                    refCode.put("Driver ID", metDriverID.getText().toString());
-                                                    refCode.put("Status", "N/A");
-
-                                                    Map<String,Object> driverAcc = new HashMap<>();
-                                                    driverAcc.put("Driver ID", metDriverID.getText().toString());
-                                                    driverAcc.put("Driver First Name", Objects.requireNonNull(metDriverFName.getText()).toString().toUpperCase());
-                                                    driverAcc.put("Driver Last Name", Objects.requireNonNull(metDriverLName.getText()).toString().toUpperCase());
-                                                    driverAcc.put("Driver Email", Objects.requireNonNull(metDriverEmail.getText()).toString());
-                                                    driverAcc.put("Driver Password", Objects.requireNonNull(metDriverPassword.getText()).toString());
-
-                                                    db.collection("Reference Code Details").document(code)
-                                                            .update(refCode);
-
-                                                    db.collection("Drivers Account Details").document(value)
-                                                            .set(driverAcc)
-                                                            .addOnSuccessListener(unused -> {
-                                                                android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverSignUp.this);
-                                                                alertDialogBuilder.setTitle("Created Account Successfully!");
-                                                                alertDialogBuilder
-                                                                        .setMessage("Let's try to login!")
-                                                                        .setCancelable(false)
-                                                                        .setPositiveButton("Yes", (dialog, id) -> {
-                                                                            startActivity(new Intent(DriverSignUp.this, DriverLogin.class));
-                                                                            finish();
-                                                                        });
-
-                                                                android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-                                                                alertDialog.show();
-                                                            })
-                                                            .addOnFailureListener(e -> {
-                                                                android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverSignUp.this);
-                                                                alertDialogBuilder.setTitle("Fail to create account!");
-                                                                alertDialogBuilder
-                                                                        .setMessage("Please try again!")
-                                                                        .setCancelable(false)
-                                                                        .setPositiveButton("OK",
-                                                                                (dialog, id) -> {
-                                                                                    metDriverID.getText().clear();
-                                                                                    metDriverFName.getText().clear();
-                                                                                    metDriverLName.getText().clear();
-                                                                                    metDriverEmail.getText().clear();
-                                                                                    metDriverPassword.getText().clear();
-                                                                                    metDriverCPassword.getText().clear();
-                                                                                    metDriverRC.getText().clear();
-                                                                                });
-
-                                                                android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-                                                                alertDialog.show();
-                                                            });
-                                                }
+                        //check the existence of document ID
+                        if(document.exists()){
+                            mtilDriverID.setError("ID have been used!");
+                        }
+                        else{
+                            db.collection("Reference Code Details").document(code).get()
+                                    .addOnCompleteListener(task2 -> {
+                                        if (task2.isSuccessful()) {
+                                            DocumentSnapshot document2 = task2.getResult();
+                                            String codeStatus = document2.getString("Status");
+                                            //check the existence of reference code
+                                            if (!document2.exists()) {
+                                                mtilDriverRC.setError("Invalid Reference Code!");
                                             }
-                                        });
-                            }
+                                            else if(codeStatus.matches("N/A")){ //check if the reference code available
+                                                mtilDriverRC.setError("Reference Code Not Available!");
+                                            }
+                                            else{
+                                                Intent intent = new Intent(DriverSignUp.this, DriverPhoneNumber.class);
+                                                intent.putExtra("dIDNext", metDriverID.getText().toString());
+                                                intent.putExtra("dFNameNext", Objects.requireNonNull(metDriverFName.getText()).toString().toUpperCase());
+                                                intent.putExtra("dLNameNext", Objects.requireNonNull(metDriverLName.getText()).toString().toUpperCase());
+                                                intent.putExtra("dEmailNext", Objects.requireNonNull(metDriverEmail.getText()).toString());
+                                                intent.putExtra("dPasswordNext", Objects.requireNonNull(metDriverPassword.getText()).toString());
+                                                intent.putExtra("dRefCodeNext", Objects.requireNonNull(metDriverRC.getText()).toString().toUpperCase());
+
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                startActivity(intent);
+//
+                                            }
+                                        }
+                                    });
                         }
                     }
                 });
