@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DriverOTP"
-    android:background="@drawable/bg_driver_signup">
+    tools:context=".FPWOtp"
+    android:background="@drawable/bg_forgot_password">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,41 +17,32 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvDriverSignUp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:text="Driver Sign Up"
-                android:textColor="@color/primary"
-                android:textSize="31sp"
-                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/appLogo"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="100dp"
-                android:layout_marginRight="31dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="31dp"
                 android:src="@drawable/icon_otp" />
 
             <TextView
-                android:id="@+id/tvDriverOTPVerification"
+                android:id="@+id/tvFPWVerification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
                 android:text="OTP Verification"
                 android:textColor="@color/black"
                 android:textSize="31sp"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/tvDriverText"
+                android:id="@+id/tvFPWText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -61,7 +52,7 @@
                 android:textAlignment="center"/>
 
             <TextView
-                android:id="@+id/tvDriverPhoneText"
+                android:id="@+id/tvFPWPhoneText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -71,7 +62,7 @@
                 android:textAlignment="center"/>
 
             <com.chaos.view.PinView
-                android:id="@+id/pvDriverOTP"
+                android:id="@+id/pvFPWOtp"
                 style="@style/PinWidget.PinView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -88,7 +79,7 @@
                 app:hideLineWhenFilled="true"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="230dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp">
@@ -105,11 +96,11 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:id="@+id/tvDriverResend"
+                    android:id="@+id/tvFPWResend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:onClick="resendDOTP"
+                    android:onClick="resendFPWOtp"
                     android:text="@string/underline_text_resend"
                     android:textColor="@color/text_blue"
                     android:textSize="16sp"
@@ -120,12 +111,12 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnDriverVerify"
+                android:id="@+id/btnFPWVerify"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="45dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/roundedbtn"
                 android:text="Verify OTP"
                 android:textAllCaps="false"

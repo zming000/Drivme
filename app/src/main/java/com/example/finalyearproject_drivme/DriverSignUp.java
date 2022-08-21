@@ -283,7 +283,7 @@ public class DriverSignUp extends AppCompatActivity {
         String value = Objects.requireNonNull(metDriverID.getText()).toString();
         String code = Objects.requireNonNull(metDriverRC.getText()).toString();
 
-        db.collection("Drivers Account Details").document(value).get()
+        db.collection("User Accounts").document(value).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();

@@ -82,7 +82,7 @@ public class TouristLogin extends AppCompatActivity {
                 String id = metLoginTouristID.getText().toString();
                 String pw = metLoginTouristPW.getText().toString();
 
-                db.collection("Tourists Account Details")
+                db.collection("User Accounts")
                         .document(id)
                         .get()
                         .addOnCompleteListener(task -> {
@@ -90,17 +90,24 @@ public class TouristLogin extends AppCompatActivity {
                                 DocumentSnapshot document = task.getResult();
 
                                 if (document != null) {
-                                    //check the existence of document/tourist ID
+                                    //check the existence of ID
                                     if (document.exists()) {
-                                        String pw2 = document.getString("Tourist Password");
+                                        Integer value = (Integer) document.get("Account Tourist");
 
-                                        //check if the password matched
-                                        if(pw.matches(pw2)){
-                                            startActivity(new Intent(TouristLogin.this, Role.class));
-                                            finish();
+                                        if(value == 1) {
+                                            String pw2 = document.getString("Password");
+
+                                            //check if the password matched
+                                            if (pw.matches(pw2)) {
+                                                startActivity(new Intent(TouristLogin.this, Role.class));
+                                                finish();
+                                            } else {
+                                                Toast.makeText(TouristLogin.this, "Wrong ID or Password!", Toast.LENGTH_SHORT).show();
+                                            }
                                         }
                                         else{
-                                            Toast.makeText(TouristLogin.this, "Wrong ID or Password!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(TouristLogin.this, "Tourist Role haven't activated!", Toast.LENGTH_SHORT).show();
+
                                         }
                                     }
                                     else{
@@ -126,6 +133,14 @@ public class TouristLogin extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         startActivity(new Intent(TouristLogin.this, Role.class));
+        finish();
+    }
+
+    public void touristForgot(View view) {
+        Intent intent = new Intent(TouristLogin.this, ForgotPassword.class);
+        intent.putExtra("role", "Tourist");
+
+        startActivity(intent);
         finish();
     }
 }

@@ -32,8 +32,8 @@
                 android:id="@+id/tvDriverLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_marginLeft="18dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="30dp"
                 android:text="Driver Login"
                 android:textColor="@color/primary"
                 android:textSize="31sp"
@@ -42,7 +42,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilLoginDriverID"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="340dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
@@ -60,7 +60,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilLoginDriverPW"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="340dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
@@ -77,36 +77,39 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <RelativeLayout
-                android:layout_width="340dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp">
+
                 <TextView
                     android:id="@+id/tvDriverForgotPW"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:onClick="driverForgot"
                     android:text="@string/underline_text_fp"
                     android:textColor="@color/text_blue"
-                    android:textSize="15sp" />
+                    android:textSize="16sp" />
             </RelativeLayout>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnDriverLogin"
-                android:layout_width="300dp"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/roundedbtn"
                 android:text="Login"
                 android:textAllCaps="false"
                 android:textColor="@color/primary"
                 android:textSize="25sp" />
 
-            <RelativeLayout
-                android:layout_width="210dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="230dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="8dp">
 
                 <TextView
                     android:id="@+id/tvText"
@@ -114,40 +117,55 @@
                     android:layout_height="wrap_content"
                     android:text="Don't have an account?"
                     android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
                     android:id="@+id/tvDriverSignUp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="8dp"
+                    android:onClick="signupDriver"
                     android:text="@string/underline_text_signup"
                     android:textColor="@color/text_blue"
-                    android:textSize="15sp"
-                    android:onClick="signupDriver"/>
-            </RelativeLayout>
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvText"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvText"
+                    app:layout_constraintTop_toTopOf="@+id/tvText" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <RelativeLayout
-                android:layout_width="264dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="290dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
+
                 <TextView
                     android:id="@+id/tvText2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Register as a Drivme drive now!"
+                    android:text="Register as a Drivme driver now!"
                     android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
                     android:id="@+id/tvDriverJoinUs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="8dp"
                     android:text="@string/underline_text_joinus"
                     android:textColor="@color/text_blue"
-                    android:textSize="15sp" />
-            </RelativeLayout>
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvText2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvText2"
+                    app:layout_constraintTop_toTopOf="@+id/tvText2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

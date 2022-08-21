@@ -21,29 +21,30 @@
             android:layout_gravity="center"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/ivSideLogoSignUp"
-                android:layout_width="237dp"
-                android:layout_height="78dp"
-                android:layout_gravity="right"
-                android:src="@drawable/app_logo_side"/>
-
             <TextView
                 android:id="@+id/tvTouristSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginLeft="14dp"
                 android:text="Tourist Sign Up"
                 android:textColor="@color/primary"
                 android:textSize="31sp"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:id="@+id/appLogo"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="55dp"
+                android:layout_marginRight="31dp"
+                android:src="@drawable/icon_otp" />
+
             <TextView
                 android:id="@+id/tvTouristOTPVerification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
                 android:layout_gravity="center"
                 android:text="OTP Verification"
                 android:textColor="@color/black"
@@ -57,7 +58,7 @@
                 android:layout_gravity="center"
                 android:text="Please enter the OTP sent on:"
                 android:textColor="@color/black"
-                android:textSize="19sp"
+                android:textSize="16sp"
                 android:textAlignment="center"/>
 
             <TextView
@@ -67,7 +68,7 @@
                 android:layout_gravity="center"
                 android:text="+60123456789"
                 android:textColor="@color/black"
-                android:textSize="19sp"
+                android:textSize="16sp"
                 android:textAlignment="center"/>
 
             <com.chaos.view.PinView
@@ -76,19 +77,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="20dp"
                 android:inputType="number"
                 android:cursorVisible="true"
                 android:itemBackground="@color/btn_color"
                 app:itemCount="6"
-                app:itemWidth="50dp"
-                app:itemHeight="50dp"
+                app:itemWidth="40dp"
+                app:itemHeight="40dp"
                 app:itemRadius="10dp"
                 app:lineWidth="1dp"
                 app:hideLineWhenFilled="true"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="220dp"
+                android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp">
@@ -100,7 +101,7 @@
                     android:layout_marginRight="5dp"
                     android:text="Didn't receive OTP?"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -112,7 +113,7 @@
                     android:onClick="resendTOTP"
                     android:text="@string/underline_text_resend"
                     android:textColor="@color/text_blue"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tvText"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/tvText"
@@ -121,10 +122,10 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnTouristVerify"
-                android:layout_width="300dp"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="190dp"
+                android:layout_marginTop="45dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/roundedbtn"
                 android:text="Verify OTP"

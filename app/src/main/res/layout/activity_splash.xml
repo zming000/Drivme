@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/wheelImg"
-        android:layout_width="168dp"
-        android:layout_height="149dp"
+        android:layout_width="138dp"
+        android:layout_height="119dp"
         android:layout_marginTop="168dp"
         android:src="@drawable/app_logo_wheel"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Drivme"
-        android:textSize="70sp"
+        android:textSize="50sp"
         android:textColor="#036666"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:text="Driver for you."
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:textColor="#0f7d63"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

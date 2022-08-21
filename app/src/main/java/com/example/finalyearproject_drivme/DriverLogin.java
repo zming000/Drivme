@@ -82,7 +82,7 @@ public class DriverLogin extends AppCompatActivity {
                 String id = metLoginDriverID.getText().toString();
                 String pw = metLoginDriverPW.getText().toString();
 
-                db.collection("Drivers Account Details")
+                db.collection("User Accounts")
                         .document(id)
                         .get()
                         .addOnCompleteListener(task -> {
@@ -90,17 +90,25 @@ public class DriverLogin extends AppCompatActivity {
                                 DocumentSnapshot document = task.getResult();
 
                                 if (document != null) {
-                                    //check the existence of document/driver ID
+                                    //check the existence of ID
                                     if (document.exists()) {
-                                        String pw2 = document.getString("Driver Password");
+                                        Integer value = (Integer) document.get("Account Driver");
 
-                                        //check if password matched
-                                        if(pw.matches(pw2)){
-                                            startActivity(new Intent(DriverLogin.this, Role.class));
-                                            finish();
+                                        if(value == 1) {
+                                            String pw2 = document.getString("Password");
+
+                                            //check if password matched
+                                            if (pw.matches(pw2)) {
+                                                startActivity(new Intent(DriverLogin.this, Role.class));
+                                                finish();
+                                            }
+                                            else {
+                                                Toast.makeText(DriverLogin.this, "Wrong ID or Password!", Toast.LENGTH_SHORT).show();
+                                            }
                                         }
                                         else{
-                                            Toast.makeText(DriverLogin.this, "Wrong ID or Password!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(DriverLogin.this, "Driver Role haven't activated!", Toast.LENGTH_SHORT).show();
+
                                         }
                                     }
                                     else{
@@ -123,6 +131,14 @@ public class DriverLogin extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         startActivity(new Intent(DriverLogin.this, DriverOption.class));
+        finish();
+    }
+
+    public void driverForgot(View view) {
+        Intent intent = new Intent(DriverLogin.this, ForgotPassword.class);
+        intent.putExtra("role", "Driver");
+
+        startActivity(intent);
         finish();
     }
 }

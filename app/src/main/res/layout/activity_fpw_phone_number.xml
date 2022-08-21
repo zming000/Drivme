@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TouristPhoneNumber"
-    android:background="@drawable/bg_tourist_signup">
+    tools:context=".FPWPhoneNumber"
+    android:background="@drawable/bg_forgot_password">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,54 +21,45 @@
             android:layout_gravity="center"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvTouristSignUp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:layout_marginLeft="14dp"
-                android:text="Tourist Sign Up"
-                android:textColor="@color/primary"
-                android:textSize="31sp"
-                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/appLogo"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="55dp"
+                android:layout_marginTop="60dp"
                 android:layout_marginRight="31dp"
                 android:src="@drawable/icon_otp" />
 
             <TextView
-                android:id="@+id/tvTouristOTPVerification"
+                android:id="@+id/tvFPWVerification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
                 android:text="OTP Verification"
                 android:textColor="@color/black"
                 android:textSize="31sp"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/tvTouristText"
+                android:id="@+id/tvText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
                 android:text="Please enter your phone number to get OTP"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textAlignment="center"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilSignUpTouristPhoneNumber"
+                android:id="@+id/tilFPWPhoneNumber"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:hint="Tourist Phone Number"
+                android:hint="Enter Phone Number"
                 app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_phone"
                 app:counterEnabled="true"
@@ -76,7 +67,7 @@
                 app:prefixText="+60">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etSignUpTouristPhoneNumber"
+                    android:id="@+id/etFPWPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLength="10"
@@ -85,10 +76,10 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnTouristOTP"
+                android:id="@+id/btnGetOTP"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="100dp"
                 android:layout_marginBottom="10dp"
                 android:layout_gravity="center"
                 android:background="@drawable/roundedbtn"

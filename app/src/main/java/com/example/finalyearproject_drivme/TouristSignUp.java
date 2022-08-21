@@ -262,7 +262,7 @@ public class TouristSignUp extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String value = Objects.requireNonNull(metTouristID.getText()).toString();
 
-        db.collection("Tourists Account Details").document(value).get()
+        db.collection("User Accounts").document(value).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();

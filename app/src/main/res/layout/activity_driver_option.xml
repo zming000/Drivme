@@ -9,12 +9,12 @@
 
     <ImageView
         android:id="@+id/ivSideLogo"
-        android:layout_width="237dp"
-        android:layout_height="78dp"
+        android:layout_width="182dp"
+        android:layout_height="62dp"
         android:layout_marginTop="32dp"
         android:src="@drawable/app_logo_side"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.971"
+        app:layout_constraintHorizontal_bias="0.91"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,7 +31,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnJoinUs"
-        android:layout_width="300dp"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
         android:background="@drawable/roundedbtn"
@@ -51,7 +51,7 @@
         android:layout_marginTop="8dp"
         android:text="Schedule interview with us!"
         android:textColor="@color/white"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,9 +59,9 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnDriverLogin"
-        android:layout_width="300dp"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/roundedbtn"
         android:text="Login"
         android:textAllCaps="false"
@@ -79,7 +79,7 @@
         android:layout_marginTop="8dp"
         android:text="Click to Login"
         android:textColor="@color/white"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,9 +87,9 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnDriverSignUp"
-        android:layout_width="300dp"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/roundedbtn"
         android:text="Sign Up"
         android:textAllCaps="false"
@@ -107,7 +107,7 @@
         android:layout_marginTop="8dp"
         android:text="Click to Sign up"
         android:textColor="@color/white"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

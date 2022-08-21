@@ -133,17 +133,21 @@ public class DriverOTP extends AppCompatActivity {
 
         //driver details to insert into firestore
         Map<String,Object> driverAcc = new HashMap<>();
-        driverAcc.put("Driver ID", value);
-        driverAcc.put("Driver First Name", getIntent().getStringExtra("dFName"));
-        driverAcc.put("Driver Last Name", getIntent().getStringExtra("dLName"));
-        driverAcc.put("Driver Phone Number", getIntent().getStringExtra("dPhoneNumber"));
-        driverAcc.put("Driver Email", getIntent().getStringExtra("dEmail"));
-        driverAcc.put("Driver Password", getIntent().getStringExtra("dPassword"));
+        driverAcc.put("User ID", value);
+        driverAcc.put("First Name", getIntent().getStringExtra("dFName"));
+        driverAcc.put("Last Name", getIntent().getStringExtra("dLName"));
+        driverAcc.put("Phone Number", getIntent().getStringExtra("dPhoneNumber"));
+        driverAcc.put("Email", getIntent().getStringExtra("dEmail"));
+        driverAcc.put("Password", getIntent().getStringExtra("dPassword"));
+        driverAcc.put("Login Status Tourist", 0);
+        driverAcc.put("Login Status Driver", 0);
+        driverAcc.put("Account Tourist", 0);
+        driverAcc.put("Account Driver", 1);
 
         db.collection("Reference Code Details").document(code)
                 .update(refCode);
 
-        db.collection("Drivers Account Details").document(value)
+        db.collection("User Accounts").document(value)
                 .set(driverAcc)
                 .addOnSuccessListener(unused -> {
                     android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverOTP.this);

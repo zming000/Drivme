@@ -21,35 +21,29 @@
             android:layout_gravity="center"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvDriverSignUp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                android:layout_marginStart="30dp"
+                android:text="Driver Sign Up"
+                android:textColor="@color/primary"
+                android:textSize="31sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvDriverSignUp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="35dp"
-                    android:layout_marginTop="30dp"
-                    android:text="Driver Sign Up"
-                    android:textColor="@color/primary"
-                    android:textSize="31sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/ivRotatedLogoSignUp"
-                    android:layout_width="64dp"
-                    android:layout_height="230dp"
-                    android:layout_alignParentEnd="true"
-                    android:src="@drawable/app_logo_rotated" />
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/appLogo"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="100dp"
+                android:layout_marginRight="31dp"
+                android:src="@drawable/icon_otp" />
 
             <TextView
                 android:id="@+id/tvDriverOTPVerification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
                 android:layout_gravity="center"
                 android:text="OTP Verification"
                 android:textColor="@color/black"
@@ -63,16 +57,16 @@
                 android:layout_gravity="center"
                 android:text="Please enter your phone number to get OTP"
                 android:textColor="@color/black"
-                android:textSize="19sp"
+                android:textSize="16sp"
                 android:textAlignment="center"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilSignUpDriverPhoneNumber"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="340dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="40dp"
                 android:hint="Driver Phone Number"
                 app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_phone"
@@ -91,10 +85,10 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnDriverOTP"
-                android:layout_width="300dp"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="150dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="55dp"
+                android:layout_marginBottom="30dp"
                 android:layout_gravity="center"
                 android:background="@drawable/roundedbtn"
                 android:text="Get OTP"

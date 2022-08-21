@@ -127,14 +127,18 @@ public class TouristOTP extends AppCompatActivity {
 
         //tourist details to insert into firestore
         Map<String,Object> touristAcc = new HashMap<>();
-        touristAcc.put("Tourist ID", value);
-        touristAcc.put("Tourist First Name", getIntent().getStringExtra("tFName"));
-        touristAcc.put("Tourist Last Name", getIntent().getStringExtra("tLName"));
-        touristAcc.put("Tourist Phone Number", getIntent().getStringExtra("tPhoneNumber"));
-        touristAcc.put("Tourist Email", getIntent().getStringExtra("tEmail"));
-        touristAcc.put("Tourist Password", getIntent().getStringExtra("tPassword"));
+        touristAcc.put("User ID", value);
+        touristAcc.put("First Name", getIntent().getStringExtra("tFName"));
+        touristAcc.put("Last Name", getIntent().getStringExtra("tLName"));
+        touristAcc.put("Phone Number", getIntent().getStringExtra("tPhoneNumber"));
+        touristAcc.put("Email", getIntent().getStringExtra("tEmail"));
+        touristAcc.put("Password", getIntent().getStringExtra("tPassword"));
+        touristAcc.put("Login Status Tourist", 0);
+        touristAcc.put("Login Status Driver", 0);
+        touristAcc.put("Account Tourist", 1);
+        touristAcc.put("Account Driver", 0);
 
-        db.collection("Tourists Account Details").document(value)
+        db.collection("User Accounts").document(value)
                 .set(touristAcc)
                 .addOnSuccessListener(unused -> {
                     android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristOTP.this);
