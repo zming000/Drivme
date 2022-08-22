@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical">
 
@@ -32,16 +32,16 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/appLogo"
+                android:id="@+id/otpLogo"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"
-                android:layout_marginRight="31dp"
+                android:layout_marginEnd="31dp"
                 android:src="@drawable/icon_otp" />
 
             <TextView
-                android:id="@+id/tvDriverOTPVerification"
+                android:id="@+id/tvDOTPVerification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -51,7 +51,7 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/tvDriverText"
+                android:id="@+id/tvDOTPText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -61,7 +61,7 @@
                 android:textAlignment="center"/>
 
             <TextView
-                android:id="@+id/tvDriverPhoneText"
+                android:id="@+id/tvDPhoneText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -94,7 +94,7 @@
                 android:layout_marginTop="8dp">
 
                 <TextView
-                    android:id="@+id/tvText"
+                    android:id="@+id/tvReceive"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Didn't receive OTP?"
@@ -113,14 +113,14 @@
                     android:text="@string/underline_text_resend"
                     android:textColor="@color/text_blue"
                     android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvText"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvReceive"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tvText"
-                    app:layout_constraintTop_toTopOf="@+id/tvText" />
+                    app:layout_constraintStart_toEndOf="@+id/tvReceive"
+                    app:layout_constraintTop_toTopOf="@+id/tvReceive" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnDriverVerify"
+                android:id="@+id/btnDVerify"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

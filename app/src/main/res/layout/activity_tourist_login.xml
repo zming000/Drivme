@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical">
 
@@ -32,7 +32,7 @@
                 android:id="@+id/tvTouristLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="5dp"
                 android:text="Tourist Login"
@@ -115,7 +115,7 @@
                     android:id="@+id/tvText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
                     android:text="Don't have an account?"
                     android:textColor="@color/black"
                     android:textSize="16sp"

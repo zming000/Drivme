@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class TouristOTP extends AppCompatActivity {
@@ -49,10 +50,10 @@ public class TouristOTP extends AppCompatActivity {
         mtvTouristPhoneText.setText(phNumT);
 
         //send otp
-        sendOTP(phNumT);
+        sendOTPtoTouristPhone(phNumT);
 
         mbtnTouristVerify.setOnClickListener(v -> {
-            String value = mpvTOTP.getText().toString();
+            String value = Objects.requireNonNull(mpvTOTP.getText()).toString();
             if(value.isEmpty()){
                 Toast.makeText(TouristOTP.this, "Invalid OTP Code!", Toast.LENGTH_SHORT).show();
             }
@@ -62,7 +63,7 @@ public class TouristOTP extends AppCompatActivity {
         });
     }
 
-    private void sendOTP(String phNum) {
+    private void sendOTPtoTouristPhone(String phNum) {
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber(phNum)       // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
@@ -77,12 +78,12 @@ public class TouristOTP extends AppCompatActivity {
             mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
         @Override
-        public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-            String codeT = credential.getSmsCode();
-            mpvTOTP.setText(codeT);
+        public void onVerificationCompleted(@NonNull PhoneAuthCredential authCred) {
+            String verificationCodeT = authCred.getSmsCode(); //get from sms
+            mpvTOTP.setText(verificationCodeT);
 
-            if(codeT != null){
-                verifyCode(codeT);
+            if(verificationCodeT != null){
+                verifyCode(verificationCodeT);
             }
         }
 
@@ -92,22 +93,22 @@ public class TouristOTP extends AppCompatActivity {
         }
 
         @Override
-        public void onCodeSent(@NonNull String s,
+        public void onCodeSent(@NonNull String verID,
                                @NonNull PhoneAuthProvider.ForceResendingToken token) {
-            super.onCodeSent(s, token);
+            super.onCodeSent(verID, token);
             Toast.makeText(TouristOTP.this, "OTP Sent!", Toast.LENGTH_SHORT).show();
-            verificationID = s;
+            verificationID = verID;
         }
     };
 
-    private void verifyCode(String c) {
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationID, c);
-        signInByCredentials(credential);
+    private void verifyCode(String cred) {
+        PhoneAuthCredential authCredential = PhoneAuthProvider.getCredential(verificationID, cred);
+        signInByCredentials(authCredential);
     }
 
     private void signInByCredentials(PhoneAuthCredential credential) {
-        FirebaseAuth fAuth = FirebaseAuth.getInstance();
-        fAuth.signInWithCredential(credential)
+        FirebaseAuth signInCred = FirebaseAuth.getInstance();
+        signInCred.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         addInfoToFirestore();
@@ -173,6 +174,6 @@ public class TouristOTP extends AppCompatActivity {
 
     public void resendTOTP(View view) {
         String num = getIntent().getStringExtra("tPhoneNumber");
-        sendOTP(num);
+        sendOTPtoTouristPhone(num);
     }
 }

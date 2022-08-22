@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical">
 
@@ -25,7 +25,7 @@
                 android:id="@+id/tvTouristSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="14dp"
+                android:layout_marginStart="14dp"
                 android:layout_marginTop="50dp"
                 android:text="Tourist Sign Up"
                 android:textColor="@color/primary"
@@ -157,7 +157,7 @@
                 android:layout_marginBottom="5dp">
 
                 <TextView
-                    android:id="@+id/tvText"
+                    android:id="@+id/tvAlready"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Already have an account?"
@@ -176,10 +176,10 @@
                     android:text="@string/underline_text_login"
                     android:textColor="@color/text_blue"
                     android:textSize="15sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvText"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvAlready"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tvText"
-                    app:layout_constraintTop_toTopOf="@+id/tvText" />
+                    app:layout_constraintStart_toEndOf="@+id/tvAlready"
+                    app:layout_constraintTop_toTopOf="@+id/tvAlready" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>

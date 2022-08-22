@@ -25,9 +25,9 @@ public class DriverPhoneNumber extends AppCompatActivity {
         setContentView(R.layout.activity_driver_phone_number);
 
         //obtaining the View with specific ID
-        mtilDPhoneNumber = findViewById(R.id.tilSignUpDriverPhoneNumber);
-        metDPhoneNumber = findViewById(R.id.etSignUpDriverPhoneNumber);
-        mbtnDriverOTP = findViewById(R.id.btnDriverOTP);
+        mtilDPhoneNumber = findViewById(R.id.tilSignUpDPhoneNumber);
+        metDPhoneNumber = findViewById(R.id.etSignUpDPhoneNumber);
+        mbtnDriverOTP = findViewById(R.id.btnGetOTP);
 
         //change error message
         metDPhoneNumber.addTextChangedListener(new TextWatcher() {

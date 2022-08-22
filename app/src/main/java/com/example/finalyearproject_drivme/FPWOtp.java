@@ -46,7 +46,7 @@ public class FPWOtp extends AppCompatActivity {
         mtvFPWPhoneText.setText(phNum);
 
         //send otp
-        sendOTP(phNum);
+        sendOTPtoPhone(phNum);
 
         mbtnFPWVerify.setOnClickListener(v -> {
             String value = mpvFPWOtp.getText().toString();
@@ -59,7 +59,7 @@ public class FPWOtp extends AppCompatActivity {
         });
     }
 
-    private void sendOTP(String phNum) {
+    private void sendOTPtoPhone(String phNum) {
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
                 .setPhoneNumber(phNum)       // Phone number to verify
                 .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
@@ -75,7 +75,7 @@ public class FPWOtp extends AppCompatActivity {
 
         @Override
         public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-            String code = credential.getSmsCode();
+            String code = credential.getSmsCode(); //get from sms
             mpvFPWOtp.setText(code);
 
             if(code != null){
@@ -89,22 +89,22 @@ public class FPWOtp extends AppCompatActivity {
         }
 
         @Override
-        public void onCodeSent(@NonNull String s,
+        public void onCodeSent(@NonNull String verID,
                                @NonNull PhoneAuthProvider.ForceResendingToken token) {
-            super.onCodeSent(s, token);
+            super.onCodeSent(verID, token);
             Toast.makeText(FPWOtp.this, "OTP Sent!", Toast.LENGTH_SHORT).show();
-            verificationID = s;
+            verificationID = verID;
         }
     };
 
-    private void verifyCode(String c) {
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationID, c);
-        signInByCredentials(credential);
+    private void verifyCode(String cred) {
+        PhoneAuthCredential authCredential = PhoneAuthProvider.getCredential(verificationID, cred);
+        signInByCredentials(authCredential);
     }
 
     private void signInByCredentials(PhoneAuthCredential credential) {
-        FirebaseAuth fAuth = FirebaseAuth.getInstance();
-        fAuth.signInWithCredential(credential)
+        FirebaseAuth signInCred = FirebaseAuth.getInstance();
+        signInCred.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         Intent intent = new Intent(FPWOtp.this, ResetPW.class);
@@ -125,6 +125,6 @@ public class FPWOtp extends AppCompatActivity {
 
     public void resendFPWOtp(View view) {
         String num = getIntent().getStringExtra("phNum");
-        sendOTP(num);
+        sendOTPtoPhone(num);
     }
 }

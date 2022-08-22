@@ -2,7 +2,6 @@ package com.example.finalyearproject_drivme;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -134,9 +133,9 @@ public class ResetPW extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
 
                         //check the existence of document ID
-                        if(document.exists()){
+                        if(Objects.requireNonNull(document).exists()){
                             Map<String,Object> userAcc = new HashMap<>();
-                            userAcc.put("Password", metResetPW.getText().toString());
+                            userAcc.put("Password", Objects.requireNonNull(metResetPW.getText()).toString());
 
                             db.collection("User Accounts").document(id)
                                     .update(userAcc)

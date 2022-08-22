@@ -98,7 +98,7 @@ public class TouristLogin extends AppCompatActivity {
                                             String pw2 = document.getString("Password");
 
                                             //check if the password matched
-                                            if (pw.matches(pw2)) {
+                                            if (pw.matches(Objects.requireNonNull(pw2))) {
                                                 startActivity(new Intent(TouristLogin.this, Role.class));
                                                 finish();
                                             } else {

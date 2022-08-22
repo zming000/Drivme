@@ -19,9 +19,9 @@ import java.util.Objects;
 
 public class DriverLogin extends AppCompatActivity {
     //declare variables
-    TextInputLayout mtilLoginDriverID, mtilLoginDriverPW;
-    TextInputEditText metLoginDriverID, metLoginDriverPW;
-    Button mbtnDriverLogin;
+    TextInputLayout mtilLoginDID, mtilLoginDPW;
+    TextInputEditText metLoginDID, metLoginDPW;
+    Button mbtnDLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +29,13 @@ public class DriverLogin extends AppCompatActivity {
         setContentView(R.layout.activity_driver_login);
 
         //obtaining the View with specific ID
-        mtilLoginDriverID = findViewById(R.id.tilLoginDriverID);
-        mtilLoginDriverPW = findViewById(R.id.tilLoginDriverPW);
-        metLoginDriverID = findViewById(R.id.etLoginDriverID);
-        metLoginDriverPW = findViewById(R.id.etLoginDriverPW);
-        mbtnDriverLogin = findViewById(R.id.btnDriverLogin);
+        mtilLoginDID = findViewById(R.id.tilLoginDID);
+        mtilLoginDPW = findViewById(R.id.tilLoginDPW);
+        metLoginDID = findViewById(R.id.etLoginDID);
+        metLoginDPW = findViewById(R.id.etLoginDPW);
+        mbtnDLogin = findViewById(R.id.btnDriverLogin);
 
-        metLoginDriverID.addTextChangedListener(new TextWatcher() {
+        metLoginDID.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -43,7 +43,7 @@ public class DriverLogin extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mtilLoginDriverID.setErrorEnabled(false);
+                mtilLoginDID.setErrorEnabled(false);
             }
 
             @Override
@@ -52,7 +52,7 @@ public class DriverLogin extends AppCompatActivity {
             }
         });
 
-        metLoginDriverPW.addTextChangedListener(new TextWatcher() {
+        metLoginDPW.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -60,7 +60,7 @@ public class DriverLogin extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mtilLoginDriverPW.setErrorEnabled(false);
+                mtilLoginDPW.setErrorEnabled(false);
             }
 
             @Override
@@ -69,36 +69,37 @@ public class DriverLogin extends AppCompatActivity {
             }
         });
 
-        mbtnDriverLogin.setOnClickListener(v -> {
+        mbtnDLogin.setOnClickListener(v -> {
             //check condition (fields not empty) before proceed to database
-            if(Objects.requireNonNull(metLoginDriverID.getText()).toString().trim().isEmpty()){
-                mtilLoginDriverID.setError("Field cannot be empty!");
+            if(Objects.requireNonNull(metLoginDID.getText()).toString().trim().isEmpty()){
+                mtilLoginDID.setError("Field cannot be empty!");
             }
-            else if(Objects.requireNonNull(metLoginDriverPW.getText()).toString().trim().isEmpty()){
-                mtilLoginDriverPW.setError("Field cannot be empty!");
+            else if(Objects.requireNonNull(metLoginDPW.getText()).toString().trim().isEmpty()){
+                mtilLoginDPW.setError("Field cannot be empty!");
             }
             else{
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                String id = metLoginDriverID.getText().toString();
-                String pw = metLoginDriverPW.getText().toString();
+                //return instance of the class
+                FirebaseFirestore userDB = FirebaseFirestore.getInstance();
+                String dID = metLoginDID.getText().toString();
+                String dPW = metLoginDPW.getText().toString();
 
-                db.collection("User Accounts")
-                        .document(id)
+                userDB.collection("User Accounts")
+                        .document(dID)
                         .get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
+                                DocumentSnapshot docResult = task.getResult();
 
-                                if (document != null) {
+                                if (docResult != null) {
                                     //check the existence of ID
-                                    if (document.exists()) {
-                                        Integer value = (Integer) document.get("Account Driver");
+                                    if (docResult.exists()) {
+                                        Integer sem = (Integer) docResult.get("Account Driver");
 
-                                        if(value == 1) {
-                                            String pw2 = document.getString("Password");
+                                        if(sem == 1) {
+                                            String docPW = docResult.getString("Password");
 
                                             //check if password matched
-                                            if (pw.matches(pw2)) {
+                                            if (dPW.matches(Objects.requireNonNull(docPW))) {
                                                 startActivity(new Intent(DriverLogin.this, Role.class));
                                                 finish();
                                             }
@@ -112,7 +113,7 @@ public class DriverLogin extends AppCompatActivity {
                                         }
                                     }
                                     else{
-                                        mtilLoginDriverID.setError("ID does not exist!");
+                                        mtilLoginDID.setError("ID does not exist!");
                                     }
                                 }
                             }
@@ -134,6 +135,7 @@ public class DriverLogin extends AppCompatActivity {
         finish();
     }
 
+    //driver login -> forgot password
     public void driverForgot(View view) {
         Intent intent = new Intent(DriverLogin.this, ForgotPassword.class);
         intent.putExtra("role", "Driver");

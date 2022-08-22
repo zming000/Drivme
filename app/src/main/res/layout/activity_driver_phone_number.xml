@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical">
 
@@ -32,16 +32,16 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/appLogo"
+                android:id="@+id/otpLogo"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"
-                android:layout_marginRight="31dp"
+                android:layout_marginEnd="31dp"
                 android:src="@drawable/icon_otp" />
 
             <TextView
-                android:id="@+id/tvDriverOTPVerification"
+                android:id="@+id/tvDOTPVerification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -51,7 +51,7 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/tvDriverText"
+                android:id="@+id/tvDOTPText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -61,7 +61,7 @@
                 android:textAlignment="center"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilSignUpDriverPhoneNumber"
+                android:id="@+id/tilSignUpDPhoneNumber"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                 app:prefixText="+60">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etSignUpDriverPhoneNumber"
+                    android:id="@+id/etSignUpDPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLength="10"
@@ -84,7 +84,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnDriverOTP"
+                android:id="@+id/btnGetOTP"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="55dp"

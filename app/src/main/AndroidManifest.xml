@@ -14,8 +14,6 @@
         <activity android:name=".ResetSuccess"/>
         <activity android:name=".ResetPW" />
         <activity android:name=".FPWOtp" />
-        <activity android:name=".FPWPhoneNumber" />
-        <activity android:name=".FPWEmail" />
 
         <!-- Driver UI -->
         <activity android:name=".DriverOTP" />

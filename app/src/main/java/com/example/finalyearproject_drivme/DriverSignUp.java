@@ -279,30 +279,31 @@ public class DriverSignUp extends AppCompatActivity {
 
     //check if ID existed
     private void checkID(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String value = Objects.requireNonNull(metDriverID.getText()).toString();
-        String code = Objects.requireNonNull(metDriverRC.getText()).toString();
+        //return instance of the class
+        FirebaseFirestore drivmeDB = FirebaseFirestore.getInstance();
+        String driverID = Objects.requireNonNull(metDriverID.getText()).toString();
+        String refCode = Objects.requireNonNull(metDriverRC.getText()).toString();
 
-        db.collection("User Accounts").document(value).get()
+        drivmeDB.collection("User Accounts").document(driverID).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
 
                         //check the existence of document ID
-                        if(document.exists()){
+                        if(Objects.requireNonNull(document).exists()){
                             mtilDriverID.setError("ID have been used!");
                         }
                         else{
-                            db.collection("Reference Code Details").document(code).get()
+                            drivmeDB.collection("Reference Code Details").document(refCode).get()
                                     .addOnCompleteListener(task2 -> {
                                         if (task2.isSuccessful()) {
                                             DocumentSnapshot document2 = task2.getResult();
-                                            String codeStatus = document2.getString("Status");
+                                            String codeStatus = Objects.requireNonNull(document2).getString("Status");
                                             //check the existence of reference code
                                             if (!document2.exists()) {
                                                 mtilDriverRC.setError("Invalid Reference Code!");
                                             }
-                                            else if(codeStatus.matches("N/A")){ //check if the reference code available
+                                            else if(Objects.requireNonNull(codeStatus).matches("N/A")){ //check if the reference code available
                                                 mtilDriverRC.setError("Reference Code Not Available!");
                                             }
                                             else{

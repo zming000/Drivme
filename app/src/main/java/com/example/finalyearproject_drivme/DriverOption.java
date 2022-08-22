@@ -25,19 +25,19 @@ public class DriverOption extends AppCompatActivity {
         });
 
         mbtnDriverLogin.setOnClickListener(v -> {
-            //go to driver login
+            //driver option -> driver login
             startActivity(new Intent(DriverOption.this, DriverLogin.class));
             finish();
         });
 
         mbtnDriverSignup.setOnClickListener(v -> {
-            //go to driver sign up
+            //driver option -> driver sign up
             startActivity(new Intent(DriverOption.this, DriverSignUp.class));
             finish();
         });
     }
 
-    //back to driver option
+    //driver option -> role
     @Override
     public void onBackPressed() {
         startActivity(new Intent(DriverOption.this, Role.class));

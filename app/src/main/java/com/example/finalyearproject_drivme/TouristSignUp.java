@@ -268,7 +268,7 @@ public class TouristSignUp extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
 
                         //check the existence of document ID
-                        if(document.exists()){
+                        if(Objects.requireNonNull(document).exists()){
                             mtilTouristID.setError("ID have been used!");
                         }
                         else{

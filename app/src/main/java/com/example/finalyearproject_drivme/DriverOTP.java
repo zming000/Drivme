@@ -21,14 +21,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class DriverOTP extends AppCompatActivity {
     //declare variables
-    TextView mtvDriverPhoneText;
+    TextView mtvDPhoneText;
     PinView mpvDOTP;
-    Button mbtnDriverVerify;
-    FirebaseAuth mAuth;
+    Button mbtnDVerify;
+    FirebaseAuth driverOTP;
     String verificationID;
 
     @Override
@@ -37,39 +38,39 @@ public class DriverOTP extends AppCompatActivity {
         setContentView(R.layout.activity_driver_otp);
 
         //obtaining the View with specific ID
-        mtvDriverPhoneText = findViewById(R.id.tvDriverPhoneText);
+        mtvDPhoneText = findViewById(R.id.tvDPhoneText);
         mpvDOTP = findViewById(R.id.pvDriverOTP);
-        mbtnDriverVerify = findViewById(R.id.btnDriverVerify);
+        mbtnDVerify = findViewById(R.id.btnDVerify);
 
         //return instance of the class
-        mAuth = FirebaseAuth.getInstance();
+        driverOTP = FirebaseAuth.getInstance();
 
         //get driver phone number
         String phNumD = getIntent().getStringExtra("dPhoneNumber");
-        mtvDriverPhoneText.setText(phNumD);
+        mtvDPhoneText.setText(phNumD);
 
         //send otp
-        sendOTP(phNumD);
+        sendOTPtoDriverPhone(phNumD);
 
-        mbtnDriverVerify.setOnClickListener(v -> {
-            String value = mpvDOTP.getText().toString();
+        mbtnDVerify.setOnClickListener(v -> {
+            String value = Objects.requireNonNull(mpvDOTP.getText()).toString();
             if(value.isEmpty()){
                 Toast.makeText(DriverOTP.this, "Invalid OTP Code!", Toast.LENGTH_SHORT).show();
             }
             else {
-                verifyCode(value);
+                verifyOTP(value);
             }
         });
     }
 
-    private void sendOTP(String phNum) {
-        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+    private void sendOTPtoDriverPhone(String phNum) {
+        PhoneAuthOptions opts = PhoneAuthOptions.newBuilder(driverOTP)
                 .setPhoneNumber(phNum)       // Phone number to verify
                 .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                 .setActivity(this)                 // Activity (for callback binding)
                 .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
                 .build();
-        PhoneAuthProvider.verifyPhoneNumber(options);
+        PhoneAuthProvider.verifyPhoneNumber(opts);
     }
 
     //callback functions that handle the results of the request
@@ -77,12 +78,12 @@ public class DriverOTP extends AppCompatActivity {
             mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
         @Override
-        public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-            String codeD = credential.getSmsCode();
-            mpvDOTP.setText(codeD);
+        public void onVerificationCompleted(@NonNull PhoneAuthCredential authCred) {
+            String verificationCodeD = authCred.getSmsCode(); //get from sms
+            mpvDOTP.setText(verificationCodeD);
 
-            if(codeD != null){
-                verifyCode(codeD);
+            if(verificationCodeD != null){
+                verifyOTP(verificationCodeD);
             }
         }
 
@@ -92,25 +93,25 @@ public class DriverOTP extends AppCompatActivity {
         }
 
         @Override
-        public void onCodeSent(@NonNull String s,
+        public void onCodeSent(@NonNull String verID,
                                @NonNull PhoneAuthProvider.ForceResendingToken token) {
-            super.onCodeSent(s, token);
+            super.onCodeSent(verID, token);
             Toast.makeText(DriverOTP.this, "OTP sent!", Toast.LENGTH_SHORT).show();
-            verificationID = s;
+            verificationID = verID;
         }
     };
 
-    private void verifyCode(String c) {
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationID, c);
-        signInByCredentials(credential);
+    private void verifyOTP(String cred) {
+        PhoneAuthCredential authCredential = PhoneAuthProvider.getCredential(verificationID, cred);
+        signInByCredentials(authCredential);
     }
 
     private void signInByCredentials(PhoneAuthCredential credential) {
-        FirebaseAuth fAuth = FirebaseAuth.getInstance();
-        fAuth.signInWithCredential(credential)
+        FirebaseAuth signInCred = FirebaseAuth.getInstance();
+        signInCred.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
-                        addInfoToFirestore();
+                        addUserToFirestore();
                     }
                     else{
                         if(task.getException() instanceof FirebaseAuthInvalidCredentialsException){
@@ -121,19 +122,19 @@ public class DriverOTP extends AppCompatActivity {
     }
 
     //add driver details into firestore
-    private void addInfoToFirestore(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String value = getIntent().getStringExtra("dID");
-        String code = getIntent().getStringExtra("dRefCode");
+    private void addUserToFirestore(){
+        FirebaseFirestore drivmeDB = FirebaseFirestore.getInstance();
+        String docID = getIntent().getStringExtra("dID");
+        String referenceCode = getIntent().getStringExtra("dRefCode");
 
         //update reference code details and insert driver details into firestore
         Map<String,Object> refCode = new HashMap<>();
-        refCode.put("Driver ID", value);
+        refCode.put("Driver ID", docID);
         refCode.put("Status", "N/A");
 
         //driver details to insert into firestore
         Map<String,Object> driverAcc = new HashMap<>();
-        driverAcc.put("User ID", value);
+        driverAcc.put("User ID", docID);
         driverAcc.put("First Name", getIntent().getStringExtra("dFName"));
         driverAcc.put("Last Name", getIntent().getStringExtra("dLName"));
         driverAcc.put("Phone Number", getIntent().getStringExtra("dPhoneNumber"));
@@ -144,10 +145,10 @@ public class DriverOTP extends AppCompatActivity {
         driverAcc.put("Account Tourist", 0);
         driverAcc.put("Account Driver", 1);
 
-        db.collection("Reference Code Details").document(code)
+        drivmeDB.collection("Reference Code Details").document(referenceCode)
                 .update(refCode);
 
-        db.collection("User Accounts").document(value)
+        drivmeDB.collection("User Accounts").document(docID)
                 .set(driverAcc)
                 .addOnSuccessListener(unused -> {
                     android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverOTP.this);
@@ -182,6 +183,6 @@ public class DriverOTP extends AppCompatActivity {
 
     public void resendDOTP(View view) {
         String numD = getIntent().getStringExtra("dPhoneNumber");
-        sendOTP(numD);
+        sendOTPtoDriverPhone(numD);
     }
 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -19,11 +20,11 @@ import java.util.Objects;
 
 public class ForgotPassword extends AppCompatActivity {
     //declare variables
-    TextInputLayout mtilFpwID;
-    TextInputEditText metFpwID;
-    CardView mviaEmail, mviaPhoneNumber;
+    TextInputLayout mtilFpwID, mtilFPWPhoneNumber;
+    TextInputEditText metFpwID, metFPWPhoneNumber;
+    Button mbtnGetOTP;
     String character;
-    FirebaseFirestore db;
+    FirebaseFirestore userDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +33,13 @@ public class ForgotPassword extends AppCompatActivity {
 
         //obtaining the View with specific ID
         mtilFpwID = findViewById(R.id.tilFpwID);
+        mtilFPWPhoneNumber = findViewById(R.id.tilFPWPhoneNumber);
         metFpwID = findViewById(R.id.etFpwID);
-        mviaEmail = findViewById(R.id.viaEmail);
-        mviaPhoneNumber = findViewById(R.id.viaPhoneNumber);
+        metFPWPhoneNumber = findViewById(R.id.etFPWPhoneNumber);
+        mbtnGetOTP = findViewById(R.id.btnGetOTP);
 
-        db = FirebaseFirestore.getInstance();
+        //return instance of the class
+        userDB = FirebaseFirestore.getInstance();
         character = getIntent().getStringExtra("role");
 
         metFpwID.addTextChangedListener(new TextWatcher() {
@@ -56,150 +59,90 @@ public class ForgotPassword extends AppCompatActivity {
             }
         });
 
-        mviaEmail.setOnClickListener(view -> {
-            //check condition (fields not empty) before proceed to database
-            if(Objects.requireNonNull(metFpwID.getText()).toString().trim().isEmpty()){
-                mtilFpwID.setError("Field cannot be empty!");
+        //change error message
+        metFPWPhoneNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //Nothing
             }
-            else{
-                String id = Objects.requireNonNull(metFpwID.getText()).toString();
 
-                if(character.equals("Tourist")) {
-                    db.collection("User Accounts").document(id).get()
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mtilFPWPhoneNumber.setErrorEnabled(false);
+            }
 
-                                    if (document != null) {
-                                        //check the existence of document/tourist ID
-                                        if (document.exists()) {
-                                            Integer value = (Integer) document.get("Account Tourist");
-
-                                            if(value == 1) {
-                                                Intent intent = new Intent(ForgotPassword.this, FPWEmail.class);
-                                                intent.putExtra("roleID", id);
-                                                intent.putExtra("roleCharacter", character);
-
-                                                startActivity(intent);
-                                            }
-                                            else{
-                                                Toast.makeText(ForgotPassword.this, "Tourist Role haven't activated!", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                        else {
-                                            mtilFpwID.setError("ID does not exist!");
-                                        }
-                                    }
-                                }
-                            });
-                }
-                else{
-                    db.collection("User Accounts")
-                            .document(id)
-                            .get()
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-
-                                    if (document != null) {
-                                        //check the existence of document/tourist ID
-                                        if (document.exists()) {
-                                            Integer value = (Integer) document.get("Account Driver");
-
-                                            if(value == 1) {
-                                                Intent intent = new Intent(ForgotPassword.this, FPWEmail.class);
-                                                intent.putExtra("roleID", id);
-                                                intent.putExtra("roleCharacter", character);
-
-                                                startActivity(intent);
-                                            }
-                                            else{
-                                                Toast.makeText(ForgotPassword.this, "Driver Role haven't activated!", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                        else {
-                                            mtilFpwID.setError("ID does not exist!");
-                                        }
-                                    }
-                                }
-                            });
-                }
+            @Override
+            public void afterTextChanged(Editable s) {
+                //Nothing
             }
         });
 
-        mviaPhoneNumber.setOnClickListener(view -> {
+        mbtnGetOTP.setOnClickListener(v -> {
             //check condition (fields not empty) before proceed to database
             if(Objects.requireNonNull(metFpwID.getText()).toString().trim().isEmpty()){
                 mtilFpwID.setError("Field cannot be empty!");
             }
+            else if(Objects.requireNonNull(metFPWPhoneNumber.getText()).toString().trim().isEmpty()){
+                mtilFPWPhoneNumber.setError("Field cannot be empty!");
+            }
             else{
                 String id = Objects.requireNonNull(metFpwID.getText()).toString();
-                if(character.equals("Tourist")) {
-                    db.collection("User Accounts")
-                            .document(id)
-                            .get()
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
 
-                                    if (document != null) {
-                                        //check the existence of document/tourist ID
-                                        if (document.exists()) {
-                                            Integer value = (Integer) document.get("Account Tourist");
+                userDB.collection("User Accounts")
+                        .document(id)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
 
-                                            if(value == 1) {
-                                                Intent intent = new Intent(ForgotPassword.this, FPWPhoneNumber.class);
-                                                intent.putExtra("roleID", id);
-                                                intent.putExtra("roleCharacter", character);
+                                if (document != null) {
+                                    //check the existence of document/tourist ID
+                                    if (document.exists()) {
+                                        if(character.equals("Tourist")) {
+                                            Integer semTourist = (Integer) document.get("Account Tourist");
 
+                                            if (semTourist == 1) {
+                                                //proceed to verify otp
+                                                Intent intent = new Intent(ForgotPassword.this, FPWOtp.class);
+                                                intent.putExtra("id", id);
+                                                intent.putExtra("character", character);
+                                                intent.putExtra("phNum", metFPWPhoneNumber.getText().toString());
+
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);
-                                            }
-                                            else{
+                                            } else {
                                                 Toast.makeText(ForgotPassword.this, "Tourist Role haven't activated!", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                         else {
-                                            mtilFpwID.setError("ID does not exist!");
-                                        }
-                                    }
-                                }
-                            });
-                }
-                else{
-                    db.collection("User Accounts")
-                            .document(id)
-                            .get()
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
+                                            Integer semDriver = (Integer) document.get("Account Driver");
 
-                                    if (document != null) {
-                                        //check the existence of document/tourist ID
-                                        if (document.exists()) {
-                                            Integer value = (Integer) document.get("Account Driver");
+                                            if(semDriver == 1) {
+                                                //proceed to verify otp
+                                                Intent intent = new Intent(ForgotPassword.this, FPWOtp.class);
+                                                intent.putExtra("id", id);
+                                                intent.putExtra("character", character);
+                                                intent.putExtra("phNum", metFPWPhoneNumber.getText().toString());
 
-                                            if(value == 1) {
-                                                Intent intent = new Intent(ForgotPassword.this, FPWPhoneNumber.class);
-                                                intent.putExtra("roleID", id);
-                                                intent.putExtra("roleCharacter", character);
-
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);
                                             }
                                             else{
                                                 Toast.makeText(ForgotPassword.this, "Driver Role haven't activated!", Toast.LENGTH_SHORT).show();
                                             }
                                         }
-                                        else {
-                                            mtilFpwID.setError("ID does not exist!");
-                                        }
+                                    }
+                                    else {
+                                        mtilFpwID.setError("ID does not exist!");
                                     }
                                 }
-                            });
-                }
+                            }
+                        });
             }
         });
     }
 
+    //forgot password -> login (tourist/driver)
     public void backToLogin(View view) {
         if(character.equals("Tourist")) {
             startActivity(new Intent(ForgotPassword.this, TouristLogin.class));
@@ -210,7 +153,7 @@ public class ForgotPassword extends AppCompatActivity {
         finish();
     }
 
-    //tourist forgot password -> login
+    //forgot password -> login (tourist/driver)
     @Override
     public void onBackPressed() {
         if(character.equals("Tourist")) {
