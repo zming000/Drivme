@@ -4,11 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_driver_login.xml" value="0.264" />
-        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_driver_option.xml" value="0.205859375" />
-        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_driver_otp.xml" value="0.41171875" />
-        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_driver_phone_number.xml" value="0.205859375" />
-        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_driver_sign_up.xml" value="0.41171875" />
-        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_forgot_password.xml" value="0.264" />
+        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_driver_option.xml" value="0.41171875" />
+        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_driver_otp.xml" value="0.18472222222222223" />
+        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_driver_phone_number.xml" value="0.18472222222222223" />
+        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_driver_sign_up.xml" value="0.18472222222222223" />
+        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_forgot_password.xml" value="0.18472222222222223" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_fpw_email.xml" value="0.4" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_fpw_otp.xml" value="0.41171875" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_fpw_phone_number.xml" value="0.41171875" />
@@ -20,8 +20,8 @@
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_splash.xml" value="0.41171875" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_tourist_email.xml" value="0.1" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_tourist_forgot_password.xml" value="0.1" />
-        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_tourist_login.xml" value="0.2809248554913295" />
-        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_tourist_otp.xml" value="0.41171875" />
+        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_tourist_login.xml" value="0.4" />
+        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_tourist_otp.xml" value="0.36944444444444446" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_tourist_phone_number.xml" value="0.41171875" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_tourist_sign_up.xml" value="0.28027681660899656" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.211" />

@@ -33,7 +33,7 @@ public class DriverLogin extends AppCompatActivity {
         mtilLoginDPW = findViewById(R.id.tilLoginDPW);
         metLoginDID = findViewById(R.id.etLoginDID);
         metLoginDPW = findViewById(R.id.etLoginDPW);
-        mbtnDLogin = findViewById(R.id.btnDriverLogin);
+        mbtnDLogin = findViewById(R.id.btnDLogin);
 
         metLoginDID.addTextChangedListener(new TextWatcher() {
             @Override
@@ -93,24 +93,23 @@ public class DriverLogin extends AppCompatActivity {
                                 if (docResult != null) {
                                     //check the existence of ID
                                     if (docResult.exists()) {
-                                        Integer sem = (Integer) docResult.get("Account Driver");
-
-                                        if(sem == 1) {
                                             String docPW = docResult.getString("Password");
-
                                             //check if password matched
                                             if (dPW.matches(Objects.requireNonNull(docPW))) {
-                                                startActivity(new Intent(DriverLogin.this, Role.class));
-                                                finish();
+                                                Integer sem = docResult.getLong("Account Driver").intValue();
+
+                                                if(sem == 1) {
+                                                    startActivity(new Intent(DriverLogin.this, Role.class));
+                                                    finish();
+                                                }
+                                                else{
+                                                    Toast.makeText(DriverLogin.this, "Driver Role haven't activated!", Toast.LENGTH_SHORT).show();
+                                                }
                                             }
                                             else {
                                                 Toast.makeText(DriverLogin.this, "Wrong ID or Password!", Toast.LENGTH_SHORT).show();
                                             }
-                                        }
-                                        else{
-                                            Toast.makeText(DriverLogin.this, "Driver Role haven't activated!", Toast.LENGTH_SHORT).show();
 
-                                        }
                                     }
                                     else{
                                         mtilLoginDID.setError("ID does not exist!");

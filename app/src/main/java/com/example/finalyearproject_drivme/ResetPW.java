@@ -92,7 +92,7 @@ public class ResetPW extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //check input condition (match password)
                 if(!Objects.requireNonNull(metResetCPW.getText()).toString()
-                        .matches(Objects.requireNonNull(metResetCPW.getText()).toString())){
+                        .matches(Objects.requireNonNull(metResetPW.getText()).toString())){
                     mtilResetCPW.setError("Password not match!");
                 }
                 else{

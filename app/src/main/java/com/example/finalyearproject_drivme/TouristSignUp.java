@@ -95,6 +95,9 @@ public class TouristSignUp extends AppCompatActivity {
                 else if(uppercaseExist(metTouristID.getText().toString())){
                     mtilTouristID.setError("ID cannot contain uppercase!");
                 }
+                else if(Objects.requireNonNull(metTouristID.getText()).length() < 7){
+                    mtilTouristID.setError("ID too short! At least total of 7 character(s) and number(s)");
+                }
                 else{
                     mtilTouristID.setErrorEnabled(false);
                 }
@@ -233,7 +236,8 @@ public class TouristSignUp extends AppCompatActivity {
         statusID = !Objects.requireNonNull(metTouristID.getText()).toString().contains(" ") &&
                 metTouristID.getText().toString().matches(".*[a-zA-Z]+.*") &&
                 digitExist(metTouristID.getText().toString()) &&
-                !uppercaseExist(metTouristID.getText().toString());
+                !uppercaseExist(metTouristID.getText().toString()) &&
+                (Objects.requireNonNull(metTouristID.getText()).length() > 7);
 
         //check input condition (without digit)
         statusFName = !digitExist(Objects.requireNonNull(metTouristFName.getText()).toString());

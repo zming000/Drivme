@@ -85,6 +85,9 @@ public class ForgotPassword extends AppCompatActivity {
             else if(Objects.requireNonNull(metFPWPhoneNumber.getText()).toString().trim().isEmpty()){
                 mtilFPWPhoneNumber.setError("Field cannot be empty!");
             }
+            else if(Objects.requireNonNull(metFPWPhoneNumber.getText()).length() < 9){
+                mtilFPWPhoneNumber.setError("Invalid length of phone number!");
+            }
             else{
                 String id = Objects.requireNonNull(metFpwID.getText()).toString();
 
@@ -99,7 +102,7 @@ public class ForgotPassword extends AppCompatActivity {
                                     //check the existence of document/tourist ID
                                     if (document.exists()) {
                                         if(character.equals("Tourist")) {
-                                            Integer semTourist = (Integer) document.get("Account Tourist");
+                                            Integer semTourist = document.getLong("Account Tourist").intValue();
 
                                             if (semTourist == 1) {
                                                 //proceed to verify otp
@@ -115,7 +118,7 @@ public class ForgotPassword extends AppCompatActivity {
                                             }
                                         }
                                         else {
-                                            Integer semDriver = (Integer) document.get("Account Driver");
+                                            Integer semDriver = document.getLong("Account Driver").intValue();
 
                                             if(semDriver == 1) {
                                                 //proceed to verify otp

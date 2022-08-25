@@ -42,7 +42,7 @@ public class FPWOtp extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         //get phone number
-        String phNum = getIntent().getStringExtra("phNum");
+        String phNum = "+60"+ getIntent().getStringExtra("phNum");
         mtvFPWPhoneText.setText(phNum);
 
         //send otp

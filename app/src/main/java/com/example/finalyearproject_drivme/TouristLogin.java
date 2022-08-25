@@ -92,23 +92,23 @@ public class TouristLogin extends AppCompatActivity {
                                 if (document != null) {
                                     //check the existence of ID
                                     if (document.exists()) {
-                                        Integer value = (Integer) document.get("Account Tourist");
-
-                                        if(value == 1) {
                                             String pw2 = document.getString("Password");
-
                                             //check if the password matched
                                             if (pw.matches(Objects.requireNonNull(pw2))) {
-                                                startActivity(new Intent(TouristLogin.this, Role.class));
-                                                finish();
-                                            } else {
+                                                Integer value = document.getLong("Account Tourist").intValue();
+
+                                                if(value == 1) {
+                                                    startActivity(new Intent(TouristLogin.this, Role.class));
+                                                    finish();
+                                                }
+                                                else{
+                                                    Toast.makeText(TouristLogin.this, "Tourist Role haven't activated!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                            else {
                                                 Toast.makeText(TouristLogin.this, "Wrong ID or Password!", Toast.LENGTH_SHORT).show();
                                             }
-                                        }
-                                        else{
-                                            Toast.makeText(TouristLogin.this, "Tourist Role haven't activated!", Toast.LENGTH_SHORT).show();
 
-                                        }
                                     }
                                     else{
                                         mtilLoginTouristID.setError("ID does not exist!");

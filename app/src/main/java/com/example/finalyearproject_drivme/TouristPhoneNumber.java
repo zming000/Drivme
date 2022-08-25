@@ -52,6 +52,9 @@ public class TouristPhoneNumber extends AppCompatActivity {
             if(Objects.requireNonNull(metTPhoneNumber.getText()).toString().trim().isEmpty()){
                 mtilTPhoneNumber.setError("Field cannot be empty!");
             }
+            else if(Objects.requireNonNull(metTPhoneNumber.getText()).length() < 9){
+                mtilTPhoneNumber.setError("Invalid length of phone number!");
+            }
             else{
                 //proceed to verify otp
                 Intent intent = new Intent(TouristPhoneNumber.this, TouristOTP.class);

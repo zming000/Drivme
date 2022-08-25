@@ -98,6 +98,9 @@ public class DriverSignUp extends AppCompatActivity {
                 else if(uppercaseExist(metDriverID.getText().toString())){
                     mtilDriverID.setError("ID cannot contain uppercase!");
                 }
+                else if(Objects.requireNonNull(metDriverID.getText()).length() < 7){
+                    mtilDriverID.setError("ID too short! At least total of 7 character(s) and number(s)");
+                }
                 else{
                     mtilDriverID.setErrorEnabled(false);
                 }
@@ -253,7 +256,8 @@ public class DriverSignUp extends AppCompatActivity {
         statusDID = !Objects.requireNonNull(metDriverID.getText()).toString().contains(" ") &&
                 metDriverID.getText().toString().matches(".*[a-zA-Z]+.*") &&
                 digitExist(metDriverID.getText().toString()) &&
-                !uppercaseExist(metDriverID.getText().toString());
+                !uppercaseExist(metDriverID.getText().toString()) &&
+                (Objects.requireNonNull(metDriverID.getText()).length() > 7);
 
         //check input condition (without digit)
         statusDFName = !digitExist(Objects.requireNonNull(metDriverFName.getText()).toString());

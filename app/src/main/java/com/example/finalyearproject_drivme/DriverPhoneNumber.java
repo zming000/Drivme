@@ -52,6 +52,9 @@ public class DriverPhoneNumber extends AppCompatActivity {
             if(Objects.requireNonNull(metDPhoneNumber.getText()).toString().trim().isEmpty()){
                 mtilDPhoneNumber.setError("Field cannot be empty!");
             }
+            else if(Objects.requireNonNull(metDPhoneNumber.getText()).length() < 9){
+                mtilDPhoneNumber.setError("Invalid length of phone number!");
+            }
             else{
                 //proceed to verify otp
                 Intent intent = new Intent(DriverPhoneNumber.this, DriverOTP.class);
