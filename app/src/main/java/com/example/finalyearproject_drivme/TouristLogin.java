@@ -15,6 +15,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class TouristLogin extends AppCompatActivity {
@@ -78,27 +80,40 @@ public class TouristLogin extends AppCompatActivity {
                 mtilLoginTouristPW.setError("Field cannot be empty!");
             }
             else{
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                FirebaseFirestore drivmeDB = FirebaseFirestore.getInstance();
                 String id = metLoginTouristID.getText().toString();
                 String pw = metLoginTouristPW.getText().toString();
 
-                db.collection("User Accounts")
+                drivmeDB.collection("User Accounts")
                         .document(id)
                         .get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
+                                DocumentSnapshot docResult = task.getResult();
 
-                                if (document != null) {
+                                if (docResult != null) {
                                     //check the existence of ID
-                                    if (document.exists()) {
-                                            String pw2 = document.getString("Password");
+                                    if (docResult.exists()) {
+                                            String pw2 = docResult.getString("Password");
                                             //check if the password matched
                                             if (pw.matches(Objects.requireNonNull(pw2))) {
-                                                Integer value = document.getLong("Account Tourist").intValue();
+                                                int value = Objects.requireNonNull(docResult.getLong("Account Tourist")).intValue();
 
                                                 if(value == 1) {
-                                                    startActivity(new Intent(TouristLogin.this, Role.class));
+                                                    int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Tourist")).intValue();
+
+                                                    if (loginStat == 0){
+                                                        Map<String,Object> userAcc = new HashMap<>();
+                                                        userAcc.put("Login Status Tourist", 1);
+
+                                                        drivmeDB.collection("User Accounts").document(id)
+                                                                .update(userAcc);
+
+                                                        startActivity(new Intent(TouristLogin.this, WelcomeTo.class));
+                                                    }
+                                                    else{
+                                                        startActivity(new Intent(TouristLogin.this, WelcomeBack.class));
+                                                    }
                                                     finish();
                                                 }
                                                 else{

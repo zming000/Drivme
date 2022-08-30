@@ -15,6 +15,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class DriverLogin extends AppCompatActivity {
@@ -96,10 +98,23 @@ public class DriverLogin extends AppCompatActivity {
                                             String docPW = docResult.getString("Password");
                                             //check if password matched
                                             if (dPW.matches(Objects.requireNonNull(docPW))) {
-                                                Integer sem = docResult.getLong("Account Driver").intValue();
+                                                int sem = Objects.requireNonNull(docResult.getLong("Account Driver")).intValue();
 
                                                 if(sem == 1) {
-                                                    startActivity(new Intent(DriverLogin.this, Role.class));
+                                                    int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Driver")).intValue();
+
+                                                    if (loginStat == 0){
+                                                        Map<String,Object> userAcc = new HashMap<>();
+                                                        userAcc.put("Login Status Driver", 1);
+
+                                                        userDB.collection("User Accounts").document(dID)
+                                                                .update(userAcc);
+
+                                                        startActivity(new Intent(DriverLogin.this, WelcomeTo.class));
+                                                    }
+                                                    else{
+                                                        startActivity(new Intent(DriverLogin.this, WelcomeBack.class));
+                                                    }
                                                     finish();
                                                 }
                                                 else{

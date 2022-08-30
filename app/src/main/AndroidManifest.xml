@@ -4,14 +4,16 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/app_logo_wheel"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/app_logo_wheel"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalYearProjectDrivme">
 
-        <!--Account UI-->
-        <activity android:name=".ResetSuccess"/>
+        <activity android:name=".AgreementPolicy"/>
+
+        <!-- Account UI -->
+        <activity android:name=".ResetSuccess" />
         <activity android:name=".ResetPW" />
         <activity android:name=".FPWOtp" />
 
@@ -19,18 +21,11 @@
         <activity android:name=".DriverOTP" />
         <activity android:name=".DriverPhoneNumber" />
         <activity android:name=".DriverSignUp" />
-        <activity android:name=".DriverLogin"/>
+        <activity android:name=".DriverLogin" />
         <activity android:name=".DriverOption" />
 
         <!-- Tourist UI -->
-        <activity android:name=".TouristLogin" />
-        <activity android:name=".TouristSignUp" />
-        <activity android:name=".TouristOTP" />
-        <activity android:name=".TouristPhoneNumber" />
-        <activity android:name=".ForgotPassword" />
-
-        <!-- App UI -->
-        <activity android:name=".Role"
+        <activity android:name=".TouristLogin"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +33,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".TouristSignUp" />
+        <activity android:name=".TouristOTP" />
+        <activity android:name=".TouristPhoneNumber" />
+        <activity android:name=".ForgotPassword" />
+        <activity android:name=".TouristIntro" />
+
+        <!-- App UI -->
+        <activity android:name=".Role" />
         <activity android:name=".SplashActivity" />
+        <activity android:name=".WelcomeTo" />
+        <activity android:name=".WelcomeBack" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

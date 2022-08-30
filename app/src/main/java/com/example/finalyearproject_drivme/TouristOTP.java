@@ -134,10 +134,11 @@ public class TouristOTP extends AppCompatActivity {
         touristAcc.put("Phone Number", getIntent().getStringExtra("tPhoneNumber"));
         touristAcc.put("Email", getIntent().getStringExtra("tEmail"));
         touristAcc.put("Password", getIntent().getStringExtra("tPassword"));
-        touristAcc.put("Login Status Tourist", "0");
-        touristAcc.put("Login Status Driver", "0");
-        touristAcc.put("Account Tourist", "1");
-        touristAcc.put("Account Driver", "0");
+        touristAcc.put("Login Status Tourist", 0);
+        touristAcc.put("Login Status Driver", 0);
+        touristAcc.put("Account Tourist", 1);
+        touristAcc.put("Account Driver", 0);
+        touristAcc.put("Agreement Check", 0);
 
         db.collection("User Accounts").document(value)
                 .set(touristAcc)

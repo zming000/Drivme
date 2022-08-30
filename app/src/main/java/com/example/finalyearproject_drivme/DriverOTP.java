@@ -144,6 +144,7 @@ public class DriverOTP extends AppCompatActivity {
         driverAcc.put("Login Status Driver", 0);
         driverAcc.put("Account Tourist", 0);
         driverAcc.put("Account Driver", 1);
+        driverAcc.put("Agreement Check", 0);
 
         drivmeDB.collection("Reference Code Details").document(referenceCode)
                 .update(refCode);
