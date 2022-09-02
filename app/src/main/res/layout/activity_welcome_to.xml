@@ -8,7 +8,7 @@
     android:background="@drawable/bg_loading">
 
     <TextView
-        android:id="@+id/tvHello"
+        android:id="@+id/tvHelloTo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -30,10 +30,10 @@
         android:textColor="@color/black"
         android:textSize="35sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/tvHello"
+        app:layout_constraintEnd_toEndOf="@+id/tvHelloTo"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/tvHello"
-        app:layout_constraintTop_toBottomOf="@+id/tvHello" />
+        app:layout_constraintStart_toStartOf="@+id/tvHelloTo"
+        app:layout_constraintTop_toBottomOf="@+id/tvHelloTo" />
 
     <ImageView
         android:id="@+id/wheelImg"

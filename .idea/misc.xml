@@ -6,6 +6,7 @@
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/drawable/btn_border.xml" value="0.2005" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/drawable/roundedbtn.xml" value="0.2005" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_agreement_policy.xml" value="0.176" />
+        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_driver_driving_details.xml" value="0.1953125" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_driver_login.xml" value="0.264" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_driver_option.xml" value="0.41171875" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_driver_otp.xml" value="0.18472222222222223" />
@@ -23,6 +24,7 @@
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_reset_success.xml" value="0.32058047493403696" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_role.xml" value="0.28421052631578947" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_splash.xml" value="0.41171875" />
+        <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_tourist_car_details.xml" value="0.1" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_tourist_email.xml" value="0.1" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_tourist_forgot_password.xml" value="0.1" />
         <entry key="..\:/Users/Zming/Documents/INTI/Final Year Project/FinalYearProjectDrivme/app/src/main/res/layout/activity_tourist_intro.xml" value="0.41171875" />

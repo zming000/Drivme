@@ -3,6 +3,7 @@ package com.example.finalyearproject_drivme;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,6 +25,13 @@ public class DriverLogin extends AppCompatActivity {
     TextInputLayout mtilLoginDID, mtilLoginDPW;
     TextInputEditText metLoginDID, metLoginDPW;
     Button mbtnDLogin;
+    SharedPreferences spDrivme;
+
+    //key name
+    private static final String SP_NAME = "drivmePref";
+    private static final String KEY_FNAME = "fName";
+    private static final String KEY_ID = "userID";
+    private static final String KEY_ROLE = "role";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +110,7 @@ public class DriverLogin extends AppCompatActivity {
 
                                                 if(sem == 1) {
                                                     int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Driver")).intValue();
+                                                    String name = Objects.requireNonNull(docResult.getString("First Name"));
 
                                                     if (loginStat == 0){
                                                         Map<String,Object> userAcc = new HashMap<>();
@@ -115,6 +124,14 @@ public class DriverLogin extends AppCompatActivity {
                                                     else{
                                                         startActivity(new Intent(DriverLogin.this, WelcomeBack.class));
                                                     }
+
+                                                    spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
+                                                    SharedPreferences.Editor spEditor = spDrivme.edit();
+                                                    spEditor.putString(KEY_FNAME, name);
+                                                    spEditor.putString(KEY_ID, dID);
+                                                    spEditor.putString(KEY_ROLE, "Driver");
+                                                    spEditor.apply();
+
                                                     finish();
                                                 }
                                                 else{

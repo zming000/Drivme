@@ -3,6 +3,7 @@ package com.example.finalyearproject_drivme;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,6 +25,13 @@ public class TouristLogin extends AppCompatActivity {
     TextInputLayout mtilLoginTouristID, mtilLoginTouristPW;
     TextInputEditText metLoginTouristID, metLoginTouristPW;
     Button mbtnTouristLogin;
+    SharedPreferences spDrivme;
+
+    //key name
+    private static final String SP_NAME = "drivmePref";
+    private static final String KEY_FNAME = "fName";
+    private static final String KEY_ID = "userID";
+    private static final String KEY_ROLE = "role";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +109,7 @@ public class TouristLogin extends AppCompatActivity {
 
                                                 if(value == 1) {
                                                     int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Tourist")).intValue();
+                                                    String name = Objects.requireNonNull(docResult.getString("First Name"));
 
                                                     if (loginStat == 0){
                                                         Map<String,Object> userAcc = new HashMap<>();
@@ -114,6 +123,15 @@ public class TouristLogin extends AppCompatActivity {
                                                     else{
                                                         startActivity(new Intent(TouristLogin.this, WelcomeBack.class));
                                                     }
+
+                                                    //save necessary data for later use
+                                                    spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
+                                                    SharedPreferences.Editor spEditor = spDrivme.edit();
+                                                    spEditor.putString(KEY_FNAME, name);
+                                                    spEditor.putString(KEY_ID, id);
+                                                    spEditor.putString(KEY_ROLE, "Tourist");
+                                                    spEditor.apply();
+
                                                     finish();
                                                 }
                                                 else{

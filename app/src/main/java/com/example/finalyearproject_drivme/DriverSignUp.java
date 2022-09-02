@@ -313,8 +313,8 @@ public class DriverSignUp extends AppCompatActivity {
                                             else{
                                                 Intent intent = new Intent(DriverSignUp.this, DriverPhoneNumber.class);
                                                 intent.putExtra("dIDNext", metDriverID.getText().toString());
-                                                intent.putExtra("dFNameNext", Objects.requireNonNull(metDriverFName.getText()).toString().toUpperCase());
-                                                intent.putExtra("dLNameNext", Objects.requireNonNull(metDriverLName.getText()).toString().toUpperCase());
+                                                intent.putExtra("dFNameNext", getCapsSentences(Objects.requireNonNull(metDriverFName.getText()).toString().toUpperCase()));
+                                                intent.putExtra("dLNameNext", getCapsSentences(Objects.requireNonNull(metDriverLName.getText()).toString().toUpperCase()));
                                                 intent.putExtra("dEmailNext", Objects.requireNonNull(metDriverEmail.getText()).toString());
                                                 intent.putExtra("dPasswordNext", Objects.requireNonNull(metDriverPassword.getText()).toString());
                                                 intent.putExtra("dRefCodeNext", Objects.requireNonNull(metDriverRC.getText()).toString().toUpperCase());
@@ -354,5 +354,21 @@ public class DriverSignUp extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    //change 1st letter into uppercase
+    private String getCapsSentences(String tagName) {
+        String[] splitWord = tagName.toLowerCase().split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < splitWord.length; i++) {
+            String word = splitWord[i];
+            if (i > 0 && word.length() > 0) {
+                sb.append(" ");
+            }
+            String cap = word.substring(0, 1).toUpperCase()
+                    + word.substring(1);
+            sb.append(cap);
+        }
+        return sb.toString();
     }
 }

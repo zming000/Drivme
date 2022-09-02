@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -278,8 +279,8 @@ public class TouristSignUp extends AppCompatActivity {
                         else{
                             Intent intent = new Intent(TouristSignUp.this, TouristPhoneNumber.class);
                             intent.putExtra("tIDNext", metTouristID.getText().toString());
-                            intent.putExtra("tFNameNext", Objects.requireNonNull(metTouristFName.getText()).toString().toUpperCase());
-                            intent.putExtra("tLNameNext", Objects.requireNonNull(metTouristLName.getText()).toString().toUpperCase());
+                            intent.putExtra("tFNameNext", getCapsSentences(Objects.requireNonNull(metTouristFName.getText()).toString()));
+                            intent.putExtra("tLNameNext", getCapsSentences(Objects.requireNonNull(metTouristLName.getText()).toString()));
                             intent.putExtra("tEmailNext", Objects.requireNonNull(metTouristEmail.getText()).toString());
                             intent.putExtra("tPasswordNext", Objects.requireNonNull(metTouristPassword.getText()).toString());
 
@@ -314,5 +315,21 @@ public class TouristSignUp extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    //change 1st letter into uppercase
+    private String getCapsSentences(String tagName) {
+        String[] splitWord = tagName.toLowerCase().split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < splitWord.length; i++) {
+            String word = splitWord[i];
+            if (i > 0 && word.length() > 0) {
+                sb.append(" ");
+            }
+            String cap = word.substring(0, 1).toUpperCase()
+                    + word.substring(1);
+            sb.append(cap);
+        }
+        return sb.toString();
     }
 }
