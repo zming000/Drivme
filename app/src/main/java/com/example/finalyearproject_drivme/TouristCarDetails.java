@@ -3,6 +3,7 @@ package com.example.finalyearproject_drivme;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -29,11 +32,14 @@ public class TouristCarDetails extends AppCompatActivity {
     TextInputLayout mtilCPlate, mtilCBrand, mtilCModel, mtilCColour, mtilCTransmission, mtilCPCompany, mtilCPType;
     TextInputEditText metCPlate;
     AutoCompleteTextView mtvCBrand, mtvCModel, mtvCColour, mtvCTransmission, mtvCPCompany, mtvCPType;
-    String[] brandItems, modelItems, colourItems, transmissionItems, companyItems, typeItems;
+    String[] companyItems, typeItems;
     boolean[] selectedCompany, selectedType;
     ArrayList<Integer> companyList, typeList;
-    Button mbtnConfirm;
+    Button mbtnConfirm, mbtnOK;
     SharedPreferences spDrivme;
+    Dialog brandDialog, modelDialog, colourDialog, transmissionDialog;
+    TextView mtvSelect;
+    NumberPicker mnpPicker;
 
     //key name
     private static final String SP_NAME = "drivmePref";
@@ -43,6 +49,11 @@ public class TouristCarDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourist_car_details);
+
+        modelDialog = new Dialog(this);
+        brandDialog = new Dialog(this);
+        colourDialog = new Dialog(this);
+        transmissionDialog = new Dialog(this);
 
         //obtaining the View with specific ID
         mtilCPlate =findViewById(R.id.tilCPlate);
@@ -125,77 +136,78 @@ public class TouristCarDetails extends AppCompatActivity {
 
     }
 
-    //brand dropdown menu
+    //brand pop out menu
     private void brandDropdown(){
         mtvCBrand.setOnClickListener(view -> {
-            brandItems = new String[]{"Volvo", "Ford", "Honda", "Mazda", "Nissan", "Perodua", "Proton", "Toyota", "Volkswagen", "BMW"};
-            Arrays.sort(brandItems);
+            brandDialog.setContentView(R.layout.activity_scroll_picker_short);
 
-            AlertDialog.Builder brandBuilder = new AlertDialog.Builder(TouristCarDetails.this);
-            brandBuilder.setTitle("Choose a Car Brand");
-            brandBuilder.setIcon(R.drawable.ic_list_bulleted);
-            brandBuilder.setSingleChoiceItems(brandItems, -1, (dialogInterface, i) -> {
-                mtvCBrand.setText(brandItems[i]);
-                dialogInterface.dismiss();
+            //obtaining the View with specific ID
+            mtvSelect = brandDialog.findViewById(R.id.tvSelectOption);
+            mbtnOK = brandDialog.findViewById(R.id.btnShortOK);
+            mnpPicker = brandDialog.findViewById(R.id.npPicker);
+
+            //set the values
+            mtvSelect.setText("Choose Car Brand");
+            ModelCarDetails.initBrand();
+            mnpPicker.setMaxValue(ModelCarDetails.getModelArrayList().size() - 1);
+            mnpPicker.setMinValue(0);
+            mnpPicker.setDisplayedValues(ModelCarDetails.detailName());
+
+            brandDialog.show();
+
+            mbtnOK.setOnClickListener(view1 -> {
+                int value = mnpPicker.getValue();
+                mtvCBrand.setText(ModelCarDetails.getModelArrayList().get(value).getModelOption());
+                brandDialog.dismiss();
             });
-            brandBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
-
-            brandBuilder.show();
         });
     }
 
-    //model dropdown menu
+    //model pop out menu
     private void modelDropdown(){
         mtvCModel.setOnClickListener(view -> {
             String getBrand = mtvCBrand.getText().toString().trim();
+
+            modelDialog.setContentView(R.layout.activity_scroll_picker_long);
+
+            //obtaining the View with specific ID
+            mtvSelect = modelDialog.findViewById(R.id.tvSelectOption);
+            mbtnOK = modelDialog.findViewById(R.id.btnLongOK);
+            mnpPicker = modelDialog.findViewById(R.id.npPicker);
+
+            //set the values
+            mtvSelect.setText("Choose Car Model");
 
             //check if car brand field is empty
             if(!getBrand.equals("")) {
                 switch (getBrand) {
                     case "BMW":
-                        modelItems = new String[]{"BMW X1", "BMW X5", "BMW iX", "BMW 3 Series Sedan", "BMW 5 Series Sedan"};
-                        break;
-                    case "Ford":
-                        modelItems = new String[]{"Ford Ranger", "Ford Everest", "Ford Fiesta", "Ford Mustang", "Ford Kuga"};
+                        ModelCarDetails.initBMW();
                         break;
                     case "Honda":
-                        modelItems = new String[]{"Honda City", "Honda City Hatchback", "Honda Civic", "Honda CR-V", "Honda Accord"};
+                        ModelCarDetails.initHonda();
                         break;
                     case "Mazda":
-                        modelItems = new String[]{"Mazda 2 Sedan", "Mazda 3 Sedan", "Mazda CX-3", "Mazda CX-8", "Mazda Biante"};
-                        break;
-                    case "Nissan":
-                        modelItems = new String[]{"Nissan Almera", "Nissan Navara", "Nissan X-Trail", "Nissan Terra", "Nissan Teana"};
+                        ModelCarDetails.initMazda();
                         break;
                     case "Perodua":
-                        modelItems = new String[]{"Perodua Axia", "Perodua Bezza", "Perodua Ativa", "Perodua Aruz", "Perodua Myvi"};
+                        ModelCarDetails.initPerodua();
                         break;
                     case "Proton":
-                        modelItems = new String[]{"Proton Saga", "Proton Iriz", "Proton X50", "Proton X70", "Proton Persona"};
-                        break;
-                    case "Toyota":
-                        modelItems = new String[]{"Toyota Yaris", "Toyota Vios", "Toyota Hilux", "Toyota Avanza", "Toyota Innova"};
-                        break;
-                    case "Volkswagen":
-                        modelItems = new String[]{"Volkswagen Passat", "Volkswagen Golf GTI", "Volkswagen Arteon", "Volkswagen Jetta", "Volkswagen Tiguan"};
-                        break;
-                    case "Volvo":
-                        modelItems = new String[]{"Volvo XC40", "Volvo S90", "Volvo V40", "Volvo XC60", "Volvo V60"};
+                        ModelCarDetails.initProton();
                         break;
                 }
+                mnpPicker.setMaxValue(ModelCarDetails.getModelArrayList().size() - 1);
+                mnpPicker.setMinValue(0);
+                mnpPicker.setDisplayedValues(ModelCarDetails.detailName());
 
-                Arrays.sort(modelItems);
+                modelDialog.show();
 
-                AlertDialog.Builder brandBuilder = new AlertDialog.Builder(TouristCarDetails.this);
-                brandBuilder.setTitle("Choose a Car Model");
-                brandBuilder.setIcon(R.drawable.ic_list_bulleted);
-                brandBuilder.setSingleChoiceItems(modelItems, -1, (dialogInterface, i) -> {
-                    mtvCModel.setText(modelItems[i]);
-                    dialogInterface.dismiss();
+                mbtnOK.setOnClickListener(view1 -> {
+                    int value = mnpPicker.getValue();
+                    mtvCModel.setText(ModelCarDetails.getModelArrayList().get(value).getModelOption());
+                    modelDialog.dismiss();
                 });
-                brandBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
-
-                brandBuilder.show();
             }
             else{
                 mtilCBrand.setError("Please select a car brand first!");
@@ -203,45 +215,61 @@ public class TouristCarDetails extends AppCompatActivity {
         });
     }
 
-    //colour dropdown menu
+    //colour pop out menu
     private void colourDropdown(){
         mtvCColour.setOnClickListener(view -> {
-            colourItems = new String[]{"Black", "Gray", "Silver", "Blue", "Red", "Brown", "Yellow", "Green", "White"};
-            Arrays.sort(colourItems);
+            colourDialog.setContentView(R.layout.activity_scroll_picker_short);
 
-            AlertDialog.Builder brandBuilder = new AlertDialog.Builder(TouristCarDetails.this);
-            brandBuilder.setTitle("Choose a Car Brand");
-            brandBuilder.setIcon(R.drawable.ic_list_bulleted);
-            brandBuilder.setSingleChoiceItems(colourItems, -1, (dialogInterface, i) -> {
-                mtvCColour.setText(colourItems[i]);
-                dialogInterface.dismiss();
+            //obtaining the View with specific ID
+            mtvSelect = colourDialog.findViewById(R.id.tvSelectOption);
+            mbtnOK = colourDialog.findViewById(R.id.btnShortOK);
+            mnpPicker = colourDialog.findViewById(R.id.npPicker);
+
+            //set the values
+            mtvSelect.setText("Choose Car Colour");
+            ModelCarDetails.initColour();
+            mnpPicker.setMaxValue(ModelCarDetails.getModelArrayList().size() - 1);
+            mnpPicker.setMinValue(0);
+            mnpPicker.setDisplayedValues(ModelCarDetails.detailName());
+
+            colourDialog.show();
+
+            mbtnOK.setOnClickListener(view1 -> {
+                int value = mnpPicker.getValue();
+                mtvCColour.setText(ModelCarDetails.getModelArrayList().get(value).getModelOption());
+                colourDialog.dismiss();
             });
-            brandBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
-
-            brandBuilder.show();
         });
     }
 
-    //transmission dropdown menu
+    //transmission pop out menu
     private void transmissionDropdown(){
         mtvCTransmission.setOnClickListener(view -> {
-            transmissionItems = new String[]{"Manual Transmission (MT)", "Automatic Transmission (AT)",
-                    "Automated Manual Transmission (AM)", "Continuously Variable Transmission (CVT)"};
+            transmissionDialog.setContentView(R.layout.activity_scroll_picker_extra_long);
 
-            AlertDialog.Builder brandBuilder = new AlertDialog.Builder(TouristCarDetails.this);
-            brandBuilder.setTitle("Choose a Car Transmission");
-            brandBuilder.setIcon(R.drawable.ic_list_bulleted);
-            brandBuilder.setSingleChoiceItems(transmissionItems, -1, (dialogInterface, i) -> {
-                mtvCTransmission.setText(transmissionItems[i]);
-                dialogInterface.dismiss();
+            //obtaining the View with specific ID
+            mtvSelect = transmissionDialog.findViewById(R.id.tvSelectOption);
+            mbtnOK = transmissionDialog.findViewById(R.id.btnXLongOK);
+            mnpPicker = transmissionDialog.findViewById(R.id.npPicker);
+
+            //set the values
+            mtvSelect.setText("Choose Car Transmission");
+            ModelCarDetails.initTransmission();
+            mnpPicker.setMaxValue(ModelCarDetails.getModelArrayList().size() - 1);
+            mnpPicker.setMinValue(0);
+            mnpPicker.setDisplayedValues(ModelCarDetails.detailName());
+
+            transmissionDialog.show();
+
+            mbtnOK.setOnClickListener(view1 -> {
+                int value = mnpPicker.getValue();
+                mtvCTransmission.setText(ModelCarDetails.getModelArrayList().get(value).getModelOption());
+                transmissionDialog.dismiss();
             });
-            brandBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
-
-            brandBuilder.show();
         });
     }
 
-    //car petrol company dropdown menu
+    //car petrol company pop out menu
     private void companyDropdown(){
         mtvCPCompany.setOnClickListener(view -> {
             companyItems = new String[]{"Petron", "Petronas", "Shell", "BHP", "Caltex"};
@@ -300,7 +328,7 @@ public class TouristCarDetails extends AppCompatActivity {
         });
     }
 
-    //car petrol type dropdown menu
+    //car petrol type pop out menu
     private void typeDropdown(){
         mtvCPType.setOnClickListener(view -> {
             String getCompany = mtvCPCompany.getText().toString().trim();
@@ -506,6 +534,9 @@ public class TouristCarDetails extends AppCompatActivity {
             String id = spDrivme.getString(KEY_ID, null);
             String carPlate = Objects.requireNonNull(metCPlate.getText()).toString().replaceAll("\\s","").toUpperCase();
 
+            Map<String,Object> userAcc = new HashMap<>();
+            userAcc.put("Login Status Tourist", 1);
+
             Map<String,Object> carDetails = new HashMap<>();
             carDetails.put("Car Plate", carPlate);
             carDetails.put("Car Model", mtvCModel.getText().toString());
@@ -513,6 +544,9 @@ public class TouristCarDetails extends AppCompatActivity {
             carDetails.put("Car Transmission", mtvCTransmission.getText().toString());
             carDetails.put("Petrol Company", mtvCPCompany.getText().toString());
             carDetails.put("Petrol Type", mtvCPType.getText().toString());
+
+            carDB.collection("User Accounts").document(id)
+                    .update(userAcc);
 
             carDB.collection("User Accounts").document(id).collection("Car Details").document(carPlate)
                     .set(carDetails)
@@ -527,5 +561,20 @@ public class TouristCarDetails extends AppCompatActivity {
     //check digit
     private boolean digitExist(String text){
         return text.matches(".*\\d.*");
+    }
+
+    //quit application
+    @Override
+    public void onBackPressed() {
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Leaving Drivme?");
+        alertDialogBuilder
+                .setMessage("Click yes to exit!")
+                .setCancelable(false)
+                .setPositiveButton("Yes", (dialog, id) -> finish())
+                .setNegativeButton("No", (dialog, id) -> dialog.cancel());
+
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

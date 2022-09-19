@@ -100,12 +100,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:onClick="resendFPWOtp"
                     android:text="@string/underline_text_resend"
                     android:textColor="@color/text_blue"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tvReceiveOTP"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvReceiveOTP"
+                    app:layout_constraintTop_toTopOf="@+id/tvReceiveOTP" />
+
+                <TextView
+                    android:id="@+id/tvTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textColor="#1991D0"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvReceiveOTP"
                     app:layout_constraintStart_toEndOf="@+id/tvReceiveOTP"
                     app:layout_constraintTop_toTopOf="@+id/tvReceiveOTP" />
             </androidx.constraintlayout.widget.ConstraintLayout>

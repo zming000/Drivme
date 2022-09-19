@@ -36,7 +36,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="70dp"
                 android:layout_marginEnd="31dp"
                 android:src="@drawable/icon_otp" />
 
@@ -77,18 +77,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="35dp"
-                android:inputType="number"
                 android:cursorVisible="true"
+                android:inputType="number"
                 android:itemBackground="@color/btn_color"
+                android:minHeight="48dp"
+                app:hideLineWhenFilled="true"
                 app:itemCount="6"
-                app:itemWidth="45dp"
-                app:itemHeight="45dp"
+                app:itemHeight="48dp"
                 app:itemRadius="10dp"
-                app:lineWidth="1dp"
-                app:hideLineWhenFilled="true"/>
+                app:itemWidth="45dp"
+                app:lineWidth="1dp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="230dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp">
@@ -105,16 +106,25 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:id="@+id/tvDriverResend"
+                    android:id="@+id/tvDResend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:onClick="resendDOTP"
                     android:text="@string/underline_text_resend"
                     android:textColor="@color/text_blue"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tvReceive"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvReceive"
+                    app:layout_constraintTop_toTopOf="@+id/tvReceive" />
+
+                <TextView
+                    android:id="@+id/tvTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textColor="#1991D0"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvReceive"
                     app:layout_constraintStart_toEndOf="@+id/tvReceive"
                     app:layout_constraintTop_toTopOf="@+id/tvReceive" />
             </androidx.constraintlayout.widget.ConstraintLayout>

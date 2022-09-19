@@ -110,12 +110,22 @@
                     android:id="@+id/tvTouristResend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="resendTOTP"
                     android:text="@string/underline_text_resend"
                     android:textColor="@color/text_blue"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tvTextReceive"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvTextReceive"
+                    app:layout_constraintTop_toTopOf="@+id/tvTextReceive" />
+
+                <TextView
+                    android:id="@+id/tvTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textColor="#1991D0"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvTextReceive"
                     app:layout_constraintStart_toEndOf="@+id/tvTextReceive"
                     app:layout_constraintTop_toTopOf="@+id/tvTextReceive" />
             </androidx.constraintlayout.widget.ConstraintLayout>

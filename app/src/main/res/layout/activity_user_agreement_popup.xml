@@ -5,7 +5,7 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     android:padding="5dp"
-    android:background="@drawable/btn_border">
+    android:background="@drawable/popout_border">
 
     <TextView
         android:id="@+id/tvAgreement"
@@ -49,7 +49,4 @@
                 android:textSize="18sp"/>
         </LinearLayout>
     </ScrollView>
-
-
-
 </RelativeLayout>

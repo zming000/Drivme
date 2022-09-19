@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.finalyearproject_drivme" >
+    package="com.example.finalyearproject_drivme">
 
     <application
         android:allowBackup="true"
@@ -8,38 +8,62 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/app_logo_wheel"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FinalYearProjectDrivme" >
-        <activity
-            android:name=".TouristCarDetails"
-            android:exported="true" >
+        android:theme="@style/Theme.FinalYearProjectDrivme">
+        <activity android:name=".DriverAvailability"
+            android:screenOrientation="portrait"/>
+
+
+        <activity android:name=".TouristCarDetails"
+            android:screenOrientation="portrait"/>
+            <!-- Account UI -->
+        <activity android:name=".ResetSuccess"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ResetPW"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".FPWOtp"
+            android:screenOrientation="portrait"/> <!-- Driver UI -->
+        <activity android:name=".DriverOTP"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DriverPhoneNumber"
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- Account UI -->
-        <activity android:name=".ResetSuccess" />
-        <activity android:name=".ResetPW" />
-        <activity android:name=".FPWOtp" /> <!-- Driver UI -->
-        <activity android:name=".DriverOTP" />
-        <activity android:name=".DriverPhoneNumber" />
-        <activity android:name=".DriverSignUp" />
-        <activity android:name=".DriverLogin" />
-        <activity android:name=".DriverOption" />
-        <activity android:name=".DriverDrivingDetails" /> <!-- Tourist UI -->
-        <activity
-            android:name=".TouristLogin"/>
+        <activity android:name=".DriverSignUp"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DriverLogin"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".TouristSignUp" />
-        <activity android:name=".TouristOTP" />
-        <activity android:name=".TouristPhoneNumber" />
-        <activity android:name=".ForgotPassword" /> <!-- App UI -->
-        <activity android:name=".Role" />
-        <activity android:name=".SplashActivity" />
-        <activity android:name=".WelcomeTo" />
-        <activity android:name=".WelcomeBack" />
-        <activity android:name=".AgreementPolicy" />
+        <activity android:name=".DriverOption"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DriverDrivingDetails"
+            android:screenOrientation="portrait"/>
+             <!-- Tourist UI -->
+        <activity android:name=".TouristLogin"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TouristSignUp"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TouristOTP"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TouristPhoneNumber"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ForgotPassword"
+            android:screenOrientation="portrait"/> <!-- App UI -->
+        <activity android:name=".Role"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SplashActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".WelcomeTo"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".WelcomeBack"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AgreementPolicy"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="preloaded_fonts"

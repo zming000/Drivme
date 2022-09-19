@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="350dp"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:background="@drawable/popout_border">
+
+    <TextView
+        android:id="@+id/tvJohor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:text="Johor"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="490dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/cbSegamat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Segamat"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvSegamat"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Sekijang/Labis]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbLedang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Ledang"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvLedang"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Tangkak]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbMuar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Muar"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvMuar"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Pagoh/Bakri]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbBatu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Batu Pahat"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvBatu"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Parit Sulong/Sri Gading/Air Hitam]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbPontian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Pontian"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvPontian"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Tanjong Piai]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbKluang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Kluang"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvKluang"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Sembrong/Simpang Renggam]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbMersing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Mersing"
+                android:textSize="19sp" />
+
+            <CheckBox
+                android:id="@+id/cbKulai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Kulai"
+                android:textSize="19sp" />
+
+            <CheckBox
+                android:id="@+id/cbKota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Kota Tinggi"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvKota"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[[Tenggara/Pengerang]]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbJB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Johor Bahru"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvJB"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Terbau/Gelang Patah/Pulai/Pasir Gudang]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnJohorOK"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/btn_rounded"
+                android:text="OK"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

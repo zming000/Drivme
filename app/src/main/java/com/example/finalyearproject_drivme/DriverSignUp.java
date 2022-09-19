@@ -65,14 +65,36 @@ public class DriverSignUp extends AppCompatActivity {
     //driver sign up -> driver option
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(DriverSignUp.this, DriverOption.class));
-        finish();
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverSignUp.this);
+        alertDialogBuilder.setTitle("Discard Process");
+        alertDialogBuilder
+                .setMessage("Do you wish to discard and go back login?")
+                .setCancelable(false)
+                .setPositiveButton("DISCARD",
+                        (dialog, id) -> {
+                            startActivity(new Intent(DriverSignUp.this, DriverLogin.class));
+                            finish();
+                        });
+
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     //driver sign up -> driver login
     public void loginDriver(View view) {
-        startActivity(new Intent(DriverSignUp.this, DriverLogin.class));
-        finish();
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverSignUp.this);
+        alertDialogBuilder.setTitle("Discard Process");
+        alertDialogBuilder
+                .setMessage("Do you wish to discard and go back login?")
+                .setCancelable(false)
+                .setPositiveButton("DISCARD",
+                        (dialog, id) -> {
+                            startActivity(new Intent(DriverSignUp.this, DriverLogin.class));
+                            finish();
+                        });
+
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     //Set error message on each field to ensure correct input
@@ -321,7 +343,7 @@ public class DriverSignUp extends AppCompatActivity {
 
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);
-//
+                                                finish();
                                             }
                                         }
                                     });

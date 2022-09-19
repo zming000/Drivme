@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="350dp"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:background="@drawable/popout_border">
+
+    <TextView
+        android:id="@+id/tvPerak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:text="Perak"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="490dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/cbHulu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Hulu Selangor"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvHulu"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Gerik]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbKerian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Kerian"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvKerian"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Parit Buntar]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbLarut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Larut Matang Selama"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvMainlandSouth"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Taiping]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbKuala"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Kuala Kangsar"
+                android:textSize="19sp" />
+
+            <CheckBox
+                android:id="@+id/cbKinta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Kinta"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvKinta"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Ipoh/Batu Gajah]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbKampar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Kampar"
+                android:textSize="19sp" />
+
+            <CheckBox
+                android:id="@+id/cbBatang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Batang Padang"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvBatang"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Tapah]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbManjung"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Manjung"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvManjung"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Seri Manjung]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbTengah"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Perak Tengah"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvTengah"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Seri Iskandar]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbHilir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Hilir Perak"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvHilir"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Teluk Intan]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbBagan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Bagan Datuk"
+                android:textSize="19sp" />
+
+            <CheckBox
+                android:id="@+id/cbMuallim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Muallim"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvMuallim"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Tanjung Malim]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnPerakOK"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/btn_rounded"
+                android:text="OK"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

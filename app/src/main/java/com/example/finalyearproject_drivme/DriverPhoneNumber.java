@@ -68,7 +68,26 @@ public class DriverPhoneNumber extends AppCompatActivity {
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
             }
         });
+    }
+
+    //driver phone number -> driver login
+    @Override
+    public void onBackPressed() {
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverPhoneNumber.this);
+        alertDialogBuilder.setTitle("Discard Process");
+        alertDialogBuilder
+                .setMessage("Do you wish to discard and go back login?")
+                .setCancelable(false)
+                .setPositiveButton("DISCARD",
+                        (dialog, id) -> {
+                            startActivity(new Intent(DriverPhoneNumber.this, DriverLogin.class));
+                            finish();
+                        });
+
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

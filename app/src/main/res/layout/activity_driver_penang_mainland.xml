@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="350dp"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:background="@drawable/popout_border">
+
+    <TextView
+        android:id="@+id/tvMainland"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:text="Penang Mainland"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="490dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/cbNorthSB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="North Seberang Perai"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvMainlandNorth"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Kepala Batas/Tasek Gelugor/Bagan/Sungai Dua/Telok Air Tawar/Permatang Berangan/Bertam/Penaga/Pinang Tunggal/Sungai Puyu/Bangan Jermal/Bagan Dalam]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbCentral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Central Seberang Perai"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvIslandSouth"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Permatang Pauh/Bukit Mertajam/Machang Bubuk/Padang Lalang/Berapit/Batu Kawan/Bukit Tengah/Seberang Jaya/Permatang Pasir/Penanti/Prai]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <CheckBox
+                android:id="@+id/cbSouthSB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="South Seberang Perai"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvMainlandSouth"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:text="[Nibong Tebal/Jawi/Sungai Bakap/Sungai Acheh/Batu Kawan/Bukit Tambun]"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnMainlandOK"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/btn_rounded"
+                android:text="OK"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

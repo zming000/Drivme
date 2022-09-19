@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -63,14 +62,36 @@ public class TouristSignUp extends AppCompatActivity {
     //tourist sign up -> tourist login
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(TouristSignUp.this, TouristLogin.class));
-        finish();
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristSignUp.this);
+        alertDialogBuilder.setTitle("Discard Process");
+        alertDialogBuilder
+                .setMessage("Do you wish to discard and go back login?")
+                .setCancelable(false)
+                .setPositiveButton("DISCARD",
+                        (dialog, id) -> {
+                            startActivity(new Intent(TouristSignUp.this, TouristLogin.class));
+                            finish();
+                        });
+
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     //tourist login text -> tourist login
     public void loginTourist(View view) {
-        startActivity(new Intent(TouristSignUp.this, TouristLogin.class));
-        finish();
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristSignUp.this);
+        alertDialogBuilder.setTitle("Discard Process");
+        alertDialogBuilder
+                .setMessage("Do you wish to discard and go back login?")
+                .setCancelable(false)
+                .setPositiveButton("DISCARD",
+                        (dialog, id) -> {
+                            startActivity(new Intent(TouristSignUp.this, TouristLogin.class));
+                            finish();
+                        });
+
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     //Set error message on each field to ensure correct input
@@ -286,6 +307,7 @@ public class TouristSignUp extends AppCompatActivity {
 
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
+                            finish();
                         }
                     }
                 });

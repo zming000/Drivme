@@ -16,8 +16,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class TouristLogin extends AppCompatActivity {
@@ -107,17 +105,12 @@ public class TouristLogin extends AppCompatActivity {
                                             if (pw.matches(Objects.requireNonNull(pw2))) {
                                                 int value = Objects.requireNonNull(docResult.getLong("Account Tourist")).intValue();
 
+                                                //check if id activated tourist role or not
                                                 if(value == 1) {
                                                     int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Tourist")).intValue();
                                                     String name = Objects.requireNonNull(docResult.getString("First Name"));
 
                                                     if (loginStat == 0){
-                                                        Map<String,Object> userAcc = new HashMap<>();
-                                                        userAcc.put("Login Status Tourist", 1);
-
-                                                        drivmeDB.collection("User Accounts").document(id)
-                                                                .update(userAcc);
-
                                                         startActivity(new Intent(TouristLogin.this, WelcomeTo.class));
                                                     }
                                                     else{
@@ -158,7 +151,9 @@ public class TouristLogin extends AppCompatActivity {
 
     //tourist login -> tourist sign up
     public void signupTourist(View view) {
-        startActivity(new Intent(TouristLogin.this, TouristSignUp.class));
+        Intent intent = new Intent(TouristLogin.this, AgreementPolicy.class);
+        intent.putExtra("role", "Tourist");
+        startActivity(intent);
         finish();
     }
 

@@ -16,8 +16,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class DriverLogin extends AppCompatActivity {
@@ -108,17 +106,12 @@ public class DriverLogin extends AppCompatActivity {
                                             if (dPW.matches(Objects.requireNonNull(docPW))) {
                                                 int sem = Objects.requireNonNull(docResult.getLong("Account Driver")).intValue();
 
+                                                //check if id activated driver role or not
                                                 if(sem == 1) {
                                                     int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Driver")).intValue();
                                                     String name = Objects.requireNonNull(docResult.getString("First Name"));
 
                                                     if (loginStat == 0){
-                                                        Map<String,Object> userAcc = new HashMap<>();
-                                                        userAcc.put("Login Status Driver", 1);
-
-                                                        userDB.collection("User Accounts").document(dID)
-                                                                .update(userAcc);
-
                                                         startActivity(new Intent(DriverLogin.this, WelcomeTo.class));
                                                     }
                                                     else{
@@ -155,7 +148,9 @@ public class DriverLogin extends AppCompatActivity {
 
     //driver login -> driver sign up
     public void signupDriver(View view) {
-        startActivity(new Intent(DriverLogin.this, DriverSignUp.class));
+        Intent intent = new Intent(DriverLogin.this, AgreementPolicy.class);
+        intent.putExtra("role", "Driver");
+        startActivity(intent);
         finish();
     }
 

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="350dp"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:background="@drawable/popout_border">
+
+    <TextView
+        android:id="@+id/tvIsland"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:text="Penang Island"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <CheckBox
+        android:id="@+id/cbNorth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Northeast Penang Island"
+        android:textSize="19sp"/>
+
+    <TextView
+        android:id="@+id/tvIslandNorth"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:text="[Georgetown/Jelutong/Bukit Bendera/Gelugor/Tanjung Tokong/Tanjong Bungah/Batu Ferringhi/Paya Terubong/Air Itam/Air Puteh/Batu Uban]"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="italic"/>
+
+    <CheckBox
+        android:id="@+id/cbSouth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Southwest Penang Island"
+        android:textSize="19sp"/>
+
+    <TextView
+        android:id="@+id/tvIslandSouth"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:text="[Bayan Lepas/Bayan Baru/Batu Maung/Balik Pulau/Teluk Bahang/Pulau Betong]"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="italic"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnIslandOK"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/btn_rounded"
+        android:text="OK"
+        android:textAllCaps="false"
+        android:textColor="@color/primary"
+        android:textSize="16sp" />
+</LinearLayout>

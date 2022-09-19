@@ -67,7 +67,26 @@ public class TouristPhoneNumber extends AppCompatActivity {
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
             }
         });
+    }
+
+    //tourist phone number -> tourist login
+    @Override
+    public void onBackPressed() {
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristPhoneNumber.this);
+        alertDialogBuilder.setTitle("Discard Process");
+        alertDialogBuilder
+                .setMessage("Do you wish to discard and go back login?")
+                .setCancelable(false)
+                .setPositiveButton("DISCARD",
+                        (dialog, id) -> {
+                            startActivity(new Intent(TouristPhoneNumber.this, TouristLogin.class));
+                            finish();
+                        });
+
+        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }
