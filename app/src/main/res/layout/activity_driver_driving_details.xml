@@ -18,14 +18,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="150dp"
                 android:layout_gravity="center"
                 android:text="Driver Details"
                 android:textColor="@color/black"
@@ -39,10 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
-                android:hint="Age"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tilCPlate">
+                android:hint="Age">
 
                 <AutoCompleteTextView
                     android:id="@+id/tvDAge"
@@ -60,10 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
-                android:hint="Gender"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tilCPlate">
+                android:hint="Gender">
 
                 <AutoCompleteTextView
                     android:id="@+id/tvDGender"
@@ -81,10 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
-                android:hint="Race"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tilCPlate">
+                android:hint="Race">
 
                 <AutoCompleteTextView
                     android:id="@+id/tvDRace"
@@ -102,10 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
-                android:hint="Driving Experience"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tilCPlate">
+                android:hint="Driving Experience">
 
                 <AutoCompleteTextView
                     android:id="@+id/tvDExp"
@@ -123,10 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
-                android:hint="Language"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tilCPlate">
+                android:hint="Language">
 
                 <AutoCompleteTextView
                     android:id="@+id/tvDLanguage"

@@ -18,7 +18,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="vertical">
 
             <ImageView
@@ -140,7 +139,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:id="@+id/tvRegisterText"
@@ -158,6 +158,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginBottom="5dp"
                     android:text="@string/underline_text_joinus"
                     android:textColor="@color/text_blue"
                     android:textSize="16sp"

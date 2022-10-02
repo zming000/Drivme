@@ -24,7 +24,7 @@ public class DriverPhoneNumber extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_phone_number);
 
-        //obtaining the View with specific ID
+        //assign variables
         mtilDPhoneNumber = findViewById(R.id.tilSignUpDPhoneNumber);
         metDPhoneNumber = findViewById(R.id.etSignUpDPhoneNumber);
         mbtnDriverOTP = findViewById(R.id.btnGetOTP);
@@ -66,28 +66,8 @@ public class DriverPhoneNumber extends AppCompatActivity {
                 intent.putExtra("dPassword", getIntent().getStringExtra("dPasswordNext"));
                 intent.putExtra("dRefCode", getIntent().getStringExtra("dRefCodeNext"));
 
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                finish();
             }
         });
-    }
-
-    //driver phone number -> driver login
-    @Override
-    public void onBackPressed() {
-        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverPhoneNumber.this);
-        alertDialogBuilder.setTitle("Discard Process");
-        alertDialogBuilder
-                .setMessage("Do you wish to discard and go back login?")
-                .setCancelable(false)
-                .setPositiveButton("DISCARD",
-                        (dialog, id) -> {
-                            startActivity(new Intent(DriverPhoneNumber.this, DriverLogin.class));
-                            finish();
-                        });
-
-        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
     }
 }

@@ -3,11 +3,11 @@ package com.example.finalyearproject_drivme;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.NumberPicker;
@@ -21,7 +21,6 @@ import java.util.Collections;
 
 public class DriverDrivingDetails extends AppCompatActivity {
     //declare variables
-    Dialog ageDialog, genderDialog, raceDialog, expDialog, lanDialog;
     TextInputLayout mtilDAge, mtilDGender, mtilDRace, mtilDExp, mtilDLanguage;
     AutoCompleteTextView mtvDAge, mtvDGender, mtvDRace, mtvDExp, mtvDLanguage;
     Button mbtnDriverNext, mbtnOK;
@@ -32,13 +31,6 @@ public class DriverDrivingDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_driving_details);
-
-        //initialize dialogs
-        ageDialog = new Dialog(this);
-        genderDialog = new Dialog(this);
-        raceDialog = new Dialog(this);
-        expDialog = new Dialog(this);
-        lanDialog = new Dialog(this);
 
         //obtaining the View with specific ID
         mtilDAge = findViewById(R.id.tilDAge);
@@ -71,13 +63,17 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
     //age dialog
     private void ageMenu() {
-        mtvDAge.setOnClickListener(view -> {
-            ageDialog.setContentView(R.layout.activity_scroll_picker_short);
+        mtvDAge.setOnClickListener(ageView -> {
+            LayoutInflater dialogInflater = getLayoutInflater();
+            ageView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
 
-            //obtaining the View with specific ID
-            mtvSelect = ageDialog.findViewById(R.id.tvSelectOption);
-            mbtnOK = ageDialog.findViewById(R.id.btnShortOK);
-            mnpPicker = ageDialog.findViewById(R.id.npPicker);
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
+            AlertDialog ageDialog = dialogBuilder.setView(ageView).create();
+
+            //assign variables
+            mtvSelect = ageView.findViewById(R.id.tvSelectOption);
+            mbtnOK = ageView.findViewById(R.id.btnOK);
+            mnpPicker = ageView.findViewById(R.id.npPicker);
 
             //set the values
             mtvSelect.setText("Select Your Age");
@@ -87,10 +83,11 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
             //show pop out dialog
             ageDialog.show();
+            ageDialog.getWindow().setLayout(450, 580);
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
-                mtvDAge.setText(Integer.toString(value));
+                mtvDAge.setText(String.valueOf(value));
                 ageDialog.dismiss();
             });
         });
@@ -98,13 +95,17 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
     //gender dialog
     private void genderMenu() {
-        mtvDGender.setOnClickListener(view -> {
-            genderDialog.setContentView(R.layout.activity_scroll_picker_short);
+        mtvDGender.setOnClickListener(genderView -> {
+            LayoutInflater dialogInflater = getLayoutInflater();
+            genderView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
 
-            //obtaining the View with specific ID
-            mtvSelect = genderDialog.findViewById(R.id.tvSelectOption);
-            mbtnOK = genderDialog.findViewById(R.id.btnShortOK);
-            mnpPicker = genderDialog.findViewById(R.id.npPicker);
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
+            AlertDialog genderDialog = dialogBuilder.setView(genderView).create();
+
+            //assign variables
+            mtvSelect = genderView.findViewById(R.id.tvSelectOption);
+            mbtnOK = genderView.findViewById(R.id.btnOK);
+            mnpPicker = genderView.findViewById(R.id.npPicker);
 
             //set the values
             ModelDriverDetails.initGender();
@@ -113,8 +114,9 @@ public class DriverDrivingDetails extends AppCompatActivity {
             mnpPicker.setMinValue(0);
             mnpPicker.setDisplayedValues(ModelDriverDetails.detailsName());
 
-            //show pop out dialog
+            //display dialog
             genderDialog.show();
+            genderDialog.getWindow().setLayout(470, 580);
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
@@ -126,13 +128,17 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
     //race dialog
     private void raceMenu() {
-        mtvDRace.setOnClickListener(view -> {
-            raceDialog.setContentView(R.layout.activity_scroll_picker_short);
+        mtvDRace.setOnClickListener(raceView -> {
+            LayoutInflater dialogInflater = getLayoutInflater();
+            raceView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
 
-            //obtaining the View with specific ID
-            mtvSelect = raceDialog.findViewById(R.id.tvSelectOption);
-            mbtnOK = raceDialog.findViewById(R.id.btnShortOK);
-            mnpPicker = raceDialog.findViewById(R.id.npPicker);
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
+            AlertDialog raceDialog = dialogBuilder.setView(raceView).create();
+
+            //assign variables
+            mtvSelect = raceView.findViewById(R.id.tvSelectOption);
+            mbtnOK = raceView.findViewById(R.id.btnOK);
+            mnpPicker = raceView.findViewById(R.id.npPicker);
 
             //set the values
             ModelDriverDetails.initRace();
@@ -141,8 +147,9 @@ public class DriverDrivingDetails extends AppCompatActivity {
             mnpPicker.setMinValue(0);
             mnpPicker.setDisplayedValues(ModelDriverDetails.detailsName());
 
-            //show pop out dialog
+            //display dialog
             raceDialog.show();
+            raceDialog.getWindow().setLayout(470, 580);
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
@@ -154,13 +161,17 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
     //driving experience dialog
     private void drivingExpMenu() {
-        mtvDExp.setOnClickListener(view -> {
-            expDialog.setContentView(R.layout.activity_scroll_picker_short);
+        mtvDExp.setOnClickListener(expView -> {
+            LayoutInflater dialogInflater = getLayoutInflater();
+            expView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
 
-            //obtaining the View with specific ID
-            mtvSelect = expDialog.findViewById(R.id.tvSelectOption);
-            mbtnOK = expDialog.findViewById(R.id.btnShortOK);
-            mnpPicker = expDialog.findViewById(R.id.npPicker);
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
+            AlertDialog expDialog = dialogBuilder.setView(expView).create();
+
+            //assign variables
+            mtvSelect = expView.findViewById(R.id.tvSelectOption);
+            mbtnOK = expView.findViewById(R.id.btnOK);
+            mnpPicker = expView.findViewById(R.id.npPicker);
 
             //set the values
             mtvSelect.setText("Select Your Driving Experience");
@@ -168,12 +179,13 @@ public class DriverDrivingDetails extends AppCompatActivity {
             mnpPicker.setMinValue(3);
             mnpPicker.setValue(3);
 
-            //show pop out dialog
+            //display dialog
             expDialog.show();
+            expDialog.getWindow().setLayout(470, 640);
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
-                mtvDExp.setText(Integer.toString(value));
+                mtvDExp.setText(String.valueOf(value));
                 expDialog.dismiss();
             });
         });
@@ -344,6 +356,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
             mtilDLanguage.setError("Field cannot be empty!");
         }
         else{
+            //proceed to next activity
             Intent intent = new Intent(DriverDrivingDetails.this, DriverAvailability.class);
             intent.putExtra("dAge", mtvDAge.getText().toString());
             intent.putExtra("dGender", mtvDGender.getText().toString());

@@ -51,6 +51,7 @@ public class WelcomeTo extends AppCompatActivity {
                     startActivity(new Intent(WelcomeTo.this, DriverDrivingDetails.class));
                 }
             }
+            finishAffinity();
             finish();
         },2000);
     }

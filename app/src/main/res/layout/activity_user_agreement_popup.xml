@@ -4,8 +4,7 @@
     android:layout_height="550dp"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:padding="5dp"
-    android:background="@drawable/popout_border">
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/tvAgreement"

@@ -36,7 +36,7 @@ public class FPWOtp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fpw_otp);
 
-        //obtaining the View with specific ID
+        //assign variables
         mtvFPWPhoneText = findViewById(R.id.tvFPWPhoneText);
         mtvFPWResend = findViewById(R.id.tvFPWResend);
         mtvTimer = findViewById(R.id.tvTimer);
@@ -119,8 +119,8 @@ public class FPWOtp extends AppCompatActivity {
                         intent.putExtra("ID", getIntent().getStringExtra("id"));
                         intent.putExtra("Character", getIntent().getStringExtra("character"));
 
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
+                        finishAffinity();
                         finish();
                     }
                     else{
@@ -161,31 +161,5 @@ public class FPWOtp extends AppCompatActivity {
                 }
             }.start();
         });
-    }
-
-    //Forget password otp -> login
-    @Override
-    public void onBackPressed() {
-        String character = getIntent().getStringExtra("character");
-
-        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Remember password?");
-        alertDialogBuilder
-                .setMessage("Click yes to login!")
-                .setCancelable(false)
-                .setPositiveButton("Yes",
-                        (dialog, id) -> {
-                            if(character.equals("Tourist")) {
-                                startActivity(new Intent(FPWOtp.this, TouristLogin.class));
-                            }
-                            else{
-                                startActivity(new Intent(FPWOtp.this, DriverLogin.class));
-                            }
-                            finish();
-                        })
-                .setNegativeButton("No", (dialog, id) -> dialog.cancel());
-
-        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
     }
 }

@@ -30,7 +30,7 @@ public class ResetPW extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_pw);
 
-        //obtaining the View with specific ID
+        //assign variables
         mtilResetPW = findViewById(R.id.tilResetPW);
         mtilResetCPW = findViewById(R.id.tilResetCPW);
         metResetPW = findViewById(R.id.etResetPW);
@@ -135,7 +135,7 @@ public class ResetPW extends AppCompatActivity {
                         //check the existence of document ID
                         if(Objects.requireNonNull(document).exists()){
                             Map<String,Object> userAcc = new HashMap<>();
-                            userAcc.put("Password", Objects.requireNonNull(metResetPW.getText()).toString());
+                            userAcc.put("password", Objects.requireNonNull(metResetPW.getText()).toString());
 
                             db.collection("User Accounts").document(id)
                                     .update(userAcc)
@@ -170,6 +170,7 @@ public class ResetPW extends AppCompatActivity {
                             else{
                                 startActivity(new Intent(ResetPW.this, DriverLogin.class));
                             }
+                            finishAffinity();
                             finish();
                         })
                 .setNegativeButton("No", (dialog, id) -> dialog.cancel());

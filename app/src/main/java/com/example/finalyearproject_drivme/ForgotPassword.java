@@ -30,14 +30,14 @@ public class ForgotPassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
-        //obtaining the View with specific ID
+        //assign variables
         mtilFpwID = findViewById(R.id.tilFpwID);
         mtilFPWPhoneNumber = findViewById(R.id.tilFPWPhoneNumber);
         metFpwID = findViewById(R.id.etFpwID);
         metFPWPhoneNumber = findViewById(R.id.etFPWPhoneNumber);
         mbtnGetOTP = findViewById(R.id.btnGetOTP);
 
-        //return instance of the class
+        //initialize
         userDB = FirebaseFirestore.getInstance();
         character = getIntent().getStringExtra("role");
 
@@ -104,7 +104,7 @@ public class ForgotPassword extends AppCompatActivity {
                                             int semTourist = Objects.requireNonNull(document.getLong("Account Tourist")).intValue();
 
                                             if (semTourist == 1) {
-                                                String phText = document.getString("Phone Number");
+                                                String phText = document.getString("phoneNumber");
 
                                                 if(Objects.requireNonNull(phText).equals("+60" + metFPWPhoneNumber.getText().toString())) {
                                                     //proceed to verify otp
@@ -113,7 +113,6 @@ public class ForgotPassword extends AppCompatActivity {
                                                     intent.putExtra("character", character);
                                                     intent.putExtra("phNum", "+60" + metFPWPhoneNumber.getText().toString());
 
-                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                     startActivity(intent);
                                                 }
                                                 else{
@@ -127,15 +126,20 @@ public class ForgotPassword extends AppCompatActivity {
                                             int semDriver = Objects.requireNonNull(document.getLong("Account Driver")).intValue();
 
                                             if(semDriver == 1) {
-                                                //proceed to verify otp
-                                                Intent intent = new Intent(ForgotPassword.this, FPWOtp.class);
-                                                intent.putExtra("id", id);
-                                                intent.putExtra("character", character);
-                                                intent.putExtra("phNum", "+60" + metFPWPhoneNumber.getText().toString());
+                                                String phText = document.getString("phoneNumber");
 
-                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                startActivity(intent);
-                                                finish();
+                                                if(Objects.requireNonNull(phText).equals("+60" + metFPWPhoneNumber.getText().toString())) {
+                                                    //proceed to verify otp
+                                                    Intent intent = new Intent(ForgotPassword.this, FPWOtp.class);
+                                                    intent.putExtra("id", id);
+                                                    intent.putExtra("character", character);
+                                                    intent.putExtra("phNum", "+60" + metFPWPhoneNumber.getText().toString());
+
+                                                    startActivity(intent);
+                                                }
+                                                else{
+                                                    mtilFPWPhoneNumber.setError("Use Verified Phone Number!");
+                                                }
                                             }
                                             else{
                                                 Toast.makeText(ForgotPassword.this, "Driver Role haven't activated!", Toast.LENGTH_SHORT).show();

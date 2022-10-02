@@ -1,5 +1,6 @@
 package com.example.finalyearproject_drivme;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,11 +12,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class DriverLogin extends AppCompatActivity {
@@ -36,7 +42,7 @@ public class DriverLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_login);
 
-        //obtaining the View with specific ID
+        //assign variables
         mtilLoginDID = findViewById(R.id.tilLoginDID);
         mtilLoginDPW = findViewById(R.id.tilLoginDPW);
         metLoginDID = findViewById(R.id.etLoginDID);
@@ -101,7 +107,7 @@ public class DriverLogin extends AppCompatActivity {
                                 if (docResult != null) {
                                     //check the existence of ID
                                     if (docResult.exists()) {
-                                            String docPW = docResult.getString("Password");
+                                            String docPW = docResult.getString("password");
                                             //check if password matched
                                             if (dPW.matches(Objects.requireNonNull(docPW))) {
                                                 int sem = Objects.requireNonNull(docResult.getLong("Account Driver")).intValue();
@@ -109,7 +115,7 @@ public class DriverLogin extends AppCompatActivity {
                                                 //check if id activated driver role or not
                                                 if(sem == 1) {
                                                     int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Driver")).intValue();
-                                                    String name = Objects.requireNonNull(docResult.getString("First Name"));
+                                                    String name = Objects.requireNonNull(docResult.getString("firstName"));
 
                                                     if (loginStat == 0){
                                                         startActivity(new Intent(DriverLogin.this, WelcomeTo.class));

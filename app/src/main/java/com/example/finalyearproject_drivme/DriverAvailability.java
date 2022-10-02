@@ -3,12 +3,13 @@ package com.example.finalyearproject_drivme;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -20,15 +21,14 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DriverAvailability extends AppCompatActivity {
     //declare variables
-    Dialog stateDialog, areaDialog, dayDialog;
-    TextInputLayout mtilDState, mtilDArea, mtilDDay;
-    AutoCompleteTextView mtvDState, mtvDArea, mtvDDay;
+    TextInputLayout mtilDState, mtilDArea;
+    AutoCompleteTextView mtvDState, mtvDArea;
     Button mbtnDriverDone, mbtnOK;
     TextView mtvSelect, mtvMost;
     NumberPicker mnpPicker;
@@ -45,28 +45,20 @@ public class DriverAvailability extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_availability);
 
-        //Initialize dialog
-        stateDialog = new Dialog(this);
-        areaDialog = new Dialog(this);
-        dayDialog = new Dialog(this);
-
-        //obtaining the View with specific ID
+        //assign variables
         mtilDState = findViewById(R.id.tilDState);
         mtilDArea = findViewById(R.id.tilDArea);
-        mtilDDay = findViewById(R.id.tilDDay);
         mtvDState = findViewById(R.id.tvDState);
         mtvDArea = findViewById(R.id.tvDArea);
         mtvMost = findViewById(R.id.tvMost);
-        mtvDDay = findViewById(R.id.tvDDay);
         mbtnDriverDone = findViewById(R.id.btnDriverDone);
 
         //initialize shared preferences
         spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
 
-        //pop out menus
+        //dialog menus
         stateMenu();
         areaMenu();
-        dayMenu();
 
         //disable error
         errorChangeOnEachFields();
@@ -79,13 +71,19 @@ public class DriverAvailability extends AppCompatActivity {
 
     //state dialog
     private void stateMenu() {
-        mtvDState.setOnClickListener(view -> {
-            stateDialog.setContentView(R.layout.activity_scroll_picker_long);
+        mtvDState.setOnClickListener(stateView -> {
+            //initialize layout
+            LayoutInflater dialogInflater = getLayoutInflater();
+            stateView = dialogInflater.inflate(R.layout.activity_scroll_picker_long, null);
 
-            //obtaining the View with specific ID
-            mtvSelect = stateDialog.findViewById(R.id.tvSelectOption);
-            mbtnOK = stateDialog.findViewById(R.id.btnLongOK);
-            mnpPicker = stateDialog.findViewById(R.id.npPicker);
+            //initialize dialog builder
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
+            AlertDialog stateDialog = dialogBuilder.setView(stateView).create();
+
+            //assign variables
+            mtvSelect = stateView.findViewById(R.id.tvSelectOption);
+            mbtnOK = stateView.findViewById(R.id.btnLongOK);
+            mnpPicker = stateView.findViewById(R.id.npPicker);
 
             //set the values
             ModelDriverDetails.initState();
@@ -94,8 +92,9 @@ public class DriverAvailability extends AppCompatActivity {
             mnpPicker.setMinValue(0);
             mnpPicker.setDisplayedValues(ModelDriverDetails.detailsName());
 
-            //show pop out dialog
+            //display dialog with suitable size
             stateDialog.show();
+            stateDialog.getWindow().setLayout(570, 580);
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
@@ -126,7 +125,7 @@ public class DriverAvailability extends AppCompatActivity {
             String getState = mtvDState.getText().toString();
             areaList = new ArrayList<>();
 
-            //check if car brand field is empty
+            //check if state field is empty
             if(!getState.equals("")) {
                 switch (getState) {
                     case "Penang (Island)":
@@ -149,62 +148,6 @@ public class DriverAvailability extends AppCompatActivity {
             else{
                 mtilDState.setError("Please select a state first!");
             }
-        });
-    }
-
-    //day dialog (multi selection)
-    private void dayMenu() {
-        mtvDDay.setOnClickListener(view -> {
-            String[] dayItems = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-
-            //initialize array list
-            ArrayList<Integer> dayList = new ArrayList<>();
-
-            //Initialize selected day array
-            boolean[] selectedDay = new boolean[dayItems.length];
-
-            AlertDialog.Builder companyBuilder = new AlertDialog.Builder(DriverAvailability.this);
-            companyBuilder.setTitle("Choose Day Available");
-            companyBuilder.setIcon(R.drawable.ic_list_bulleted);
-            companyBuilder.setMultiChoiceItems(dayItems, selectedDay, (dialogInterface, i, checked) -> {
-                if(checked){
-                    //add position
-                    dayList.add(i);
-                    //sort
-                    Collections.sort(dayList);
-                }
-                else{
-                    //remove from array list
-                    dayList.remove(i);
-                }
-            });
-            companyBuilder.setPositiveButton("OK", (dialogInterface, i) -> {
-                //initialize string builder
-                StringBuilder typeSB = new StringBuilder();
-
-                for(int j = 0; j < dayList.size(); j++){
-                    //concat array value
-                    typeSB.append(dayItems[dayList.get(j)]);
-
-                    if(j != dayList.size()-1){
-                        typeSB.append(", ");
-                    }
-                }
-
-                mtvDDay.setText(typeSB.toString());
-            });
-            companyBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
-            companyBuilder.setNeutralButton("Clear All", (dialogInterface, i) -> {
-                for(int j = 0; j < selectedDay.length; j++){
-                    //remove all selection
-                    selectedDay[j] = false;
-                    //clear list
-                    dayList.clear();
-                    //clear text
-                    mtvDDay.setText("");
-                }
-            });
-            companyBuilder.show();
         });
     }
 
@@ -243,23 +186,6 @@ public class DriverAvailability extends AppCompatActivity {
                 //Nothing
             }
         });
-
-        mtvDDay.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //Nothing
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mtilDDay.setErrorEnabled(false);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                //Nothing
-            }
-        });
     }
 
     //check empty fields
@@ -270,30 +196,36 @@ public class DriverAvailability extends AppCompatActivity {
         else if(mtvDArea.getText().toString().isEmpty()){
             mtilDArea.setError("Field cannot be empty!");
         }
-        else if(mtvDDay.getText().toString().isEmpty()){
-            mtilDDay.setError("Field cannot be empty!");
-        }
         else{
             //insert database
             FirebaseFirestore drivingDB = FirebaseFirestore.getInstance();
             String id = spDrivme.getString(KEY_ID, null);
+            //get text
+            String textLan = getIntent().getStringExtra("dLanguage");
+            String textArea =  mtvDArea.getText().toString();
+            //split text to save into array
+            String[] lan = textLan.split(", ");
+            String[] area = textArea.split(", ");
 
+            //set data to save into firestore
             Map<String,Object> drivingDetails = new HashMap<>();
-            drivingDetails.put("Age", getIntent().getStringExtra("dAge"));
-            drivingDetails.put("Gender", getIntent().getStringExtra("dGender"));
-            drivingDetails.put("Race", getIntent().getStringExtra("dRace"));
-            drivingDetails.put("Driving Experience", getIntent().getStringExtra("dExp"));
-            drivingDetails.put("Languages", getIntent().getStringExtra("dLanguage"));
-            drivingDetails.put("State", mtvDState.getText().toString());
-            drivingDetails.put("Familiar Areas", mtvDArea.getText().toString());
-            drivingDetails.put("Day", mtvDDay.getText().toString());
+            drivingDetails.put("age", getIntent().getStringExtra("dAge"));
+            drivingDetails.put("gender", getIntent().getStringExtra("dGender"));
+            drivingDetails.put("race", getIntent().getStringExtra("dRace"));
+            drivingDetails.put("drivingExperience", getIntent().getStringExtra("dExp"));
+            drivingDetails.put("languages", Arrays.asList(lan));
+            drivingDetails.put("state", mtvDState.getText().toString());
+            drivingDetails.put("familiarAreas", Arrays.asList(area));
             drivingDetails.put("Login Status Driver", 1);
+            drivingDetails.put("accountStatus", "Driver");
 
             drivingDB.collection("User Accounts").document(id)
                     .update(drivingDetails)
                     .addOnSuccessListener(unused -> {
-                        Toast.makeText(DriverAvailability.this, "Driver Driving Details Updated Successfully!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(DriverAvailability.this, Role.class));
+                        //go to homepage
+                        Toast.makeText(DriverAvailability.this, "Driver Driving Details Added Successfully!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(DriverAvailability.this, DriverNavHomepage.class));
+                        finishAffinity();
                         finish();
                     });
         }
@@ -301,14 +233,19 @@ public class DriverAvailability extends AppCompatActivity {
 
     private void penangIslandMenu(){
         //set layout
-        areaDialog.setContentView(R.layout.activity_driver_penang_island);
+        LayoutInflater dialogInflater = getLayoutInflater();
+        View islandView = dialogInflater.inflate(R.layout.activity_driver_penang_island, null);
 
-        //obtaining the View with specific ID
-        CheckBox mcbNorth = areaDialog.findViewById(R.id.cbNorth);
-        CheckBox mcbSouth = areaDialog.findViewById(R.id.cbSouth);
-        Button mbtnIslandOK = areaDialog.findViewById(R.id.btnIslandOK);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
+        AlertDialog islandDialog = dialogBuilder.setView(islandView).create();
 
-        areaDialog.show();
+        //assign variables
+        CheckBox mcbNorth = islandView.findViewById(R.id.cbNorth);
+        CheckBox mcbSouth = islandView.findViewById(R.id.cbSouth);
+        Button mbtnIslandOK = islandView.findViewById(R.id.btnIslandOK);
+
+        islandDialog.show();
+        islandDialog.getWindow().setLayout(650, 710);
 
         //checkboxes
         mcbNorth.setOnClickListener(view12 -> {
@@ -342,22 +279,27 @@ public class DriverAvailability extends AppCompatActivity {
                 }
             }
             mtvDArea.setText(areaSB.toString());
-            areaDialog.dismiss();
+            islandDialog.dismiss();
         });
     }
 
     private void penangMainlandMenu() {
         //set layout
-        areaDialog.setContentView(R.layout.activity_driver_penang_mainland);
+        LayoutInflater dialogInflater = getLayoutInflater();
+        View mainlandView = dialogInflater.inflate(R.layout.activity_driver_penang_mainland, null);
 
-        //obtaining the View with specific ID
-        CheckBox mcbNorthSB = areaDialog.findViewById(R.id.cbNorthSB);
-        CheckBox mcbCentral = areaDialog.findViewById(R.id.cbCentral);
-        CheckBox mcbSouthSB = areaDialog.findViewById(R.id.cbSouthSB);
-        Button mbtnMainlandOK = areaDialog.findViewById(R.id.btnMainlandOK);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
+        AlertDialog mainlandDialog = dialogBuilder.setView(mainlandView).create();
+
+        //assign variables
+        CheckBox mcbNorthSB = mainlandView.findViewById(R.id.cbNorthSB);
+        CheckBox mcbCentral = mainlandView.findViewById(R.id.cbCentral);
+        CheckBox mcbSouthSB = mainlandView.findViewById(R.id.cbSouthSB);
+        Button mbtnMainlandOK = mainlandView.findViewById(R.id.btnMainlandOK);
         counter = 0;
 
-        areaDialog.show();
+        mainlandDialog.show();
+        mainlandDialog.getWindow().setLayout(650, 710);
 
         //checkboxes
         mcbNorthSB.setOnClickListener(view12 -> {
@@ -423,31 +365,36 @@ public class DriverAvailability extends AppCompatActivity {
                 }
             }
             mtvDArea.setText(areaSB.toString());
-            areaDialog.dismiss();
+            mainlandDialog.dismiss();
         });
     }
 
     private void perakMenu() {
         //set layout
-        areaDialog.setContentView(R.layout.activity_driver_perak);
+        LayoutInflater dialogInflater = getLayoutInflater();
+        View perakView = dialogInflater.inflate(R.layout.activity_driver_perak, null);
 
-        //obtaining the View with specific ID
-        CheckBox mcbHulu = areaDialog.findViewById(R.id.cbHulu);
-        CheckBox mcbKerian = areaDialog.findViewById(R.id.cbKerian);
-        CheckBox mcbLarut = areaDialog.findViewById(R.id.cbLarut);
-        CheckBox mcbKuala = areaDialog.findViewById(R.id.cbKuala);
-        CheckBox mcbKinta = areaDialog.findViewById(R.id.cbKinta);
-        CheckBox mcbKampar = areaDialog.findViewById(R.id.cbKampar);
-        CheckBox mcbBatang = areaDialog.findViewById(R.id.cbBatang);
-        CheckBox mcbManjung = areaDialog.findViewById(R.id.cbManjung);
-        CheckBox mcbTengah = areaDialog.findViewById(R.id.cbTengah);
-        CheckBox mcbHilir = areaDialog.findViewById(R.id.cbHilir);
-        CheckBox mcbBagan = areaDialog.findViewById(R.id.cbBagan);
-        CheckBox mcbMuallim = areaDialog.findViewById(R.id.cbMuallim);
-        Button mbtnPerakOK = areaDialog.findViewById(R.id.btnPerakOK);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
+        AlertDialog perakDialog = dialogBuilder.setView(perakView).create();
+
+        //assign variables
+        CheckBox mcbHulu = perakView.findViewById(R.id.cbHulu);
+        CheckBox mcbKerian = perakView.findViewById(R.id.cbKerian);
+        CheckBox mcbLarut = perakView.findViewById(R.id.cbLarut);
+        CheckBox mcbKuala = perakView.findViewById(R.id.cbKuala);
+        CheckBox mcbKinta = perakView.findViewById(R.id.cbKinta);
+        CheckBox mcbKampar = perakView.findViewById(R.id.cbKampar);
+        CheckBox mcbBatang = perakView.findViewById(R.id.cbBatang);
+        CheckBox mcbManjung = perakView.findViewById(R.id.cbManjung);
+        CheckBox mcbTengah = perakView.findViewById(R.id.cbTengah);
+        CheckBox mcbHilir = perakView.findViewById(R.id.cbHilir);
+        CheckBox mcbBagan = perakView.findViewById(R.id.cbBagan);
+        CheckBox mcbMuallim = perakView.findViewById(R.id.cbMuallim);
+        Button mbtnPerakOK = perakView.findViewById(R.id.btnPerakOK);
         counter = 0;
 
-        areaDialog.show();
+        perakDialog.show();
+        perakDialog.getWindow().setLayout(650, 710);
 
         //checkboxes
         mcbHulu.setOnClickListener(view12 -> {
@@ -666,29 +613,34 @@ public class DriverAvailability extends AppCompatActivity {
                 }
             }
             mtvDArea.setText(areaSB.toString());
-            areaDialog.dismiss();
+            perakDialog.dismiss();
         });
     }
 
     private void selangorMenu() {
         //set layout
-        areaDialog.setContentView(R.layout.activity_driver_selangor);
+        LayoutInflater dialogInflater = getLayoutInflater();
+        View selangorView = dialogInflater.inflate(R.layout.activity_driver_selangor, null);
 
-        //obtaining the View with specific ID
-        CheckBox mcbSabak = areaDialog.findViewById(R.id.cbSabak);
-        CheckBox mcbKuala = areaDialog.findViewById(R.id.cbKuala);
-        CheckBox mcbHulu = areaDialog.findViewById(R.id.cbHulu);
-        CheckBox mcbKlang = areaDialog.findViewById(R.id.cbKlang);
-        CheckBox mcbLangat = areaDialog.findViewById(R.id.cbLangat);
-        CheckBox mcbSepang = areaDialog.findViewById(R.id.cbSepang);
-        CheckBox mcbHuluLangat = areaDialog.findViewById(R.id.cbHuluLangat);
-        CheckBox mcbPetaling = areaDialog.findViewById(R.id.cbPetaling);
-        CheckBox mcbGombak = areaDialog.findViewById(R.id.cbGombak);
-        CheckBox mcbKL = areaDialog.findViewById(R.id.cbKL);
-        Button mbtnSelangorOK = areaDialog.findViewById(R.id.btnSelangorOK);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
+        AlertDialog selangorDialog = dialogBuilder.setView(selangorView).create();
+
+        //assign variables
+        CheckBox mcbSabak = selangorView.findViewById(R.id.cbSabak);
+        CheckBox mcbKuala = selangorView.findViewById(R.id.cbKuala);
+        CheckBox mcbHulu = selangorView.findViewById(R.id.cbHulu);
+        CheckBox mcbKlang = selangorView.findViewById(R.id.cbKlang);
+        CheckBox mcbLangat = selangorView.findViewById(R.id.cbLangat);
+        CheckBox mcbSepang = selangorView.findViewById(R.id.cbSepang);
+        CheckBox mcbHuluLangat = selangorView.findViewById(R.id.cbHuluLangat);
+        CheckBox mcbPetaling = selangorView.findViewById(R.id.cbPetaling);
+        CheckBox mcbGombak = selangorView.findViewById(R.id.cbGombak);
+        CheckBox mcbKL = selangorView.findViewById(R.id.cbKL);
+        Button mbtnSelangorOK = selangorView.findViewById(R.id.btnSelangorOK);
         counter = 0;
 
-        areaDialog.show();
+        selangorDialog.show();
+        selangorDialog.getWindow().setLayout(650, 710);
 
         //checkboxes
         mcbSabak.setOnClickListener(view12 -> {
@@ -873,29 +825,34 @@ public class DriverAvailability extends AppCompatActivity {
                 }
             }
             mtvDArea.setText(areaSB.toString());
-            areaDialog.dismiss();
+            selangorDialog.dismiss();
         });
     }
 
     private void johorMenu() {
         //set layout
-        areaDialog.setContentView(R.layout.activity_driver_johor);
+        LayoutInflater dialogInflater = getLayoutInflater();
+        View johorView = dialogInflater.inflate(R.layout.activity_driver_johor, null);
 
-        //obtaining the View with specific ID
-        CheckBox mcbSegamat = areaDialog.findViewById(R.id.cbSegamat);
-        CheckBox mcbLedang = areaDialog.findViewById(R.id.cbLedang);
-        CheckBox mcbMuar = areaDialog.findViewById(R.id.cbMuar);
-        CheckBox mcbBatu = areaDialog.findViewById(R.id.cbBatu);
-        CheckBox mcbPontian = areaDialog.findViewById(R.id.cbPontian);
-        CheckBox mcbKluang = areaDialog.findViewById(R.id.cbKluang);
-        CheckBox mcbMersing = areaDialog.findViewById(R.id.cbMersing);
-        CheckBox mcbKulai = areaDialog.findViewById(R.id.cbKulai);
-        CheckBox mcbKota = areaDialog.findViewById(R.id.cbKota);
-        CheckBox mcbJB = areaDialog.findViewById(R.id.cbJB);
-        Button mbtnJohorOK = areaDialog.findViewById(R.id.btnJohorOK);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
+        AlertDialog johorDialog = dialogBuilder.setView(johorView).create();
+
+        //assign variables
+        CheckBox mcbSegamat = johorView.findViewById(R.id.cbSegamat);
+        CheckBox mcbLedang = johorView.findViewById(R.id.cbLedang);
+        CheckBox mcbMuar = johorView.findViewById(R.id.cbMuar);
+        CheckBox mcbBatu = johorView.findViewById(R.id.cbBatu);
+        CheckBox mcbPontian = johorView.findViewById(R.id.cbPontian);
+        CheckBox mcbKluang = johorView.findViewById(R.id.cbKluang);
+        CheckBox mcbMersing = johorView.findViewById(R.id.cbMersing);
+        CheckBox mcbKulai = johorView.findViewById(R.id.cbKulai);
+        CheckBox mcbKota = johorView.findViewById(R.id.cbKota);
+        CheckBox mcbJB = johorView.findViewById(R.id.cbJB);
+        Button mbtnJohorOK = johorView.findViewById(R.id.btnJohorOK);
         counter = 0;
 
-        areaDialog.show();
+        johorDialog.show();
+        johorDialog.getWindow().setLayout(650, 710);
 
         //checkboxes
         mcbSegamat.setOnClickListener(view12 -> {
@@ -1080,7 +1037,7 @@ public class DriverAvailability extends AppCompatActivity {
                 }
             }
             mtvDArea.setText(areaSB.toString());
-            areaDialog.dismiss();
+            johorDialog.dismiss();
         });
     }
 }

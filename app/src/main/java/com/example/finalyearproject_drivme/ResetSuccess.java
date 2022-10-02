@@ -15,7 +15,7 @@ public class ResetSuccess extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_success);
 
-        //obtaining the View with specific ID
+        //assign variable
         mbtnGotoLogin = findViewById(R.id.btnGotoLogin);
 
         mbtnGotoLogin.setOnClickListener(view -> {
@@ -27,6 +27,7 @@ public class ResetSuccess extends AppCompatActivity {
             } else{
                 startActivity(new Intent(ResetSuccess.this, DriverLogin.class));
             }
+            finishAffinity();
             finish();
         });
     }
@@ -42,6 +43,7 @@ public class ResetSuccess extends AppCompatActivity {
         } else{
             startActivity(new Intent(ResetSuccess.this, DriverLogin.class));
         }
+        finishAffinity();
         finish();
     }
 }

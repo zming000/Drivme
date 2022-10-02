@@ -29,7 +29,7 @@ public class TouristSignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourist_sign_up);
 
-        //obtaining the View with specific ID
+        //assign variable
         mtilTouristID = findViewById(R.id.tilSignUpTouristID);
         mtilTFName = findViewById(R.id.tilSignUpTouristFName);
         mtilTLName = findViewById(R.id.tilSignUpTouristLName);
@@ -70,6 +70,7 @@ public class TouristSignUp extends AppCompatActivity {
                 .setPositiveButton("DISCARD",
                         (dialog, id) -> {
                             startActivity(new Intent(TouristSignUp.this, TouristLogin.class));
+                            finishAffinity();
                             finish();
                         });
 
@@ -87,6 +88,7 @@ public class TouristSignUp extends AppCompatActivity {
                 .setPositiveButton("DISCARD",
                         (dialog, id) -> {
                             startActivity(new Intent(TouristSignUp.this, TouristLogin.class));
+                            finishAffinity();
                             finish();
                         });
 
@@ -306,9 +308,7 @@ public class TouristSignUp extends AppCompatActivity {
                             intent.putExtra("tPasswordNext", Objects.requireNonNull(metTouristPassword.getText()).toString());
 
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                            finish();
-                        }
+                            startActivity(intent);                        }
                     }
                 });
     }

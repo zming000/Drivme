@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.finalyearproject_drivme">
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/app_logo_wheel"
@@ -9,22 +9,103 @@
         android:roundIcon="@drawable/app_logo_wheel"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalYearProjectDrivme">
-        <activity android:name=".DriverAvailability"
+        <activity
+            android:name=".DriverMoreDetails"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".TouristDriverList"
+            android:screenOrientation="portrait" /> <!-- Account UI -->
+        <activity
+            android:name=".ResetSuccess"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ResetPW"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FPWOtp"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ForgotPassword"
+            android:screenOrientation="portrait" /> <!-- Driver UI -->
+        <activity
+            android:name=".DriverOTP"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverPhoneNumber"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverSignUp"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverLogin"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverOption"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverDrivingDetails"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverAvailability"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverNavSettings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverNavNotifications"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverNavChat"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverNavActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverNavHomepage"
+            android:screenOrientation="portrait" /> <!-- Tourist UI -->
+        <activity
+            android:name=".TouristLogin"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristSignUp"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristOTP"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristPhoneNumber"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristCarDetails"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristNavSettings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristNavNotifications"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristNavChat"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristNavActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristNavHomepage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristDayTrip"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".TouristCarDetails"
-            android:screenOrientation="portrait"/>
-            <!-- Account UI -->
-        <activity android:name=".ResetSuccess"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ResetPW"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".FPWOtp"
-            android:screenOrientation="portrait"/> <!-- Driver UI -->
-        <activity android:name=".DriverOTP"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".DriverPhoneNumber"
+        <activity
+            android:name=".TouristHourTrip"
+            android:screenOrientation="portrait" /> <!-- App UI -->
+        <activity
+            android:name=".Role"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SplashActivity"
             android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
@@ -33,41 +114,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DriverSignUp"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".DriverLogin"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".DriverOption"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".DriverDrivingDetails"
-            android:screenOrientation="portrait"/>
-             <!-- Tourist UI -->
-        <activity android:name=".TouristLogin"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".TouristSignUp"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".TouristOTP"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".TouristPhoneNumber"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ForgotPassword"
-            android:screenOrientation="portrait"/> <!-- App UI -->
-        <activity android:name=".Role"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".SplashActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".WelcomeTo"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".WelcomeBack"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".AgreementPolicy"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".WelcomeTo"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WelcomeBack"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AgreementPolicy"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>

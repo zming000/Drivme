@@ -29,7 +29,7 @@ public class DriverSignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_sign_up);
 
-        //obtaining the View with specific ID
+        //assign variables
         mtilDriverID = findViewById(R.id.tilSignUpDriverID);
         mtilDFName = findViewById(R.id.tilSignUpDriverFName);
         mtilDLName = findViewById(R.id.tilSignUpDriverLName);
@@ -57,7 +57,6 @@ public class DriverSignUp extends AppCompatActivity {
             }
             else{
                 Toast.makeText(DriverSignUp.this, "Please ensure each field input correctly!", Toast.LENGTH_SHORT).show();
-
             }
         });
     }
@@ -341,9 +340,7 @@ public class DriverSignUp extends AppCompatActivity {
                                                 intent.putExtra("dPasswordNext", Objects.requireNonNull(metDriverPassword.getText()).toString());
                                                 intent.putExtra("dRefCodeNext", Objects.requireNonNull(metDriverRC.getText()).toString().toUpperCase());
 
-                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);
-                                                finish();
                                             }
                                         }
                                     });

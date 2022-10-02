@@ -3,12 +3,12 @@ package com.example.finalyearproject_drivme;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.NumberPicker;
@@ -37,7 +37,6 @@ public class TouristCarDetails extends AppCompatActivity {
     ArrayList<Integer> companyList, typeList;
     Button mbtnConfirm, mbtnOK;
     SharedPreferences spDrivme;
-    Dialog brandDialog, modelDialog, colourDialog, transmissionDialog;
     TextView mtvSelect;
     NumberPicker mnpPicker;
 
@@ -50,12 +49,7 @@ public class TouristCarDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourist_car_details);
 
-        modelDialog = new Dialog(this);
-        brandDialog = new Dialog(this);
-        colourDialog = new Dialog(this);
-        transmissionDialog = new Dialog(this);
-
-        //obtaining the View with specific ID
+        //assign variables
         mtilCPlate =findViewById(R.id.tilCPlate);
         mtilCBrand = findViewById(R.id.tilCBrand);
         mtilCModel = findViewById(R.id.tilCModel);
@@ -95,56 +89,39 @@ public class TouristCarDetails extends AppCompatActivity {
 
     //check car plate
     private void checkCarPlate(){
-        String cPlate = Objects.requireNonNull(metCPlate.getText()).toString().replaceAll("\\s","");
+        FirebaseFirestore checkCar = FirebaseFirestore.getInstance();
+        String checkID = spDrivme.getString(KEY_ID, null);
+        String checkCarPlate = metCPlate.getText().toString().replaceAll("\\s","").toUpperCase();
 
-        //check length of car plate
-        if (cPlate.length() == 7) {
-            //check first 3 characters
-            if(!digitExist(cPlate.substring(0, 3))){
-                //check last 4 numbers
-                if(cPlate.substring(3, 7).matches("[0-9]+")){
-                    FirebaseFirestore checkCar = FirebaseFirestore.getInstance();
-                    String checkID = spDrivme.getString(KEY_ID, null);
-                    String checkCarPlate = metCPlate.getText().toString().replaceAll("\\s","").toUpperCase();
+        //check if car plate exist in user's database
+        checkCar.collection("User Accounts").document(checkID).collection("Car Details").document(checkCarPlate)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot carResult = task.getResult();
 
-                    //check if car plate exist in user's database
-                    checkCar.collection("User Accounts").document(checkID).collection("Car Details").document(checkCarPlate)
-                            .get()
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot carResult = task.getResult();
-
-                                    //check the existence of ID
-                                    if (Objects.requireNonNull(carResult).exists()) {
-                                        mtilCPlate.setError("Car Plate is used!");
-                                    }
-                                }
-                            });
-
-                }
-                else{
-                    mtilCPlate.setError("Invalid Numbers in Car Plate! ");
-                }
-            }
-            else{
-                mtilCPlate.setError("Invalid Characters in Car Plate! ");
-            }
-        }
-        else{
-            mtilCPlate.setError("Invalid Car Plate!");
-        }
-
+                        //check the existence of ID
+                        if (Objects.requireNonNull(carResult).exists()) {
+                            mtilCPlate.setError("Car Plate is used!");
+                        }
+                    }
+                });
     }
 
     //brand pop out menu
     private void brandDropdown(){
-        mtvCBrand.setOnClickListener(view -> {
-            brandDialog.setContentView(R.layout.activity_scroll_picker_short);
+        mtvCBrand.setOnClickListener(brandView -> {
+            //set layout
+            LayoutInflater dialogInflater = getLayoutInflater();
+            brandView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
+
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
+            AlertDialog brandDialog = dialogBuilder.setView(brandView).create();
 
             //obtaining the View with specific ID
-            mtvSelect = brandDialog.findViewById(R.id.tvSelectOption);
-            mbtnOK = brandDialog.findViewById(R.id.btnShortOK);
-            mnpPicker = brandDialog.findViewById(R.id.npPicker);
+            mtvSelect = brandView.findViewById(R.id.tvSelectOption);
+            mbtnOK = brandView.findViewById(R.id.btnOK);
+            mnpPicker = brandView.findViewById(R.id.npPicker);
 
             //set the values
             mtvSelect.setText("Choose Car Brand");
@@ -154,6 +131,7 @@ public class TouristCarDetails extends AppCompatActivity {
             mnpPicker.setDisplayedValues(ModelCarDetails.detailName());
 
             brandDialog.show();
+            brandDialog.getWindow().setLayout(450, 580);
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
@@ -165,15 +143,20 @@ public class TouristCarDetails extends AppCompatActivity {
 
     //model pop out menu
     private void modelDropdown(){
-        mtvCModel.setOnClickListener(view -> {
+        mtvCModel.setOnClickListener(modelView -> {
             String getBrand = mtvCBrand.getText().toString().trim();
 
-            modelDialog.setContentView(R.layout.activity_scroll_picker_long);
+            //set layout
+            LayoutInflater dialogInflater = getLayoutInflater();
+            modelView = dialogInflater.inflate(R.layout.activity_scroll_picker_long, null);
+
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
+            AlertDialog modelDialog = dialogBuilder.setView(modelView).create();
 
             //obtaining the View with specific ID
-            mtvSelect = modelDialog.findViewById(R.id.tvSelectOption);
-            mbtnOK = modelDialog.findViewById(R.id.btnLongOK);
-            mnpPicker = modelDialog.findViewById(R.id.npPicker);
+            mtvSelect = modelView.findViewById(R.id.tvSelectOption);
+            mbtnOK = modelView.findViewById(R.id.btnLongOK);
+            mnpPicker = modelView.findViewById(R.id.npPicker);
 
             //set the values
             mtvSelect.setText("Choose Car Model");
@@ -202,6 +185,7 @@ public class TouristCarDetails extends AppCompatActivity {
                 mnpPicker.setDisplayedValues(ModelCarDetails.detailName());
 
                 modelDialog.show();
+                modelDialog.getWindow().setLayout(500, 580);
 
                 mbtnOK.setOnClickListener(view1 -> {
                     int value = mnpPicker.getValue();
@@ -217,13 +201,18 @@ public class TouristCarDetails extends AppCompatActivity {
 
     //colour pop out menu
     private void colourDropdown(){
-        mtvCColour.setOnClickListener(view -> {
-            colourDialog.setContentView(R.layout.activity_scroll_picker_short);
+        mtvCColour.setOnClickListener(colourView -> {
+            //set layout
+            LayoutInflater dialogInflater = getLayoutInflater();
+            colourView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
+
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
+            AlertDialog colourDialog = dialogBuilder.setView(colourView).create();
 
             //obtaining the View with specific ID
-            mtvSelect = colourDialog.findViewById(R.id.tvSelectOption);
-            mbtnOK = colourDialog.findViewById(R.id.btnShortOK);
-            mnpPicker = colourDialog.findViewById(R.id.npPicker);
+            mtvSelect = colourView.findViewById(R.id.tvSelectOption);
+            mbtnOK = colourView.findViewById(R.id.btnOK);
+            mnpPicker = colourView.findViewById(R.id.npPicker);
 
             //set the values
             mtvSelect.setText("Choose Car Colour");
@@ -233,6 +222,7 @@ public class TouristCarDetails extends AppCompatActivity {
             mnpPicker.setDisplayedValues(ModelCarDetails.detailName());
 
             colourDialog.show();
+            colourDialog.getWindow().setLayout(450, 660);
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
@@ -244,13 +234,18 @@ public class TouristCarDetails extends AppCompatActivity {
 
     //transmission pop out menu
     private void transmissionDropdown(){
-        mtvCTransmission.setOnClickListener(view -> {
-            transmissionDialog.setContentView(R.layout.activity_scroll_picker_extra_long);
+        mtvCTransmission.setOnClickListener(transmissionView -> {
+            //set layout
+            LayoutInflater dialogInflater = getLayoutInflater();
+            transmissionView = dialogInflater.inflate(R.layout.activity_scroll_picker_extra_long, null);
+
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
+            AlertDialog transmissionDialog = dialogBuilder.setView(transmissionView).create();
 
             //obtaining the View with specific ID
-            mtvSelect = transmissionDialog.findViewById(R.id.tvSelectOption);
-            mbtnOK = transmissionDialog.findViewById(R.id.btnXLongOK);
-            mnpPicker = transmissionDialog.findViewById(R.id.npPicker);
+            mtvSelect = transmissionView.findViewById(R.id.tvSelectOption);
+            mbtnOK = transmissionView.findViewById(R.id.btnXLongOK);
+            mnpPicker = transmissionView.findViewById(R.id.npPicker);
 
             //set the values
             mtvSelect.setText("Choose Car Transmission");
@@ -260,6 +255,7 @@ public class TouristCarDetails extends AppCompatActivity {
             mnpPicker.setDisplayedValues(ModelCarDetails.detailName());
 
             transmissionDialog.show();
+            transmissionDialog.getWindow().setLayout(670, 580);
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
@@ -538,12 +534,13 @@ public class TouristCarDetails extends AppCompatActivity {
             userAcc.put("Login Status Tourist", 1);
 
             Map<String,Object> carDetails = new HashMap<>();
-            carDetails.put("Car Plate", carPlate);
-            carDetails.put("Car Model", mtvCModel.getText().toString());
-            carDetails.put("Car Colour", mtvCColour.getText().toString());
-            carDetails.put("Car Transmission", mtvCTransmission.getText().toString());
-            carDetails.put("Petrol Company", mtvCPCompany.getText().toString());
-            carDetails.put("Petrol Type", mtvCPType.getText().toString());
+            carDetails.put("carPlate", carPlate);
+            carDetails.put("carModel", mtvCModel.getText().toString());
+            carDetails.put("carColour", mtvCColour.getText().toString());
+            carDetails.put("carTransmission", mtvCTransmission.getText().toString());
+            carDetails.put("petrolCompany", mtvCPCompany.getText().toString());
+            carDetails.put("petrolType", mtvCPType.getText().toString());
+            carDetails.put("carStatus", "Available");
 
             carDB.collection("User Accounts").document(id)
                     .update(userAcc);
@@ -552,7 +549,8 @@ public class TouristCarDetails extends AppCompatActivity {
                     .set(carDetails)
                     .addOnSuccessListener(unused -> {
                         Toast.makeText(TouristCarDetails.this, "Car Added Successfully!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(TouristCarDetails.this, Role.class));
+                        startActivity(new Intent(TouristCarDetails.this, TouristNavHomepage.class));
+                        finishAffinity();
                         finish();
                     });
         }
@@ -571,7 +569,10 @@ public class TouristCarDetails extends AppCompatActivity {
         alertDialogBuilder
                 .setMessage("Click yes to exit!")
                 .setCancelable(false)
-                .setPositiveButton("Yes", (dialog, id) -> finish())
+                .setPositiveButton("Yes", (dialog, id) -> {
+                    finishAffinity();
+                    finish();
+                })
                 .setNegativeButton("No", (dialog, id) -> dialog.cancel());
 
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();

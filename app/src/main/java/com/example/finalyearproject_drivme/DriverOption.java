@@ -15,7 +15,7 @@ public class DriverOption extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_option);
 
-        //obtaining the View with specific ID
+        //assign variables
         mbtnJoinUs = findViewById(R.id.btnJoinUs);
         mbtnDriverLogin = findViewById(R.id.btnDriverLogin);
         mbtnDriverSignup = findViewById(R.id.btnDriverSignUp);

@@ -39,7 +39,7 @@ public class DriverOTP extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_otp);
 
-        //obtaining the View with specific ID
+        //assign variables
         mtvDPhoneText = findViewById(R.id.tvDPhoneText);
         mtvDriverResend = findViewById(R.id.tvDResend);
         mtvTimer = findViewById(R.id.tvTimer);
@@ -47,7 +47,6 @@ public class DriverOTP extends AppCompatActivity {
         mbtnDVerify = findViewById(R.id.btnDVerify);
 
         mtvTimer.setVisibility(View.GONE);
-
 
         //return instance of the class
         driverOTP = FirebaseAuth.getInstance();
@@ -144,17 +143,24 @@ public class DriverOTP extends AppCompatActivity {
 
         //driver details to insert into firestore
         Map<String,Object> driverAcc = new HashMap<>();
-        driverAcc.put("User ID", docID);
-        driverAcc.put("First Name", getIntent().getStringExtra("dFName"));
-        driverAcc.put("Last Name", getIntent().getStringExtra("dLName"));
-        driverAcc.put("Phone Number", getIntent().getStringExtra("dPhoneNumber"));
-        driverAcc.put("Email", getIntent().getStringExtra("dEmail"));
-        driverAcc.put("Password", getIntent().getStringExtra("dPassword"));
+        driverAcc.put("userID", docID);
+        driverAcc.put("firstName", getIntent().getStringExtra("dFName"));
+        driverAcc.put("lastName", getIntent().getStringExtra("dLName"));
+        driverAcc.put("phoneNumber", getIntent().getStringExtra("dPhoneNumber"));
+        driverAcc.put("email", getIntent().getStringExtra("dEmail"));
+        driverAcc.put("password", getIntent().getStringExtra("dPassword"));
         driverAcc.put("Login Status Tourist", 0);
         driverAcc.put("Login Status Driver", 0);
         driverAcc.put("Account Tourist", 0);
         driverAcc.put("Account Driver", 1);
         driverAcc.put("Agreement Check", 1);
+        driverAcc.put("rating", 5);
+        driverAcc.put("5 Stars", 1);
+        driverAcc.put("4 Stars", 0);
+        driverAcc.put("3 Stars", 0);
+        driverAcc.put("2 Stars", 0);
+        driverAcc.put("1 Star", 0);
+        driverAcc.put("priceDay", "RM250");
 
         drivmeDB.collection("Reference Code Details").document(referenceCode)
                 .update(refCode);
@@ -169,6 +175,7 @@ public class DriverOTP extends AppCompatActivity {
                             .setCancelable(false)
                             .setPositiveButton("Yes", (dialog, id) -> {
                                 startActivity(new Intent(DriverOTP.this, DriverLogin.class));
+                                finishAffinity();
                                 finish();
                             });
 
@@ -184,6 +191,7 @@ public class DriverOTP extends AppCompatActivity {
                             .setPositiveButton("OK",
                                     (dialog, id) -> {
                                         startActivity(new Intent(DriverOTP.this, DriverSignUp.class));
+                                        finishAffinity();
                                         finish();
                                     });
 
@@ -222,23 +230,5 @@ public class DriverOTP extends AppCompatActivity {
                 }
             }.start();
         });
-    }
-
-    //driver otp -> driver login
-    @Override
-    public void onBackPressed() {
-        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverOTP.this);
-        alertDialogBuilder.setTitle("Discard Process");
-        alertDialogBuilder
-                .setMessage("Do you wish to discard and go back login?")
-                .setCancelable(false)
-                .setPositiveButton("DISCARD",
-                        (dialog, id) -> {
-                            startActivity(new Intent(DriverOTP.this, DriverLogin.class));
-                            finish();
-                        });
-
-        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
     }
 }

@@ -16,13 +16,14 @@ public class WelcomeBack extends AppCompatActivity {
     //key name
     private static final String SP_NAME = "drivmePref";
     private static final String KEY_FNAME = "fName";
+    private static final String KEY_ROLE = "role";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_back);
 
-        //obtaining the View with specific ID
+        //assign variable
         mtvHello = findViewById(R.id.tvHello);
 
         //initialize shared preference
@@ -30,6 +31,7 @@ public class WelcomeBack extends AppCompatActivity {
 
         //get data from shared preference
         String getName = spDrivme.getString(KEY_FNAME, null);
+        String getRole = spDrivme.getString(KEY_ROLE, null);
 
         //set name
         if(getName != null){
@@ -39,8 +41,17 @@ public class WelcomeBack extends AppCompatActivity {
         //display a loading screen for 2 second
         Handler handler = new Handler();
         handler.postDelayed(() -> {
-            //go to main
-            startActivity(new Intent(WelcomeBack.this, Role.class));
+            if(getRole != null) {
+                if(getRole.equals("Tourist")) {
+                    //go to car details
+                    startActivity(new Intent(WelcomeBack.this, TouristNavHomepage.class));
+                }
+                else{
+                    //go to driving details
+                    startActivity(new Intent(WelcomeBack.this, DriverNavHomepage.class));
+                }
+            }
+            finishAffinity();
             finish();
         },2000);
     }

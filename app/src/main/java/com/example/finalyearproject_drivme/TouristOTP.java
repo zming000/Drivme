@@ -39,7 +39,7 @@ public class TouristOTP extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourist_otp);
 
-        //obtaining the View with specific ID
+        //assign variable
         mtvTouristPhoneText = findViewById(R.id.tvTouristPhoneText);
         mtvTouristResend = findViewById(R.id.tvTouristResend);
         mtvTimer = findViewById(R.id.tvTimer);
@@ -86,12 +86,12 @@ public class TouristOTP extends AppCompatActivity {
 
         @Override
         public void onVerificationCompleted(@NonNull PhoneAuthCredential authCred) {
-//            String verificationCodeT = authCred.getSmsCode(); //get from sms
-//            mpvTOTP.setText(verificationCodeT);
+            String verificationCodeT = authCred.getSmsCode(); //get from sms
+            mpvTOTP.setText(verificationCodeT);
 
-//            if(verificationCodeT != null){
-//                verifyCode(verificationCodeT);
-//            }
+            if(verificationCodeT != null){
+                verifyCode(verificationCodeT);
+            }
         }
 
         @Override
@@ -135,12 +135,12 @@ public class TouristOTP extends AppCompatActivity {
 
         //tourist details to insert into firestore
         Map<String,Object> touristAcc = new HashMap<>();
-        touristAcc.put("User ID", value);
-        touristAcc.put("First Name", getIntent().getStringExtra("tFName"));
-        touristAcc.put("Last Name", getIntent().getStringExtra("tLName"));
-        touristAcc.put("Phone Number", getIntent().getStringExtra("tPhoneNumber"));
-        touristAcc.put("Email", getIntent().getStringExtra("tEmail"));
-        touristAcc.put("Password", getIntent().getStringExtra("tPassword"));
+        touristAcc.put("userID", value);
+        touristAcc.put("firstName", getIntent().getStringExtra("tFName"));
+        touristAcc.put("lastName", getIntent().getStringExtra("tLName"));
+        touristAcc.put("phoneNumber", getIntent().getStringExtra("tPhoneNumber"));
+        touristAcc.put("email", getIntent().getStringExtra("tEmail"));
+        touristAcc.put("password", getIntent().getStringExtra("tPassword"));
         touristAcc.put("Login Status Tourist", 0);
         touristAcc.put("Login Status Driver", 0);
         touristAcc.put("Account Tourist", 1);
@@ -157,6 +157,7 @@ public class TouristOTP extends AppCompatActivity {
                             .setCancelable(false)
                             .setPositiveButton("Yes", (dialog, id) -> {
                                 startActivity(new Intent(TouristOTP.this, TouristLogin.class));
+                                finishAffinity();
                                 finish();
                             });
 
@@ -169,9 +170,9 @@ public class TouristOTP extends AppCompatActivity {
                     alertDialogBuilder
                             .setMessage("Please try again!")
                             .setCancelable(false)
-                            .setPositiveButton("OK",
-                                    (dialog, id) -> {
+                            .setPositiveButton("OK", (dialog, id) -> {
                                         startActivity(new Intent(TouristOTP.this, TouristSignUp.class));
+                                        finishAffinity();
                                         finish();
                                     });
 
@@ -211,23 +212,5 @@ public class TouristOTP extends AppCompatActivity {
             }.start();
         });
 
-    }
-
-    //tourist otp -> tourist login
-    @Override
-    public void onBackPressed() {
-        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristOTP.this);
-        alertDialogBuilder.setTitle("Discard Process");
-        alertDialogBuilder
-                .setMessage("Do you wish to discard and go back login?")
-                .setCancelable(false)
-                .setPositiveButton("DISCARD",
-                        (dialog, id) -> {
-                            startActivity(new Intent(TouristOTP.this, TouristLogin.class));
-                            finish();
-                        });
-
-        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
     }
 }

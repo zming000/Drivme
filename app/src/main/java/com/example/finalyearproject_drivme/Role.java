@@ -3,8 +3,15 @@ package com.example.finalyearproject_drivme;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 public class Role extends AppCompatActivity {
     //declare variables
@@ -15,7 +22,7 @@ public class Role extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_role);
 
-        //obtaining the View with specific ID
+        //assign variables
         mbtnDriver = findViewById(R.id.btnDriver);
         mbtnTourist = findViewById(R.id.btnTourist);
 
@@ -40,7 +47,10 @@ public class Role extends AppCompatActivity {
         alertDialogBuilder
                 .setMessage("Click yes to exit!")
                 .setCancelable(false)
-                .setPositiveButton("Yes", (dialog, id) -> finish())
+                .setPositiveButton("Yes", (dialog, id) -> {
+                    finishAffinity();
+                    finish();
+                })
                 .setNegativeButton("No", (dialog, id) -> dialog.cancel());
 
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();

@@ -15,7 +15,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class TouristLogin extends AppCompatActivity {
@@ -36,7 +39,7 @@ public class TouristLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourist_login);
 
-        //obtaining the View with specific ID
+        //assign variables
         mtilLoginTouristID = findViewById(R.id.tilLoginTouristID);
         mtilLoginTouristPW = findViewById(R.id.tilLoginTouristPW);
         metLoginTouristID = findViewById(R.id.etLoginTouristID);
@@ -100,7 +103,7 @@ public class TouristLogin extends AppCompatActivity {
                                 if (docResult != null) {
                                     //check the existence of ID
                                     if (docResult.exists()) {
-                                            String pw2 = docResult.getString("Password");
+                                            String pw2 = docResult.getString("password");
                                             //check if the password matched
                                             if (pw.matches(Objects.requireNonNull(pw2))) {
                                                 int value = Objects.requireNonNull(docResult.getLong("Account Tourist")).intValue();
@@ -108,13 +111,32 @@ public class TouristLogin extends AppCompatActivity {
                                                 //check if id activated tourist role or not
                                                 if(value == 1) {
                                                     int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Tourist")).intValue();
-                                                    String name = Objects.requireNonNull(docResult.getString("First Name"));
+                                                    String name = Objects.requireNonNull(docResult.getString("firstName"));
 
                                                     if (loginStat == 0){
                                                         startActivity(new Intent(TouristLogin.this, WelcomeTo.class));
                                                     }
                                                     else{
-                                                        startActivity(new Intent(TouristLogin.this, WelcomeBack.class));
+                                                        //startActivity(new Intent(TouristLogin.this, WelcomeBack.class));
+
+                                                        FirebaseMessaging.getInstance().getToken()
+                                                                .addOnCompleteListener(task1 -> {
+                                                                    if (!task1.isSuccessful()) {
+                                                                        return;
+                                                                    }
+
+                                                                    // Get new FCM registration token
+                                                                    String token = task1.getResult();
+                                                                    FirebaseFirestore updateToken = FirebaseFirestore.getInstance();
+
+
+                                                                    Map<String,Object> noToken = new HashMap<>();
+                                                                    noToken.put("notificationToken", token);
+
+                                                                    updateToken.collection("User Accounts").document(id)
+                                                                            .update(noToken);
+                                                                });
+
                                                     }
 
                                                     //save necessary data for later use
@@ -125,7 +147,9 @@ public class TouristLogin extends AppCompatActivity {
                                                     spEditor.putString(KEY_ROLE, "Tourist");
                                                     spEditor.apply();
 
-                                                    finish();
+
+
+                                                    //finish();
                                                 }
                                                 else{
                                                     Toast.makeText(TouristLogin.this, "Tourist Role haven't activated!", Toast.LENGTH_SHORT).show();
@@ -154,7 +178,6 @@ public class TouristLogin extends AppCompatActivity {
         Intent intent = new Intent(TouristLogin.this, AgreementPolicy.class);
         intent.putExtra("role", "Tourist");
         startActivity(intent);
-        finish();
     }
 
     //tourist login -> role

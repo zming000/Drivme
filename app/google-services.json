@@ -14,13 +14,21 @@
       },
       "oauth_client": [
         {
+          "client_id": "303487392298-6d42mjkhc2drdn0d0i74td761se387hc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.finalyearproject_drivme",
+            "certificate_hash": "8f862d5b39aa3809f65eff54311b08f16edb14f7"
+          }
+        },
+        {
           "client_id": "303487392298-16ldi5sf6bqbjgo8rd1mdh9dkvi6f636.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBjdThjf_MS2clJK1Jw9MOscOXsqXWiLzE"
+          "current_key": "AIzaSyC6D1cflCefqdKB33r07218oGvKiLHOG2o"
         }
       ],
       "services": {
