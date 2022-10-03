@@ -278,7 +278,7 @@ public class DriverSignUp extends AppCompatActivity {
                 metDriverID.getText().toString().matches(".*[a-zA-Z]+.*") &&
                 digitExist(metDriverID.getText().toString()) &&
                 !uppercaseExist(metDriverID.getText().toString()) &&
-                (Objects.requireNonNull(metDriverID.getText()).length() > 7);
+                (Objects.requireNonNull(metDriverID.getText()).length() >= 7);
 
         //check input condition (without digit)
         statusDFName = !digitExist(Objects.requireNonNull(metDriverFName.getText()).toString());

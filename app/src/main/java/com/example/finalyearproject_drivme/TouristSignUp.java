@@ -261,7 +261,7 @@ public class TouristSignUp extends AppCompatActivity {
                 metTouristID.getText().toString().matches(".*[a-zA-Z]+.*") &&
                 digitExist(metTouristID.getText().toString()) &&
                 !uppercaseExist(metTouristID.getText().toString()) &&
-                (Objects.requireNonNull(metTouristID.getText()).length() > 7);
+                (Objects.requireNonNull(metTouristID.getText()).length() >= 7);
 
         //check input condition (without digit)
         statusFName = !digitExist(Objects.requireNonNull(metTouristFName.getText()).toString());

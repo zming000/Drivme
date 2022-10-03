@@ -130,24 +130,24 @@ public class SplashActivity extends AppCompatActivity {
                                             startActivity(new Intent(SplashActivity.this, WelcomeBack.class));
                                         }
 
-//                                        FirebaseMessaging.getInstance().getToken()
-//                                                .addOnCompleteListener(new OnCompleteListener<String>() {
-//                                                    @Override
-//                                                    public void onComplete(@NonNull Task<String> task) {
-//                                                        if (!task.isSuccessful()) {
-//                                                            return;
-//                                                        }
-//                                                        // Get new FCM registration token
-//                                                        String token = task.getResult();
-//                                                        updateToken = FirebaseFirestore.getInstance();
-//
-//                                                        Map<String,Object> noToken = new HashMap<>();
-//                                                        noToken.put("notificationToken", token);
-//
-//                                                        updateToken.collection("User Accounts").document(uID)
-//                                                                .update(noToken);
-//                                                    }
-//                                                });
+                                        FirebaseMessaging.getInstance().getToken()
+                                                .addOnCompleteListener(new OnCompleteListener<String>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<String> task) {
+                                                        if (!task.isSuccessful()) {
+                                                            return;
+                                                        }
+                                                        // Get new FCM registration token
+                                                        String token = task.getResult();
+                                                        updateToken = FirebaseFirestore.getInstance();
+
+                                                        Map<String,Object> noToken = new HashMap<>();
+                                                        noToken.put("notificationToken", token);
+
+                                                        updateToken.collection("User Accounts").document(uID)
+                                                                .update(noToken);
+                                                    }
+                                                });
 
                                         overridePendingTransition(0, 0);
                                         finish();

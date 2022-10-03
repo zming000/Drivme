@@ -8,21 +8,22 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 
 public class DriverDrivingDetails extends AppCompatActivity {
     //declare variables
     TextInputLayout mtilDAge, mtilDGender, mtilDRace, mtilDExp, mtilDLanguage;
-    AutoCompleteTextView mtvDAge, mtvDGender, mtvDRace, mtvDExp, mtvDLanguage;
+    TextInputEditText metDAge, metDGender, metDRace, metDExp, metDLanguage;
     Button mbtnDriverNext, mbtnOK;
     TextView mtvSelect;
     NumberPicker mnpPicker;
@@ -38,11 +39,11 @@ public class DriverDrivingDetails extends AppCompatActivity {
         mtilDRace = findViewById(R.id.tilDRace);
         mtilDExp = findViewById(R.id.tilDExp);
         mtilDLanguage = findViewById(R.id.tilDLanguage);
-        mtvDAge = findViewById(R.id.tvDAge);
-        mtvDGender = findViewById(R.id.tvDGender);
-        mtvDRace = findViewById(R.id.tvDRace);
-        mtvDExp = findViewById(R.id.tvDExp);
-        mtvDLanguage = findViewById(R.id.tvDLanguage);
+        metDAge = findViewById(R.id.etDAge);
+        metDGender = findViewById(R.id.etDGender);
+        metDRace = findViewById(R.id.etDRace);
+        metDExp = findViewById(R.id.etDExp);
+        metDLanguage = findViewById(R.id.etDLanguage);
         mbtnDriverNext = findViewById(R.id.btnDriverNext);
 
         //pop out menus
@@ -63,7 +64,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
     //age dialog
     private void ageMenu() {
-        mtvDAge.setOnClickListener(ageView -> {
+        metDAge.setOnClickListener(ageView -> {
             LayoutInflater dialogInflater = getLayoutInflater();
             ageView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
 
@@ -87,7 +88,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
-                mtvDAge.setText(String.valueOf(value));
+                metDAge.setText(String.valueOf(value));
                 ageDialog.dismiss();
             });
         });
@@ -95,7 +96,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
     //gender dialog
     private void genderMenu() {
-        mtvDGender.setOnClickListener(genderView -> {
+        metDGender.setOnClickListener(genderView -> {
             LayoutInflater dialogInflater = getLayoutInflater();
             genderView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
 
@@ -120,7 +121,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
-                mtvDGender.setText(ModelDriverDetails.getDetailsArrayList().get(value).getDetailsOption());
+                metDGender.setText(ModelDriverDetails.getDetailsArrayList().get(value).getDetailsOption());
                 genderDialog.dismiss();
             });
         });
@@ -128,7 +129,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
     //race dialog
     private void raceMenu() {
-        mtvDRace.setOnClickListener(raceView -> {
+        metDRace.setOnClickListener(raceView -> {
             LayoutInflater dialogInflater = getLayoutInflater();
             raceView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
 
@@ -153,7 +154,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
-                mtvDRace.setText(ModelDriverDetails.getDetailsArrayList().get(value).getDetailsOption());
+                metDRace.setText(ModelDriverDetails.getDetailsArrayList().get(value).getDetailsOption());
                 raceDialog.dismiss();
             });
         });
@@ -161,7 +162,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
     //driving experience dialog
     private void drivingExpMenu() {
-        mtvDExp.setOnClickListener(expView -> {
+        metDExp.setOnClickListener(expView -> {
             LayoutInflater dialogInflater = getLayoutInflater();
             expView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
 
@@ -185,7 +186,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
-                mtvDExp.setText(String.valueOf(value));
+                metDExp.setText(String.valueOf(value));
                 expDialog.dismiss();
             });
         });
@@ -193,7 +194,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
     //language dialog (multi selection)
     private void languageMenu() {
-        mtvDLanguage.setOnClickListener(view -> {
+        metDLanguage.setOnClickListener(view -> {
             String[] languageItems = new String[]{"Malay", "Mandarin Chinese", "English", "Tamil/Hindi", "Hokkien", "Cantonese", "Hakka", "Hainanese", "Hokchew", "Sign Language", "Spanish", "French", "Arabic", "Bengali", "Russian", "Portuguese", "Indonesian"};
             //sort the languages
             Arrays.sort(languageItems);
@@ -232,7 +233,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
                     }
                 }
 
-                mtvDLanguage.setText(typeSB.toString());
+                metDLanguage.setText(typeSB.toString());
             });
             companyBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
             companyBuilder.setNeutralButton("Clear All", (dialogInterface, i) -> {
@@ -242,7 +243,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
                     //clear list
                     langList.clear();
                     //clear text
-                    mtvDLanguage.setText("");
+                    metDLanguage.setText("");
                 }
             });
 
@@ -252,7 +253,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
     //Set error message on each field to ensure correct input
     private void errorChangeOnEachFields() {
-        mtvDAge.addTextChangedListener(new TextWatcher() {
+        metDAge.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -269,7 +270,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
             }
         });
 
-        mtvDGender.addTextChangedListener(new TextWatcher() {
+        metDGender.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -286,7 +287,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
             }
         });
 
-        mtvDRace.addTextChangedListener(new TextWatcher() {
+        metDRace.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -303,7 +304,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
             }
         });
 
-        mtvDExp.addTextChangedListener(new TextWatcher() {
+        metDExp.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -320,7 +321,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
             }
         });
 
-        mtvDLanguage.addTextChangedListener(new TextWatcher() {
+        metDLanguage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -340,29 +341,29 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
     //check empty fields
     private void checkMenus(){
-        if(mtvDAge.getText().toString().isEmpty()){
+        if(Objects.requireNonNull(metDAge.getText()).toString().isEmpty()){
             mtilDAge.setError("Field cannot be empty!");
         }
-        else if(mtvDGender.getText().toString().isEmpty()){
+        else if(Objects.requireNonNull(metDGender.getText()).toString().isEmpty()){
             mtilDGender.setError("Field cannot be empty!");
         }
-        else if(mtvDRace.getText().toString().isEmpty()){
+        else if(Objects.requireNonNull(metDRace.getText()).toString().isEmpty()){
             mtilDRace.setError("Field cannot be empty!");
         }
-        else if(mtvDExp.getText().toString().isEmpty()){
+        else if(Objects.requireNonNull(metDExp.getText()).toString().isEmpty()){
             mtilDExp.setError("Field cannot be empty!");
         }
-        else if(mtvDLanguage.getText().toString().isEmpty()){
+        else if(Objects.requireNonNull(metDLanguage.getText()).toString().isEmpty()){
             mtilDLanguage.setError("Field cannot be empty!");
         }
         else{
             //proceed to next activity
             Intent intent = new Intent(DriverDrivingDetails.this, DriverAvailability.class);
-            intent.putExtra("dAge", mtvDAge.getText().toString());
-            intent.putExtra("dGender", mtvDGender.getText().toString());
-            intent.putExtra("dRace", mtvDRace.getText().toString());
-            intent.putExtra("dExp", mtvDExp.getText().toString());
-            intent.putExtra("dLanguage", mtvDLanguage.getText().toString());
+            intent.putExtra("dAge", metDAge.getText().toString());
+            intent.putExtra("dGender", metDGender.getText().toString());
+            intent.putExtra("dRace", metDRace.getText().toString());
+            intent.putExtra("dExp", metDExp.getText().toString());
+            intent.putExtra("dLanguage", metDLanguage.getText().toString());
 
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -377,7 +378,10 @@ public class DriverDrivingDetails extends AppCompatActivity {
         alertDialogBuilder
                 .setMessage("Click yes to exit!")
                 .setCancelable(false)
-                .setPositiveButton("Yes", (dialog, id) -> finish())
+                .setPositiveButton("Yes", (dialog, id) -> {
+                    finishAffinity();
+                    finish();
+                })
                 .setNegativeButton("No", (dialog, id) -> dialog.cancel());
 
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();

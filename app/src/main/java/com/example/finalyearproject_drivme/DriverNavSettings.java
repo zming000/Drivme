@@ -9,6 +9,10 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DriverNavSettings extends AppCompatActivity {
     //declare variables
@@ -19,6 +23,7 @@ public class DriverNavSettings extends AppCompatActivity {
 
     //key name
     private static final String SP_NAME = "drivmePref";
+    private static final String KEY_ID = "userID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +63,15 @@ public class DriverNavSettings extends AppCompatActivity {
         mbtnDLogout.setOnClickListener(view -> {
             //logout
             spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
+            String id = spDrivme.getString(KEY_ID, null);
             spDrivme.edit().clear().commit();
+
+            FirebaseFirestore updateStatus = FirebaseFirestore.getInstance();
+            Map<String,Object> noToken = new HashMap<>();
+            noToken.put("accountStatus", "Offline");
+
+            updateStatus.collection("User Accounts").document(id)
+                    .update(noToken);
 
             startActivity(new Intent(getApplicationContext(), Role.class));
             finishAffinity();

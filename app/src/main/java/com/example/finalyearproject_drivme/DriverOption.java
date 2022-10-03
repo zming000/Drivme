@@ -32,7 +32,9 @@ public class DriverOption extends AppCompatActivity {
 
         mbtnDriverSignup.setOnClickListener(v -> {
             //driver option -> driver sign up
-            startActivity(new Intent(DriverOption.this, DriverSignUp.class));
+            Intent intent = new Intent(DriverOption.this, AgreementPolicy.class);
+            intent.putExtra("role", "Driver");
+            startActivity(intent);
             finish();
         });
     }

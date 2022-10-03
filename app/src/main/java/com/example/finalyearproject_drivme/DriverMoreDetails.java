@@ -1,15 +1,20 @@
 package com.example.finalyearproject_drivme;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.taufiqrahman.reviewratings.BarLabels;
@@ -130,5 +135,26 @@ public class DriverMoreDetails extends AppCompatActivity {
                 });
 
         mbtnBack.setOnClickListener(view -> finish());
+
+        mbtnSelect.setOnClickListener(view -> {
+            FirebaseFirestore getToken = FirebaseFirestore.getInstance();
+            getToken.collection("User Accounts").document(driverID).get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if(task.isSuccessful()) {
+                                DocumentSnapshot doc = task.getResult();
+
+                                String token = doc.getString("notificationToken");
+
+                                FCMSend.pushNotification(
+                                        DriverMoreDetails.this,
+                                        token,
+                                        "New Request",
+                                        "You have received a request from a customer!");
+                            }
+                        }
+                    });
+        });
     }
 }

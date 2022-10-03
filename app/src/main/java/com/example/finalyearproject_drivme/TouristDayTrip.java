@@ -260,8 +260,7 @@ public class TouristDayTrip extends AppCompatActivity implements DatePickerDialo
     private void carPlateMenu() {
         cpList = new ArrayList<>();
         //get id
-        String getID = "sad02167";
-        //spDrivme.getString(KEY_ID, null);
+        String getID = spDrivme.getString(KEY_ID, null);
 
         //get specific collection
         FirebaseFirestore drivmeDB = FirebaseFirestore.getInstance();

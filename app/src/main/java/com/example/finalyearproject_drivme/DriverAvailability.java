@@ -10,13 +10,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -28,7 +28,7 @@ import java.util.Map;
 public class DriverAvailability extends AppCompatActivity {
     //declare variables
     TextInputLayout mtilDState, mtilDArea;
-    AutoCompleteTextView mtvDState, mtvDArea;
+    TextInputEditText metDState, metDArea;
     Button mbtnDriverDone, mbtnOK;
     TextView mtvSelect, mtvMost;
     NumberPicker mnpPicker;
@@ -48,8 +48,8 @@ public class DriverAvailability extends AppCompatActivity {
         //assign variables
         mtilDState = findViewById(R.id.tilDState);
         mtilDArea = findViewById(R.id.tilDArea);
-        mtvDState = findViewById(R.id.tvDState);
-        mtvDArea = findViewById(R.id.tvDArea);
+        metDState = findViewById(R.id.etDState);
+        metDArea = findViewById(R.id.etDArea);
         mtvMost = findViewById(R.id.tvMost);
         mbtnDriverDone = findViewById(R.id.btnDriverDone);
 
@@ -71,7 +71,7 @@ public class DriverAvailability extends AppCompatActivity {
 
     //state dialog
     private void stateMenu() {
-        mtvDState.setOnClickListener(stateView -> {
+        metDState.setOnClickListener(stateView -> {
             //initialize layout
             LayoutInflater dialogInflater = getLayoutInflater();
             stateView = dialogInflater.inflate(R.layout.activity_scroll_picker_long, null);
@@ -98,20 +98,20 @@ public class DriverAvailability extends AppCompatActivity {
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
-                mtvDState.setText(ModelDriverDetails.getDetailsArrayList().get(value).getDetailsOption());
+                metDState.setText(ModelDriverDetails.getDetailsArrayList().get(value).getDetailsOption());
 
                 //set text based on state selected
-                switch (mtvDState.getText().toString()) {
+                switch (metDState.getText().toString()) {
                     case "Penang (Island)":
                     case "Penang (Mainland)":
                         mtvMost.setText("Select at most 2");
-                        mtvDArea.setText("");
+                        metDArea.setText("");
                         break;
                     case "Perak":
                     case "Selangor":
                     case "Johor":
                         mtvMost.setText("Select at most 3");
-                        mtvDArea.setText("");
+                        metDArea.setText("");
                         break;
                 }
                 stateDialog.dismiss();
@@ -121,8 +121,8 @@ public class DriverAvailability extends AppCompatActivity {
 
     //area dialog
     private void areaMenu() {
-        mtvDArea.setOnClickListener(view -> {
-            String getState = mtvDState.getText().toString();
+        metDArea.setOnClickListener(view -> {
+            String getState = metDState.getText().toString();
             areaList = new ArrayList<>();
 
             //check if state field is empty
@@ -153,7 +153,7 @@ public class DriverAvailability extends AppCompatActivity {
 
     //Set error message on each field to ensure correct input
     private void errorChangeOnEachFields() {
-        mtvDState.addTextChangedListener(new TextWatcher() {
+        metDState.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -170,7 +170,7 @@ public class DriverAvailability extends AppCompatActivity {
             }
         });
 
-        mtvDArea.addTextChangedListener(new TextWatcher() {
+        metDArea.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -190,10 +190,10 @@ public class DriverAvailability extends AppCompatActivity {
 
     //check empty fields
     private void checkMenus(){
-        if(mtvDState.getText().toString().isEmpty()){
+        if(metDState.getText().toString().isEmpty()){
             mtilDState.setError("Field cannot be empty!");
         }
-        else if(mtvDArea.getText().toString().isEmpty()){
+        else if(metDArea.getText().toString().isEmpty()){
             mtilDArea.setError("Field cannot be empty!");
         }
         else{
@@ -202,7 +202,7 @@ public class DriverAvailability extends AppCompatActivity {
             String id = spDrivme.getString(KEY_ID, null);
             //get text
             String textLan = getIntent().getStringExtra("dLanguage");
-            String textArea =  mtvDArea.getText().toString();
+            String textArea =  metDArea.getText().toString();
             //split text to save into array
             String[] lan = textLan.split(", ");
             String[] area = textArea.split(", ");
@@ -214,7 +214,7 @@ public class DriverAvailability extends AppCompatActivity {
             drivingDetails.put("race", getIntent().getStringExtra("dRace"));
             drivingDetails.put("drivingExperience", getIntent().getStringExtra("dExp"));
             drivingDetails.put("languages", Arrays.asList(lan));
-            drivingDetails.put("state", mtvDState.getText().toString());
+            drivingDetails.put("state", metDState.getText().toString());
             drivingDetails.put("familiarAreas", Arrays.asList(area));
             drivingDetails.put("Login Status Driver", 1);
             drivingDetails.put("accountStatus", "Driver");
@@ -278,7 +278,7 @@ public class DriverAvailability extends AppCompatActivity {
                     areaSB.append(", ");
                 }
             }
-            mtvDArea.setText(areaSB.toString());
+            metDArea.setText(areaSB.toString());
             islandDialog.dismiss();
         });
     }
@@ -364,7 +364,7 @@ public class DriverAvailability extends AppCompatActivity {
                     areaSB.append(", ");
                 }
             }
-            mtvDArea.setText(areaSB.toString());
+            metDArea.setText(areaSB.toString());
             mainlandDialog.dismiss();
         });
     }
@@ -612,7 +612,7 @@ public class DriverAvailability extends AppCompatActivity {
                     areaSB.append(", ");
                 }
             }
-            mtvDArea.setText(areaSB.toString());
+            metDArea.setText(areaSB.toString());
             perakDialog.dismiss();
         });
     }
@@ -824,7 +824,7 @@ public class DriverAvailability extends AppCompatActivity {
                     areaSB.append(", ");
                 }
             }
-            mtvDArea.setText(areaSB.toString());
+            metDArea.setText(areaSB.toString());
             selangorDialog.dismiss();
         });
     }
@@ -1036,7 +1036,7 @@ public class DriverAvailability extends AppCompatActivity {
                     areaSB.append(", ");
                 }
             }
-            mtvDArea.setText(areaSB.toString());
+            metDArea.setText(areaSB.toString());
             johorDialog.dismiss();
         });
     }

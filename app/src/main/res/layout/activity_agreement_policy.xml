@@ -7,130 +7,144 @@
     tools:context=".AgreementPolicy"
     android:background="@drawable/bg_agreement">
 
-    <ImageView
-        android:id="@+id/wheelImg"
-        android:layout_width="118dp"
-        android:layout_height="99dp"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/app_logo_wheel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvDriv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Drivme"
-        android:textSize="40sp"
-        android:textColor="#036666"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wheelImg" />
-
-    <LinearLayout
-        android:id="@+id/btnUserAgreement"
-        android:layout_width="280dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/btn_border"
-        android:elevation="2dp"
-        android:gravity="center"
-        android:onClick="toAgreement"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDriv">
-
-        <ImageView
-            android:id="@+id/iconAgreement"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="9dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/icon_user_agreement" />
-
-        <TextView
-            android:id="@+id/tvUserAgreement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="1dp"
-            android:text="User Agreement"
-            android:textStyle="bold"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="23sp" />
-
-        <ImageView
-            android:id="@+id/ivArrow"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/icon_arrow" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/btnPrivacyPolicy"
-        android:layout_width="280dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/btn_border"
-        android:elevation="2dp"
-        android:gravity="center"
-        android:onClick="toPolicy"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnUserAgreement">
-
-        <ImageView
-            android:id="@+id/iconPolicy"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/icon_privacy_policy" />
-
-        <TextView
-            android:id="@+id/tvPrivacyPolicy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="25dp"
-            android:text="Privacy Policy"
-            android:textStyle="bold"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="23sp" />
-
-        <ImageView
-            android:id="@+id/ivArrow2"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/icon_arrow" />
-    </LinearLayout>
-
-    <CheckBox
-        android:id="@+id/cbTNC"
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="40dp"
-        android:text="I have read and accept the\nUser Agreement and Privacy Policy"
-        app:layout_constraintBottom_toTopOf="@+id/btnAgree"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnPrivacyPolicy" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnAgree"
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
-        android:background="@drawable/btn_rounded"
-        android:text="Agree"
-        android:textAllCaps="false"
-        android:textColor="@color/primary"
-        android:textSize="25sp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/wheelImg"
+                android:layout_width="118dp"
+                android:layout_height="99dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/app_logo_wheel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvDriv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Drivme"
+                android:textSize="40sp"
+                android:textColor="#036666"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/wheelImg" />
+
+            <LinearLayout
+                android:id="@+id/btnUserAgreement"
+                android:layout_width="280dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/btn_border"
+                android:elevation="2dp"
+                android:gravity="center"
+                android:onClick="toAgreement"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDriv">
+
+                <ImageView
+                    android:id="@+id/iconAgreement"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/icon_user_agreement" />
+
+                <TextView
+                    android:id="@+id/tvUserAgreement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="1dp"
+                    android:text="User Agreement"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="23sp" />
+
+                <ImageView
+                    android:id="@+id/ivArrow"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_arrow" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnPrivacyPolicy"
+                android:layout_width="280dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_border"
+                android:elevation="2dp"
+                android:gravity="center"
+                android:onClick="toPolicy"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnUserAgreement">
+
+                <ImageView
+                    android:id="@+id/iconPolicy"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/icon_privacy_policy" />
+
+                <TextView
+                    android:id="@+id/tvPrivacyPolicy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:text="Privacy Policy"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="23sp" />
+
+                <ImageView
+                    android:id="@+id/ivArrow2"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/icon_arrow" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/cbTNC"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:text="I have read and accept the\nUser Agreement and Privacy Policy"
+                app:layout_constraintBottom_toTopOf="@+id/btnAgree"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnPrivacyPolicy" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnAgree"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="80dp"
+                android:background="@drawable/btn_rounded"
+                android:text="Agree"
+                android:textAllCaps="false"
+                android:textColor="@color/primary"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -117,26 +117,7 @@ public class TouristLogin extends AppCompatActivity {
                                                         startActivity(new Intent(TouristLogin.this, WelcomeTo.class));
                                                     }
                                                     else{
-                                                        //startActivity(new Intent(TouristLogin.this, WelcomeBack.class));
-
-                                                        FirebaseMessaging.getInstance().getToken()
-                                                                .addOnCompleteListener(task1 -> {
-                                                                    if (!task1.isSuccessful()) {
-                                                                        return;
-                                                                    }
-
-                                                                    // Get new FCM registration token
-                                                                    String token = task1.getResult();
-                                                                    FirebaseFirestore updateToken = FirebaseFirestore.getInstance();
-
-
-                                                                    Map<String,Object> noToken = new HashMap<>();
-                                                                    noToken.put("notificationToken", token);
-
-                                                                    updateToken.collection("User Accounts").document(id)
-                                                                            .update(noToken);
-                                                                });
-
+                                                        startActivity(new Intent(TouristLogin.this, WelcomeBack.class));
                                                     }
 
                                                     //save necessary data for later use
@@ -147,9 +128,24 @@ public class TouristLogin extends AppCompatActivity {
                                                     spEditor.putString(KEY_ROLE, "Tourist");
                                                     spEditor.apply();
 
+                                                    FirebaseMessaging.getInstance().getToken()
+                                                            .addOnCompleteListener(task1 -> {
+                                                                if (!task1.isSuccessful()) {
+                                                                    return;
+                                                                }
 
+                                                                // Get new FCM registration token
+                                                                String token = task1.getResult();
+                                                                FirebaseFirestore updateToken = FirebaseFirestore.getInstance();
 
-                                                    //finish();
+                                                                Map<String,Object> noToken = new HashMap<>();
+                                                                noToken.put("notificationToken", token);
+                                                                noToken.put("accountStatus", "Tourist");
+
+                                                                updateToken.collection("User Accounts").document(id)
+                                                                        .update(noToken);
+                                                            });
+                                                    finish();
                                                 }
                                                 else{
                                                     Toast.makeText(TouristLogin.this, "Tourist Role haven't activated!", Toast.LENGTH_SHORT).show();

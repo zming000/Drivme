@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -30,8 +29,7 @@ import java.util.Objects;
 public class TouristCarDetails extends AppCompatActivity {
     //declare variables
     TextInputLayout mtilCPlate, mtilCBrand, mtilCModel, mtilCColour, mtilCTransmission, mtilCPCompany, mtilCPType;
-    TextInputEditText metCPlate;
-    AutoCompleteTextView mtvCBrand, mtvCModel, mtvCColour, mtvCTransmission, mtvCPCompany, mtvCPType;
+    TextInputEditText metCPlate, metCBrand, metCModel, metCColour, metCTransmission, metCPCompany, metCPType;
     String[] companyItems, typeItems;
     boolean[] selectedCompany, selectedType;
     ArrayList<Integer> companyList, typeList;
@@ -58,12 +56,12 @@ public class TouristCarDetails extends AppCompatActivity {
         mtilCPCompany = findViewById(R.id.tilCPCompany);
         mtilCPType = findViewById(R.id.tilCPType);
         metCPlate = findViewById(R.id.etCPlate);
-        mtvCBrand = findViewById(R.id.tvCBrand);
-        mtvCModel = findViewById(R.id.tvCModel);
-        mtvCColour = findViewById(R.id.tvCColour);
-        mtvCTransmission = findViewById(R.id.tvCTransmission);
-        mtvCPCompany = findViewById(R.id.tvCPCompany);
-        mtvCPType = findViewById(R.id.tvCPType);
+        metCBrand = findViewById(R.id.etCBrand);
+        metCModel = findViewById(R.id.etCModel);
+        metCColour = findViewById(R.id.etCColour);
+        metCTransmission = findViewById(R.id.etCTransmission);
+        metCPCompany = findViewById(R.id.etCPCompany);
+        metCPType = findViewById(R.id.etCPType);
         mbtnConfirm = findViewById(R.id.btnConfirm);
 
         //initialize shared preferences
@@ -82,35 +80,13 @@ public class TouristCarDetails extends AppCompatActivity {
 
         mbtnConfirm.setOnClickListener(view -> {
             //check each fields
-            checkCarPlate();
             checkDropdownMenus();
         });
     }
 
-    //check car plate
-    private void checkCarPlate(){
-        FirebaseFirestore checkCar = FirebaseFirestore.getInstance();
-        String checkID = spDrivme.getString(KEY_ID, null);
-        String checkCarPlate = metCPlate.getText().toString().replaceAll("\\s","").toUpperCase();
-
-        //check if car plate exist in user's database
-        checkCar.collection("User Accounts").document(checkID).collection("Car Details").document(checkCarPlate)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot carResult = task.getResult();
-
-                        //check the existence of ID
-                        if (Objects.requireNonNull(carResult).exists()) {
-                            mtilCPlate.setError("Car Plate is used!");
-                        }
-                    }
-                });
-    }
-
     //brand pop out menu
     private void brandDropdown(){
-        mtvCBrand.setOnClickListener(brandView -> {
+        metCBrand.setOnClickListener(brandView -> {
             //set layout
             LayoutInflater dialogInflater = getLayoutInflater();
             brandView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
@@ -135,7 +111,7 @@ public class TouristCarDetails extends AppCompatActivity {
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
-                mtvCBrand.setText(ModelCarDetails.getModelArrayList().get(value).getModelOption());
+                metCBrand.setText(ModelCarDetails.getModelArrayList().get(value).getModelOption());
                 brandDialog.dismiss();
             });
         });
@@ -143,8 +119,8 @@ public class TouristCarDetails extends AppCompatActivity {
 
     //model pop out menu
     private void modelDropdown(){
-        mtvCModel.setOnClickListener(modelView -> {
-            String getBrand = mtvCBrand.getText().toString().trim();
+        metCModel.setOnClickListener(modelView -> {
+            String getBrand = Objects.requireNonNull(metCBrand.getText()).toString().trim();
 
             //set layout
             LayoutInflater dialogInflater = getLayoutInflater();
@@ -189,7 +165,7 @@ public class TouristCarDetails extends AppCompatActivity {
 
                 mbtnOK.setOnClickListener(view1 -> {
                     int value = mnpPicker.getValue();
-                    mtvCModel.setText(ModelCarDetails.getModelArrayList().get(value).getModelOption());
+                    metCModel.setText(ModelCarDetails.getModelArrayList().get(value).getModelOption());
                     modelDialog.dismiss();
                 });
             }
@@ -201,7 +177,7 @@ public class TouristCarDetails extends AppCompatActivity {
 
     //colour pop out menu
     private void colourDropdown(){
-        mtvCColour.setOnClickListener(colourView -> {
+        metCColour.setOnClickListener(colourView -> {
             //set layout
             LayoutInflater dialogInflater = getLayoutInflater();
             colourView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
@@ -226,7 +202,7 @@ public class TouristCarDetails extends AppCompatActivity {
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
-                mtvCColour.setText(ModelCarDetails.getModelArrayList().get(value).getModelOption());
+                metCColour.setText(ModelCarDetails.getModelArrayList().get(value).getModelOption());
                 colourDialog.dismiss();
             });
         });
@@ -234,7 +210,7 @@ public class TouristCarDetails extends AppCompatActivity {
 
     //transmission pop out menu
     private void transmissionDropdown(){
-        mtvCTransmission.setOnClickListener(transmissionView -> {
+        metCTransmission.setOnClickListener(transmissionView -> {
             //set layout
             LayoutInflater dialogInflater = getLayoutInflater();
             transmissionView = dialogInflater.inflate(R.layout.activity_scroll_picker_extra_long, null);
@@ -259,7 +235,7 @@ public class TouristCarDetails extends AppCompatActivity {
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
-                mtvCTransmission.setText(ModelCarDetails.getModelArrayList().get(value).getModelOption());
+                metCTransmission.setText(ModelCarDetails.getModelArrayList().get(value).getModelOption());
                 transmissionDialog.dismiss();
             });
         });
@@ -267,7 +243,7 @@ public class TouristCarDetails extends AppCompatActivity {
 
     //car petrol company pop out menu
     private void companyDropdown(){
-        mtvCPCompany.setOnClickListener(view -> {
+        metCPCompany.setOnClickListener(view -> {
             companyItems = new String[]{"Petron", "Petronas", "Shell", "BHP", "Caltex"};
             //sort the petrol companies
             Arrays.sort(companyItems);
@@ -306,7 +282,7 @@ public class TouristCarDetails extends AppCompatActivity {
                     }
                 }
 
-                mtvCPCompany.setText(typeSB.toString());
+                metCPCompany.setText(typeSB.toString());
             });
             companyBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
             companyBuilder.setNeutralButton("Clear All", (dialogInterface, i) -> {
@@ -316,7 +292,7 @@ public class TouristCarDetails extends AppCompatActivity {
                     //clear list
                     companyList.clear();
                     //clear text
-                    mtvCPCompany.setText("");
+                    metCPCompany.setText("");
                 }
             });
 
@@ -326,8 +302,8 @@ public class TouristCarDetails extends AppCompatActivity {
 
     //car petrol type pop out menu
     private void typeDropdown(){
-        mtvCPType.setOnClickListener(view -> {
-            String getCompany = mtvCPCompany.getText().toString().trim();
+        metCPType.setOnClickListener(view -> {
+            String getCompany = Objects.requireNonNull(metCPCompany.getText()).toString().trim();
 
             if(!getCompany.equals("")) {
                 typeItems = new String[]{"RON95", "RON97", "RON100", "Diesel", "Hybrid (Petrol and Electric)", "Gasoline"};
@@ -363,7 +339,7 @@ public class TouristCarDetails extends AppCompatActivity {
                         }
                     }
 
-                    mtvCPType.setText(typeSB.toString());
+                    metCPType.setText(typeSB.toString());
                 });
                 typeBuilder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
                 typeBuilder.setNeutralButton("Clear All", (dialogInterface, i) -> {
@@ -373,7 +349,7 @@ public class TouristCarDetails extends AppCompatActivity {
                         //clear list
                         typeList.clear();
                         //clear text
-                        mtvCPType.setText("");
+                        metCPType.setText("");
                     }
                 });
 
@@ -401,7 +377,7 @@ public class TouristCarDetails extends AppCompatActivity {
             }
         });
 
-        mtvCBrand.addTextChangedListener(new TextWatcher() {
+        metCBrand.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -418,7 +394,7 @@ public class TouristCarDetails extends AppCompatActivity {
             }
         });
 
-        mtvCModel.addTextChangedListener(new TextWatcher() {
+        metCModel.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -435,7 +411,7 @@ public class TouristCarDetails extends AppCompatActivity {
             }
         });
 
-        mtvCColour.addTextChangedListener(new TextWatcher() {
+        metCColour.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -452,7 +428,7 @@ public class TouristCarDetails extends AppCompatActivity {
             }
         });
 
-        mtvCTransmission.addTextChangedListener(new TextWatcher() {
+        metCTransmission.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -469,7 +445,7 @@ public class TouristCarDetails extends AppCompatActivity {
             }
         });
 
-        mtvCPCompany.addTextChangedListener(new TextWatcher() {
+        metCPCompany.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -486,7 +462,7 @@ public class TouristCarDetails extends AppCompatActivity {
             }
         });
 
-        mtvCPType.addTextChangedListener(new TextWatcher() {
+        metCPType.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -506,59 +482,76 @@ public class TouristCarDetails extends AppCompatActivity {
 
     //check empty fields
     private void checkDropdownMenus(){
-        if(mtvCBrand.getText().toString().isEmpty()){
-            mtilCBrand.setError("Field cannot be empty!");
-        }
-        else if(mtvCModel.getText().toString().isEmpty()){
-            mtilCModel.setError("Field cannot be empty!");
-        }
-        else if(mtvCColour.getText().toString().isEmpty()){
-            mtilCColour.setError("Field cannot be empty!");
-        }
-        else if(mtvCTransmission.getText().toString().isEmpty()){
-            mtilCTransmission.setError("Field cannot be empty!");
-        }
-        else if(mtvCPCompany.getText().toString().isEmpty()){
-            mtilCPCompany.setError("Field cannot be empty!");
-        }
-        else if(mtvCPType.getText().toString().isEmpty()){
-            mtilCPType.setError("Field cannot be empty!");
-        }
-        else{
-            //insert database
-            FirebaseFirestore carDB = FirebaseFirestore.getInstance();
-            String id = spDrivme.getString(KEY_ID, null);
-            String carPlate = Objects.requireNonNull(metCPlate.getText()).toString().replaceAll("\\s","").toUpperCase();
+        if(!metCPlate.getText().toString().isEmpty()) {
+            FirebaseFirestore checkCar = FirebaseFirestore.getInstance();
+            String checkID = spDrivme.getString(KEY_ID, null);
+            String checkCarPlate = metCPlate.getText().toString().replaceAll("\\s", "").toUpperCase();
 
-            Map<String,Object> userAcc = new HashMap<>();
-            userAcc.put("Login Status Tourist", 1);
+            //check if car plate exist in user's database
+            checkCar.collection("User Accounts").document(checkID).collection("Car Details").document(checkCarPlate)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot carResult = task.getResult();
 
-            Map<String,Object> carDetails = new HashMap<>();
-            carDetails.put("carPlate", carPlate);
-            carDetails.put("carModel", mtvCModel.getText().toString());
-            carDetails.put("carColour", mtvCColour.getText().toString());
-            carDetails.put("carTransmission", mtvCTransmission.getText().toString());
-            carDetails.put("petrolCompany", mtvCPCompany.getText().toString());
-            carDetails.put("petrolType", mtvCPType.getText().toString());
-            carDetails.put("carStatus", "Available");
+                            //check the existence of ID
+                            if (Objects.requireNonNull(carResult).exists()) {
+                                mtilCPlate.setError("Car Plate is used!");
+                            }
+                            else if(Objects.requireNonNull(metCBrand.getText()).toString().isEmpty()){
+                                mtilCBrand.setError("Field cannot be empty!");
+                            }
+                            else if(Objects.requireNonNull(metCModel.getText()).toString().isEmpty()){
+                                mtilCModel.setError("Field cannot be empty!");
+                            }
+                            else if(Objects.requireNonNull(metCColour.getText()).toString().isEmpty()){
+                                mtilCColour.setError("Field cannot be empty!");
+                            }
+                            else if(Objects.requireNonNull(metCTransmission.getText()).toString().isEmpty()){
+                                mtilCTransmission.setError("Field cannot be empty!");
+                            }
+                            else if(Objects.requireNonNull(metCPCompany.getText()).toString().isEmpty()){
+                                mtilCPCompany.setError("Field cannot be empty!");
+                            }
+                            else if(Objects.requireNonNull(metCPType.getText()).toString().isEmpty()){
+                                mtilCPType.setError("Field cannot be empty!");
+                            }
+                            else{
+                                //insert database
+                                FirebaseFirestore carDB = FirebaseFirestore.getInstance();
+                                String id = spDrivme.getString(KEY_ID, null);
+                                String carPlate = Objects.requireNonNull(metCPlate.getText()).toString().replaceAll("\\s","").toUpperCase();
 
-            carDB.collection("User Accounts").document(id)
-                    .update(userAcc);
+                                Map<String,Object> userAcc = new HashMap<>();
+                                userAcc.put("Login Status Tourist", 1);
 
-            carDB.collection("User Accounts").document(id).collection("Car Details").document(carPlate)
-                    .set(carDetails)
-                    .addOnSuccessListener(unused -> {
-                        Toast.makeText(TouristCarDetails.this, "Car Added Successfully!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(TouristCarDetails.this, TouristNavHomepage.class));
-                        finishAffinity();
-                        finish();
+                                Map<String,Object> carDetails = new HashMap<>();
+                                carDetails.put("carPlate", carPlate);
+                                carDetails.put("carModel", metCModel.getText().toString());
+                                carDetails.put("carColour", metCColour.getText().toString());
+                                carDetails.put("carTransmission", metCTransmission.getText().toString());
+                                carDetails.put("petrolCompany", metCPCompany.getText().toString());
+                                carDetails.put("petrolType", metCPType.getText().toString());
+                                carDetails.put("carStatus", "Available");
+
+                                carDB.collection("User Accounts").document(id)
+                                        .update(userAcc);
+
+                                carDB.collection("User Accounts").document(id).collection("Car Details").document(carPlate)
+                                        .set(carDetails)
+                                        .addOnSuccessListener(unused -> {
+                                            Toast.makeText(TouristCarDetails.this, "Car Added Successfully!", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(TouristCarDetails.this, TouristNavHomepage.class));
+                                            finishAffinity();
+                                            finish();
+                                        });
+                            }
+                        }
                     });
         }
-    }
-
-    //check digit
-    private boolean digitExist(String text){
-        return text.matches(".*\\d.*");
+        else{
+            mtilCPlate.setError("Input Car Plate!");
+        }
     }
 
     //quit application

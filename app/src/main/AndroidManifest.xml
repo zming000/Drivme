@@ -9,13 +9,10 @@
         android:roundIcon="@drawable/app_logo_wheel"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalYearProjectDrivme">
-        <activity
-            android:name=".DriverMoreDetails"
-            android:screenOrientation="portrait"/>
 
-        <activity
-            android:name=".TouristDriverList"
-            android:screenOrientation="portrait" /> <!-- Account UI -->
+
+
+        <!-- Account UI -->
         <activity
             android:name=".ResetSuccess"
             android:screenOrientation="portrait" />
@@ -27,7 +24,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ForgotPassword"
-            android:screenOrientation="portrait" /> <!-- Driver UI -->
+            android:screenOrientation="portrait" />
+
+
+        <!-- Driver UI -->
         <activity
             android:name=".DriverOTP"
             android:screenOrientation="portrait" />
@@ -63,7 +63,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".DriverNavHomepage"
-            android:screenOrientation="portrait" /> <!-- Tourist UI -->
+            android:screenOrientation="portrait" />
+
+
+        <!-- Tourist UI -->
         <activity
             android:name=".TouristLogin"
             android:screenOrientation="portrait" />
@@ -97,10 +100,15 @@
         <activity
             android:name=".TouristDayTrip"
             android:screenOrientation="portrait"/>
-
         <activity
-            android:name=".TouristHourTrip"
-            android:screenOrientation="portrait" /> <!-- App UI -->
+            android:name=".TouristDriverList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverMoreDetails"
+            android:screenOrientation="portrait"/>
+
+
+        <!-- App UI -->
         <activity
             android:name=".Role"
             android:screenOrientation="portrait" />
@@ -127,6 +135,18 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/app_logo_wheel" />
+
+        <service
+            android:name=".PushNotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
     </application>
 

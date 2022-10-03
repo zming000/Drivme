@@ -33,90 +33,95 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilDAge"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:hint="Age">
 
-                <AutoCompleteTextView
-                    android:id="@+id/tvDAge"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etDAge"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
+                    android:focusableInTouchMode="false"
                     tools:ignore="Deprecated" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilDGender"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:hint="Gender">
 
-                <AutoCompleteTextView
-                    android:id="@+id/tvDGender"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etDGender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
+                    android:focusableInTouchMode="false"
                     tools:ignore="Deprecated" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilDRace"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:hint="Race">
 
-                <AutoCompleteTextView
-                    android:id="@+id/tvDRace"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etDRace"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
+                    android:focusableInTouchMode="false"
                     tools:ignore="Deprecated" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilDExp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:hint="Driving Experience">
 
-                <AutoCompleteTextView
-                    android:id="@+id/tvDExp"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etDExp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
+                    android:focusableInTouchMode="false"
                     tools:ignore="Deprecated" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilDLanguage"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:hint="Language">
 
-                <AutoCompleteTextView
-                    android:id="@+id/tvDLanguage"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etDLanguage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
+                    android:focusableInTouchMode="false"
                     tools:ignore="Deprecated" />
 
             </com.google.android.material.textfield.TextInputLayout>

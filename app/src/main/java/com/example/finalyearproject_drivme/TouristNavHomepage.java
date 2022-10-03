@@ -32,30 +32,8 @@ public class TouristNavHomepage extends AppCompatActivity {
 
     private void tripSelection() {
         mcvBooking.setOnClickListener(tripView -> {
-            //set layout
-            LayoutInflater dialogInflater = getLayoutInflater();
-            tripView = dialogInflater.inflate(R.layout.activity_tourist_trip_option, null);
-
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
-            AlertDialog tripOptDialog = dialogBuilder.setView(tripView).create();
-
-            tripOptDialog.show();
-
-            ImageView mivTripClose = tripView.findViewById(R.id.ivTripClose);
-            Button mbtnHour = tripView.findViewById(R.id.btnHour);
-            Button mbtnDay = tripView.findViewById(R.id.btnDay);
-
-            mivTripClose.setOnClickListener(view -> tripOptDialog.dismiss());
-
-            mbtnHour.setOnClickListener(view -> {
-                startActivity(new Intent(getApplicationContext(), TouristHourTrip.class));
-                finish();
-            });
-
-            mbtnDay.setOnClickListener(view -> {
-                startActivity(new Intent(getApplicationContext(), TouristDayTrip.class));
-                finish();
-            });
+            startActivity(new Intent(getApplicationContext(), TouristDayTrip.class));
+            finish();
         });
     }
 
