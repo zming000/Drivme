@@ -1,15 +1,22 @@
 package com.example.finalyearproject_drivme;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.Objects;
 
 public class DriverNavActivity extends AppCompatActivity {
-    //declare variable
+    //declare variables
     BottomNavigationView mbtmDNav;
+    TabLayout mtabActivity;
+    ViewPager2 mvpActivity;
+    AdapterDriverViewPager dvpAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +25,36 @@ public class DriverNavActivity extends AppCompatActivity {
 
         //assign variable
         mbtmDNav = findViewById(R.id.btmDNav);
+        mtabActivity = findViewById(R.id.tabActivity);
+        mvpActivity = findViewById(R.id.vpActivity);
+        dvpAdapter = new AdapterDriverViewPager(this);
+        mvpActivity.setAdapter(dvpAdapter);
+
+        mtabActivity.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mvpActivity.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        mvpActivity.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                Objects.requireNonNull(mtabActivity.getTabAt(position)).select();
+            }
+        });
+
         navSelection();
     }
 
@@ -30,18 +67,13 @@ public class DriverNavActivity extends AppCompatActivity {
             switch(item.getItemId()){
                 case R.id.activity:
                     return true;
-                case R.id.chat:
-                    startActivity(new Intent(getApplicationContext(), DriverNavChat.class));
+                case R.id.rating:
+                    startActivity(new Intent(getApplicationContext(), DriverNavRating.class));
                     overridePendingTransition(0, 0);
                     finish();
                     return true;
                 case R.id.home:
                     startActivity(new Intent(getApplicationContext(), DriverNavHomepage.class));
-                    overridePendingTransition(0, 0);
-                    finish();
-                    return true;
-                case R.id.notifications:
-                    startActivity(new Intent(getApplicationContext(), DriverNavNotifications.class));
                     overridePendingTransition(0, 0);
                     finish();
                     return true;

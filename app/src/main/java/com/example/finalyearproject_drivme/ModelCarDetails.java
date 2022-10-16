@@ -38,7 +38,7 @@ public class ModelCarDetails {
     //Initialize model honda array list
     public static void initHonda(){
         cModelArrayList = new ArrayList<>();
-        String[] modelItems = new String[]{"Honda City", "Honda City Hatchback", "Honda Civic", "Honda CR-V", "Honda Accord"};
+        String[] modelItems = new String[]{"Honda City", "Honda BR-V", "Honda Civic", "Honda CR-V", "Honda Accord"};
         Arrays.sort(modelItems);
 
         for (String modelItem : modelItems) {

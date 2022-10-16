@@ -323,7 +323,7 @@ public class DriverSignUp extends AppCompatActivity {
                                     .addOnCompleteListener(task2 -> {
                                         if (task2.isSuccessful()) {
                                             DocumentSnapshot document2 = task2.getResult();
-                                            String codeStatus = Objects.requireNonNull(document2).getString("Status");
+                                            String codeStatus = Objects.requireNonNull(document2).getString("status");
                                             //check the existence of reference code
                                             if (!document2.exists()) {
                                                 mtilDriverRC.setError("Invalid Reference Code!");

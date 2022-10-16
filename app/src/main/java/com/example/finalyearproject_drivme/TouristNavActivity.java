@@ -1,15 +1,22 @@
 package com.example.finalyearproject_drivme;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.Objects;
 
 public class TouristNavActivity extends AppCompatActivity {
-    //declare variable
+    //declare variables
     BottomNavigationView mbtmTNav;
+    TabLayout mtabActivity;
+    ViewPager2 mvpActivity;
+    AdapterTouristViewPager tvpAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +25,36 @@ public class TouristNavActivity extends AppCompatActivity {
 
         //assign variable
         mbtmTNav = findViewById(R.id.btmTNav);
+        mtabActivity = findViewById(R.id.tabActivity);
+        mvpActivity = findViewById(R.id.vpActivity);
+        tvpAdapter = new AdapterTouristViewPager(this);
+        mvpActivity.setAdapter(tvpAdapter);
+
+        mtabActivity.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mvpActivity.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        mvpActivity.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                Objects.requireNonNull(mtabActivity.getTabAt(position)).select();
+            }
+        });
+
         navSelection();
     }
 
@@ -30,18 +67,13 @@ public class TouristNavActivity extends AppCompatActivity {
             switch(item.getItemId()){
                 case R.id.activity:
                     return true;
-                case R.id.chat:
-                    startActivity(new Intent(getApplicationContext(), TouristNavChat.class));
+                case R.id.cars:
+                    startActivity(new Intent(getApplicationContext(), TouristNavCars.class));
                     overridePendingTransition(0, 0);
                     finish();
                     return true;
                 case R.id.home:
                     startActivity(new Intent(getApplicationContext(), TouristNavHomepage.class));
-                    overridePendingTransition(0, 0);
-                    finish();
-                    return true;
-                case R.id.notifications:
-                    startActivity(new Intent(getApplicationContext(), TouristNavNotifications.class));
                     overridePendingTransition(0, 0);
                     finish();
                     return true;

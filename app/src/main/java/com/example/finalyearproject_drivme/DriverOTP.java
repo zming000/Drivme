@@ -138,8 +138,10 @@ public class DriverOTP extends AppCompatActivity {
 
         //update reference code details and insert driver details into firestore
         Map<String,Object> refCode = new HashMap<>();
-        refCode.put("Driver ID", docID);
-        refCode.put("Status", "N/A");
+        refCode.put("refCode", referenceCode);
+        refCode.put("driverID", docID);
+        refCode.put("status", "N/A");
+        refCode.put("driverName",getIntent().getStringExtra("dLName") + " " + getIntent().getStringExtra("dFName"));
 
         //driver details to insert into firestore
         Map<String,Object> driverAcc = new HashMap<>();
@@ -160,7 +162,8 @@ public class DriverOTP extends AppCompatActivity {
         driverAcc.put("3 Stars", 0);
         driverAcc.put("2 Stars", 0);
         driverAcc.put("1 Star", 0);
-        driverAcc.put("priceDay", "RM250");
+        driverAcc.put("priceDay", 300);
+        driverAcc.put("drivPay", "0.00");
 
         drivmeDB.collection("Reference Code Details").document(referenceCode)
                 .update(refCode);

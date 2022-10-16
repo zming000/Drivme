@@ -1,18 +1,27 @@
 package com.example.finalyearproject_drivme;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class DriverNavSettings extends AppCompatActivity {
     //declare variables
@@ -20,10 +29,12 @@ public class DriverNavSettings extends AppCompatActivity {
     ConstraintLayout mclickDProfile, mclickDCP, mclickDHelp, mclickDSwitch, mclickDAbout;
     Button mbtnDLogout;
     SharedPreferences spDrivme;
+    FirebaseFirestore checkTourist, updateAcc;
 
     //key name
     private static final String SP_NAME = "drivmePref";
     private static final String KEY_ID = "userID";
+    private static final String KEY_ROLE = "role";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +49,19 @@ public class DriverNavSettings extends AppCompatActivity {
         mclickDAbout = findViewById(R.id.clickDAbout);
         mbtnDLogout = findViewById(R.id.btnDLogout);
         mbtmDNav = findViewById(R.id.btmDNav);
+        spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
         navSelection();
 
         mclickDProfile.setOnClickListener(view -> {
             //go profile ui
+            startActivity(new Intent(DriverNavSettings.this, DriverProfile.class));
+            finish();
         });
 
         mclickDCP.setOnClickListener(view -> {
             //go change password ui
+            startActivity(new Intent(DriverNavSettings.this, DriverChangePW.class));
+            finish();
         });
 
         mclickDHelp.setOnClickListener(view -> {
@@ -54,15 +70,70 @@ public class DriverNavSettings extends AppCompatActivity {
 
         mclickDSwitch.setOnClickListener(view -> {
             //go switch account ui
+            String uID = spDrivme.getString(KEY_ID, null);
+            checkTourist = FirebaseFirestore.getInstance();
+            updateAcc = FirebaseFirestore.getInstance();
+
+            checkTourist.collection("User Accounts").document(uID).get()
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot doc = task.getResult();
+                            int touristAcc = doc.getLong("Account Tourist").intValue();
+
+                            if(touristAcc == 0){
+                                android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+                                alertDialogBuilder.setTitle("Activate Tourist Account");
+                                alertDialogBuilder
+                                        .setMessage("Do you wish to activate Tourist Account?")
+                                        .setCancelable(false)
+                                        .setPositiveButton("Activate", (dialog, id) -> {
+                                            SharedPreferences.Editor spEditor = spDrivme.edit();
+                                            spEditor.putString(KEY_ROLE, "Tourist");
+                                            spEditor.apply();
+
+                                            Map<String,Object> acc = new HashMap<>();
+                                            acc.put("accountStatus", "Tourist");
+                                            acc.put("Account Tourist", 1);
+
+                                            updateAcc.collection("User Accounts").document(uID)
+                                                    .update(acc);
+
+                                            startActivity(new Intent(DriverNavSettings.this, TouristInputCar.class));
+                                            finishAffinity();
+                                            finish();
+                                        })
+                                        .setNegativeButton("No", (dialog, id) -> dialog.cancel());
+
+                                android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+                                alertDialog.show();
+                            }
+                            else{
+                                SharedPreferences.Editor spEditor = spDrivme.edit();
+                                spEditor.putString(KEY_ROLE, "Tourist");
+                                spEditor.apply();
+
+                                Map<String,Object> acc = new HashMap<>();
+                                acc.put("accountStatus", "Tourist");;
+
+                                updateAcc.collection("User Accounts").document(uID)
+                                        .update(acc);
+
+                                startActivity(new Intent(DriverNavSettings.this, TouristNavHomepage.class));
+                                finishAffinity();
+                                finish();
+                            }
+                        }
+                    });
         });
 
         mclickDAbout.setOnClickListener(view -> {
             //go about us ui
+            startActivity(new Intent(DriverNavSettings.this, DriverAboutUs.class));
+            finish();
         });
 
         mbtnDLogout.setOnClickListener(view -> {
             //logout
-            spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
             String id = spDrivme.getString(KEY_ID, null);
             spDrivme.edit().clear().commit();
 
@@ -73,7 +144,7 @@ public class DriverNavSettings extends AppCompatActivity {
             updateStatus.collection("User Accounts").document(id)
                     .update(noToken);
 
-            startActivity(new Intent(getApplicationContext(), Role.class));
+            startActivity(new Intent(getApplicationContext(), UserRole.class));
             finishAffinity();
             finish();
         });
@@ -91,18 +162,13 @@ public class DriverNavSettings extends AppCompatActivity {
                     overridePendingTransition(0, 0);
                     finish();
                     return true;
-                case R.id.chat:
-                    startActivity(new Intent(getApplicationContext(), DriverNavChat.class));
+                case R.id.rating:
+                    startActivity(new Intent(getApplicationContext(), DriverNavRating.class));
                     overridePendingTransition(0, 0);
                     finish();
                     return true;
                 case R.id.home:
                     startActivity(new Intent(getApplicationContext(), DriverNavHomepage.class));
-                    overridePendingTransition(0, 0);
-                    finish();
-                    return true;
-                case R.id.notifications:
-                    startActivity(new Intent(getApplicationContext(), DriverNavNotifications.class));
                     overridePendingTransition(0, 0);
                     finish();
                     return true;

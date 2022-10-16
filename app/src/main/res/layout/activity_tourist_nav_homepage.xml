@@ -51,7 +51,6 @@
                 android:id="@+id/tvTMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="RM 0.00"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold"
@@ -121,6 +120,16 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="250dp"
+        android:layout_gravity="center"
+        android:text="Note: Price included driver's fee, driver's meal, and insurance."
+        android:textColor="@color/red"
+        android:textSize="14sp"
+        android:textStyle="italic"/>
+
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/btmTBar"
         android:layout_width="match_parent"
@@ -137,7 +146,7 @@
             android:layout_marginRight="16dp"
             android:background="@drawable/bg_transparent"
             app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/navigation_menu"/>
+            app:menu="@menu/tourist_navigation_menu"/>
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

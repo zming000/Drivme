@@ -51,7 +51,6 @@
                 android:id="@+id/tvDMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="RM 0.00"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold"
@@ -126,7 +125,7 @@
             android:layout_marginRight="16dp"
             android:background="@drawable/bg_transparent"
             app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/navigation_menu"/>
+            app:menu="@menu/driver_navigation_menu"/>
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

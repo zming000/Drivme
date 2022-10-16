@@ -1,12 +1,12 @@
 package com.example.finalyearproject_drivme;
 
 public class ModelDriverList {
-    String userID, firstName, lastName, gender, priceDay;
-    float rating;
+    String userID, firstName, lastName, gender;
+    float priceDay, rating;
 
     public ModelDriverList(){/*empty constructor*/}
 
-    public ModelDriverList(String userID, String firstName, String lastName, String gender, String priceDay, float rating) {
+    public ModelDriverList(String userID, String firstName, String lastName, String gender, float priceDay, float rating) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -47,11 +47,11 @@ public class ModelDriverList {
         this.gender = gender;
     }
 
-    public String getPriceDay() {
+    public float getPriceDay() {
         return priceDay;
     }
 
-    public void setPriceDay(String priceDay) {
+    public void setPriceDay(float priceDay) {
         this.priceDay = priceDay;
     }
 

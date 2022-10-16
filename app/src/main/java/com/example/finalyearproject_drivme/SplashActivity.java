@@ -1,28 +1,20 @@
 package com.example.finalyearproject_drivme;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class SplashActivity extends AppCompatActivity {
@@ -30,8 +22,9 @@ public class SplashActivity extends AppCompatActivity {
     Animation rotateAnim, topAnim, btmAnim;
     ImageView ivWheel;
     TextView mtvDriv, mtvSlogan;
+    FirebaseFirestore drivmeDB;
     SharedPreferences spDrivme;
-    FirebaseFirestore drivmeDB, updateToken;
+
     //key name
     private static final String SP_NAME = "drivmePref";
     private static final String KEY_ID = "userID";
@@ -67,7 +60,7 @@ public class SplashActivity extends AppCompatActivity {
             spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
 
             //check shared preference whether user logged out
-            //get username from shared preference
+            //get user id from shared preference
             String uID = spDrivme.getString(KEY_ID, null);
             String uRole = spDrivme.getString(KEY_ROLE, null);
 
@@ -83,30 +76,11 @@ public class SplashActivity extends AppCompatActivity {
                                         int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Tourist")).intValue();
 
                                         if (loginStat == 0){
-                                            startActivity(new Intent(SplashActivity.this, WelcomeTo.class));
+                                            startActivity(new Intent(SplashActivity.this, UserWelcomeTo.class));
                                         }
                                         else{
-                                            startActivity(new Intent(SplashActivity.this, WelcomeBack.class));
+                                            startActivity(new Intent(SplashActivity.this, UserWelcomeBack.class));
                                         }
-
-//                                        FirebaseMessaging.getInstance().getToken()
-//                                                .addOnCompleteListener(new OnCompleteListener<String>() {
-//                                                    @Override
-//                                                    public void onComplete(@NonNull Task<String> task) {
-//                                                        if (!task.isSuccessful()) {
-//                                                            return;
-//                                                        }
-//                                                        // Get new FCM registration token
-//                                                        String token = task.getResult();
-//                                                        updateToken = FirebaseFirestore.getInstance();
-//
-//                                                        Map<String,Object> noToken = new HashMap<>();
-//                                                        noToken.put("notificationToken", token);
-//
-//                                                        updateToken.collection("User Accounts").document(uID)
-//                                                                .update(noToken);
-//                                                    }
-//                                                });
 
                                         overridePendingTransition(0, 0);
                                         finish();
@@ -124,30 +98,11 @@ public class SplashActivity extends AppCompatActivity {
                                         int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Driver")).intValue();
 
                                         if (loginStat == 0){
-                                            startActivity(new Intent(SplashActivity.this, WelcomeTo.class));
+                                            startActivity(new Intent(SplashActivity.this, UserWelcomeTo.class));
                                         }
                                         else{
-                                            startActivity(new Intent(SplashActivity.this, WelcomeBack.class));
+                                            startActivity(new Intent(SplashActivity.this, UserWelcomeBack.class));
                                         }
-
-                                        FirebaseMessaging.getInstance().getToken()
-                                                .addOnCompleteListener(new OnCompleteListener<String>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<String> task) {
-                                                        if (!task.isSuccessful()) {
-                                                            return;
-                                                        }
-                                                        // Get new FCM registration token
-                                                        String token = task.getResult();
-                                                        updateToken = FirebaseFirestore.getInstance();
-
-                                                        Map<String,Object> noToken = new HashMap<>();
-                                                        noToken.put("notificationToken", token);
-
-                                                        updateToken.collection("User Accounts").document(uID)
-                                                                .update(noToken);
-                                                    }
-                                                });
 
                                         overridePendingTransition(0, 0);
                                         finish();
@@ -156,7 +111,7 @@ public class SplashActivity extends AppCompatActivity {
                             });
                 }
             }else{
-                startActivity(new Intent(SplashActivity.this, Role.class));
+                startActivity(new Intent(SplashActivity.this, UserRole.class));
                 overridePendingTransition(0, 0);
                 finish();
             }

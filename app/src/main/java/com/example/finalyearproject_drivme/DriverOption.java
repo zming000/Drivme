@@ -32,7 +32,7 @@ public class DriverOption extends AppCompatActivity {
 
         mbtnDriverSignup.setOnClickListener(v -> {
             //driver option -> driver sign up
-            Intent intent = new Intent(DriverOption.this, AgreementPolicy.class);
+            Intent intent = new Intent(DriverOption.this, UserAgreementPolicy.class);
             intent.putExtra("role", "Driver");
             startActivity(intent);
             finish();
@@ -42,7 +42,7 @@ public class DriverOption extends AppCompatActivity {
     //driver option -> role
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(DriverOption.this, Role.class));
+        startActivity(new Intent(DriverOption.this, UserRole.class));
         finish();
     }
 }

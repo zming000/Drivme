@@ -1,6 +1,5 @@
 package com.example.finalyearproject_drivme;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,8 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -110,38 +107,69 @@ public class DriverLogin extends AppCompatActivity {
                                             String docPW = docResult.getString("password");
                                             //check if password matched
                                             if (dPW.matches(Objects.requireNonNull(docPW))) {
-                                                int sem = Objects.requireNonNull(docResult.getLong("Account Driver")).intValue();
+                                                String accStatus = docResult.getString("accountStatus");
 
-                                                //check if id activated driver role or not
-                                                if(sem == 1) {
-                                                    int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Driver")).intValue();
-                                                    String name = Objects.requireNonNull(docResult.getString("firstName"));
+                                                if(!accStatus.equals("Suspended")) {
+                                                    int sem = Objects.requireNonNull(docResult.getLong("Account Driver")).intValue();
 
-                                                    if (loginStat == 0){
-                                                        startActivity(new Intent(DriverLogin.this, WelcomeTo.class));
+                                                    //check if id activated driver role or not
+                                                    if (sem == 1) {
+                                                        int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Driver")).intValue();
+                                                        String name = Objects.requireNonNull(docResult.getString("firstName"));
+
+                                                        if (loginStat == 0) {
+                                                            startActivity(new Intent(DriverLogin.this, UserWelcomeTo.class));
+                                                        } else {
+                                                            startActivity(new Intent(DriverLogin.this, UserWelcomeBack.class));
+                                                        }
+
+                                                        spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
+                                                        SharedPreferences.Editor spEditor = spDrivme.edit();
+                                                        spEditor.putString(KEY_FNAME, name);
+                                                        spEditor.putString(KEY_ID, dID);
+                                                        spEditor.putString(KEY_ROLE, "Driver");
+                                                        spEditor.apply();
+
+                                                        FirebaseMessaging.getInstance().getToken()
+                                                                .addOnCompleteListener(task1 -> {
+                                                                    if (!task1.isSuccessful()) {
+                                                                        return;
+                                                                    }
+
+                                                                    // Get new FCM registration token
+                                                                    String token = task1.getResult();
+                                                                    FirebaseFirestore updateToken = FirebaseFirestore.getInstance();
+
+                                                                    Map<String, Object> noToken = new HashMap<>();
+                                                                    noToken.put("notificationToken", token);
+                                                                    noToken.put("accountStatus", "Driver");
+
+                                                                    updateToken.collection("User Accounts").document(dID)
+                                                                            .update(noToken);
+                                                                });
+
+                                                        finish();
+                                                    } else {
+                                                        Toast.makeText(DriverLogin.this, "Driver Role haven't activated!", Toast.LENGTH_SHORT).show();
                                                     }
-                                                    else{
-                                                        startActivity(new Intent(DriverLogin.this, WelcomeBack.class));
-                                                    }
-
-                                                    spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
-                                                    SharedPreferences.Editor spEditor = spDrivme.edit();
-                                                    spEditor.putString(KEY_FNAME, name);
-                                                    spEditor.putString(KEY_ID, dID);
-                                                    spEditor.putString(KEY_ROLE, "Driver");
-                                                    spEditor.apply();
-
-
-                                                    finish();
                                                 }
                                                 else{
-                                                    Toast.makeText(DriverLogin.this, "Driver Role haven't activated!", Toast.LENGTH_SHORT).show();
+                                                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+                                                    alertDialogBuilder.setTitle("Account Suspended");
+                                                    alertDialogBuilder
+                                                            .setMessage("Your account have been suspended!\nPlease check your email or contact Drivme support for further information.")
+                                                            .setCancelable(false)
+                                                            .setPositiveButton("OK", (dialog, id) -> {
+                                                                dialog.cancel();
+                                                            });
+
+                                                    android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+                                                    alertDialog.show();
                                                 }
                                             }
                                             else {
                                                 Toast.makeText(DriverLogin.this, "Wrong ID or Password!", Toast.LENGTH_SHORT).show();
                                             }
-
                                     }
                                     else{
                                         mtilLoginDID.setError("ID does not exist!");
@@ -155,7 +183,7 @@ public class DriverLogin extends AppCompatActivity {
 
     //driver login -> driver sign up
     public void signupDriver(View view) {
-        Intent intent = new Intent(DriverLogin.this, AgreementPolicy.class);
+        Intent intent = new Intent(DriverLogin.this, UserAgreementPolicy.class);
         intent.putExtra("role", "Driver");
         startActivity(intent);
         finish();
@@ -170,7 +198,7 @@ public class DriverLogin extends AppCompatActivity {
 
     //driver login -> forgot password
     public void driverForgot(View view) {
-        Intent intent = new Intent(DriverLogin.this, ForgotPassword.class);
+        Intent intent = new Intent(DriverLogin.this, UserForgotPassword.class);
         intent.putExtra("role", "Driver");
 
         startActivity(intent);

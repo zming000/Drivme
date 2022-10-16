@@ -19,11 +19,27 @@ public class AdapterDriverList extends RecyclerView.Adapter<AdapterDriverList.Dr
     //declare variables
     Context driverContext;
     ArrayList<ModelDriverList> driverArrayList;
+    String orderID, touristID, startDate, endDate, time, carPlate, locality, address, comment, tripOption, dateID;
+    int duration;
 
     //constructor
-    public AdapterDriverList(Context driverContext, ArrayList<ModelDriverList> driverArrayList) {
+    public AdapterDriverList(Context driverContext, ArrayList<ModelDriverList> driverArrayList, String orderID, String touristID, int duration,
+                             String startDate, String endDate, String time, String carPlate, String locality, String address, String comment,
+                             String tripOption, String dateID) {
         this.driverContext = driverContext;
         this.driverArrayList = driverArrayList;
+        this.orderID = orderID;
+        this.touristID = touristID;
+        this.duration = duration;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.time = time;
+        this.carPlate = carPlate;
+        this.locality = locality;
+        this.address = address;
+        this.comment = comment;
+        this.tripOption = tripOption;
+        this.dateID = dateID;
     }
 
     @NonNull
@@ -50,7 +66,7 @@ public class AdapterDriverList extends RecyclerView.Adapter<AdapterDriverList.Dr
 
         holder.mtvName.setText(mdl.lastName + " " + mdl.firstName);
         holder.mtvRating.setText(String.valueOf(mdl.rating));
-        holder.mtvPrice.setText(mdl.priceDay + " / Day");
+        holder.mtvPrice.setText("RM" + Math.round(mdl.priceDay) + " / Day");
         holder.mrbDriver.setRating(mdl.rating);
 
         //driver list -> driver more details
@@ -58,6 +74,19 @@ public class AdapterDriverList extends RecyclerView.Adapter<AdapterDriverList.Dr
             Intent intent = new Intent(driverContext, DriverMoreDetails.class);
             intent.putExtra("driverID", mdl.userID);
             intent.putExtra("rating", mdl.rating);
+            intent.putExtra("priceDay", Math.round(mdl.priceDay));
+            intent.putExtra("orderID", orderID);
+            intent.putExtra("touristID", touristID);
+            intent.putExtra("duration", duration);
+            intent.putExtra("startDate", startDate);
+            intent.putExtra("endDate", endDate);
+            intent.putExtra("time", time);
+            intent.putExtra("carPlate", carPlate);
+            intent.putExtra("locality", locality);
+            intent.putExtra("address", address);
+            intent.putExtra("tripOption", tripOption);
+            intent.putExtra("comment", comment);
+            intent.putExtra("dateID", dateID);
 
             driverContext.startActivity(intent);
         });

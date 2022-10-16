@@ -27,6 +27,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -207,7 +208,7 @@ public class TouristDayTrip extends AppCompatActivity implements DatePickerDialo
             e.printStackTrace();
         }
 
-        c.add(Calendar.DATE, duration);
+        c.add(Calendar.DATE, duration - 1);
 
         Date resultdate = new Date(c.getTimeInMillis());
         endDate = sdf.format(resultdate);
@@ -404,30 +405,92 @@ public class TouristDayTrip extends AppCompatActivity implements DatePickerDialo
             //get id and order id
             String getID = spDrivme.getString(KEY_ID, null);
             String carPlate = Objects.requireNonNull(metDCarPlate.getText()).toString();
-            String getOrderID = dateForID + carPlate;
+            //get current date time
+            DateFormat df = new SimpleDateFormat("ddMMyyyyHHmm");
+            String date = df.format(Calendar.getInstance().getTime());
+            String getOrderID = date + carPlate;
+            FirebaseFirestore dateDB = FirebaseFirestore.getInstance();
 
-            //booking details -> driver list
-            Intent intent = new Intent(TouristDayTrip.this, TouristDriverList.class);
-            intent.putExtra("orderID", getOrderID);
-            intent.putExtra("touristID", getID);
-            intent.putExtra("dateID", dateForID);
-            intent.putExtra("duration", duration);
-            intent.putExtra("startDate", metDStartDate.getText().toString());
-            intent.putExtra("endDate", Objects.requireNonNull(metDEndDate.getText()).toString());
-            intent.putExtra("time", metDTime.getText().toString());
-            intent.putExtra("carPlate", carPlate);
-            intent.putExtra("state", metDState.getText().toString());
-            intent.putExtra("locality", metDLocality.getText().toString());
-            intent.putExtra("address", metDAddress.getText().toString());
+            //initialize
+            ArrayList<String> dates = new ArrayList<>();
+            SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+            Calendar c = Calendar.getInstance();
 
-            if(Objects.requireNonNull(metDComment.getText()).toString().isEmpty()){
-                intent.putExtra("comment", "No comment.");
+            //add start date
+            dates.add(dateForID);
+
+            //calculate and add dates into arraylist
+            for(int i = 0; i < duration; i++) {
+                //calculate end date with duration
+                try {
+                    c.setTime(Objects.requireNonNull(sdf.parse(dates.get(i))));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                //add 1 day
+                c.add(Calendar.DATE, 1);
+
+                Date resultDate = new Date(c.getTimeInMillis());
+                dates.add(sdf.format(resultDate));
             }
-            else{
-                intent.putExtra("comment", Objects.requireNonNull(metDComment.getText()).toString());
-            }
 
-            startActivity(intent);
+            //check which driver match the requirements
+            dateDB.collection("User Accounts").document(getID).collection("Date Booked").get()
+                    .addOnCompleteListener(task -> {
+                        String checkStatus = "true";
+                        ArrayList<String> listID = new ArrayList<>();
+
+                        if (task.isSuccessful()) {
+                            //save id into arraylist
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                listID.add(document.getId());
+                            }
+                            //nested for loop to check availability of the dates calculated
+                            for (int i = 0; i < dates.size(); i++) {
+                                for (int j = 0; j < listID.size(); j++) {
+                                    //if false, break loop
+                                    if (dates.get(i).equals(listID.get(j))) {
+                                        checkStatus = "false";
+                                        break;
+                                    }
+                                }
+                                //if false, break loop
+                                if (checkStatus.equals("false")) {
+                                    break;
+                                }
+                            }
+
+                            //if true only allowed to proceed
+                            if (checkStatus.equals("true")) {
+                                //booking details -> driver list
+                                Intent intent = new Intent(TouristDayTrip.this, TouristDriverList.class);
+                                intent.putExtra("orderID", getOrderID);
+                                intent.putExtra("touristID", getID);
+                                intent.putExtra("dateID", dateForID);
+                                intent.putExtra("duration", duration);
+                                intent.putExtra("startDate", metDStartDate.getText().toString());
+                                intent.putExtra("endDate", Objects.requireNonNull(metDEndDate.getText()).toString());
+                                intent.putExtra("time", metDTime.getText().toString());
+                                intent.putExtra("carPlate", carPlate);
+                                intent.putExtra("state", metDState.getText().toString());
+                                intent.putExtra("locality", metDLocality.getText().toString());
+                                intent.putExtra("address", metDAddress.getText().toString());
+                                intent.putExtra("tripOption", getIntent().getStringExtra("tripOpt"));
+
+                                if(Objects.requireNonNull(metDComment.getText()).toString().isEmpty()){
+                                    intent.putExtra("comment", "No comment.");
+                                }
+                                else{
+                                    intent.putExtra("comment", Objects.requireNonNull(metDComment.getText()).toString());
+                                }
+                                startActivity(intent);
+                            }
+                            else{
+                                Toast.makeText(TouristDayTrip.this, "Date selected have been booked! Please choose another date!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
         }
     }
 
@@ -565,7 +628,9 @@ public class TouristDayTrip extends AppCompatActivity implements DatePickerDialo
                             startActivity(new Intent(TouristDayTrip.this, TouristNavHomepage.class));
                             finishAffinity();
                             finish();
-                        });
+                        })
+                .setNegativeButton("No", (dialog, id) -> dialog.cancel());
+
 
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();

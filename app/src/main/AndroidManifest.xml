@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.finalyearproject_drivme">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/app_logo_wheel"
@@ -9,25 +11,57 @@
         android:roundIcon="@drawable/app_logo_wheel"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalYearProjectDrivme">
-
-
-
-        <!-- Account UI -->
         <activity
-            android:name=".ResetSuccess"
+            android:name=".DriverAboutUs"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ResetPW"
+            android:name=".TouristAboutUs"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".FPWOtp"
+            android:name=".DriverProfile"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ForgotPassword"
+            android:name=".TouristProfile"
             android:screenOrientation="portrait" />
-
-
-        <!-- Driver UI -->
+        <activity
+            android:name=".TouristCarDetails"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverChangePW"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristChangePW"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristRating"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristPayment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristBookingDetails"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristBookSuccess"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristSlotTrip"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverRequestDetails"
+            android:screenOrientation="portrait" /> <!-- Account UI -->
+        <activity
+            android:name=".UserResetSuccess"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserResetPW"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserFPWOtp"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserForgotPassword"
+            android:screenOrientation="portrait" /> <!-- Driver UI -->
         <activity
             android:name=".DriverOTP"
             android:screenOrientation="portrait" />
@@ -53,20 +87,14 @@
             android:name=".DriverNavSettings"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DriverNavNotifications"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".DriverNavChat"
+            android:name=".DriverNavRating"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DriverNavActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DriverNavHomepage"
-            android:screenOrientation="portrait" />
-
-
-        <!-- Tourist UI -->
+            android:screenOrientation="portrait" /> <!-- Tourist UI -->
         <activity
             android:name=".TouristLogin"
             android:screenOrientation="portrait" />
@@ -80,16 +108,13 @@
             android:name=".TouristPhoneNumber"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TouristCarDetails"
+            android:name=".TouristInputCar"
             android:screenOrientation="portrait" />
         <activity
             android:name=".TouristNavSettings"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TouristNavNotifications"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".TouristNavChat"
+            android:name=".TouristNavCars"
             android:screenOrientation="portrait" />
         <activity
             android:name=".TouristNavActivity"
@@ -99,23 +124,20 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".TouristDayTrip"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".TouristDriverList"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DriverMoreDetails"
-            android:screenOrientation="portrait"/>
-
-
-        <!-- App UI -->
+            android:screenOrientation="portrait" /> <!-- App UI -->
         <activity
-            android:name=".Role"
+            android:name=".UserRole"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SplashActivity"
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -123,31 +145,29 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WelcomeTo"
+            android:name=".UserWelcomeTo"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".WelcomeBack"
+            android:name=".UserWelcomeBack"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AgreementPolicy"
+            android:name=".UserAgreementPolicy"
             android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/app_logo_wheel" />
 
         <service
-            android:name=".PushNotificationService"
+            android:name=".UserPushNotificationService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

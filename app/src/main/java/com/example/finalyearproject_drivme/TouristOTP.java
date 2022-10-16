@@ -146,6 +146,7 @@ public class TouristOTP extends AppCompatActivity {
         touristAcc.put("Account Tourist", 1);
         touristAcc.put("Account Driver", 0);
         touristAcc.put("Agreement Check", 1);
+        touristAcc.put("drivPay", "0.00");
 
         db.collection("User Accounts").document(value)
                 .set(touristAcc)
@@ -155,7 +156,7 @@ public class TouristOTP extends AppCompatActivity {
                     alertDialogBuilder
                             .setMessage("Let's try to login!")
                             .setCancelable(false)
-                            .setPositiveButton("Yes", (dialog, id) -> {
+                            .setPositiveButton("Login", (dialog, id) -> {
                                 startActivity(new Intent(TouristOTP.this, TouristLogin.class));
                                 finishAffinity();
                                 finish();
@@ -170,7 +171,7 @@ public class TouristOTP extends AppCompatActivity {
                     alertDialogBuilder
                             .setMessage("Please try again!")
                             .setCancelable(false)
-                            .setPositiveButton("OK", (dialog, id) -> {
+                            .setPositiveButton("Try Again", (dialog, id) -> {
                                         startActivity(new Intent(TouristOTP.this, TouristSignUp.class));
                                         finishAffinity();
                                         finish();
@@ -211,6 +212,5 @@ public class TouristOTP extends AppCompatActivity {
                 }
             }.start();
         });
-
     }
 }

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -22,7 +21,7 @@ import java.util.Objects;
 public class TouristDriverList extends AppCompatActivity {
     //declare variables
     RecyclerView mrvDriver;
-    ArrayList<ModelDriverList> mdl;
+    ArrayList<ModelDriverList> driverList;
     AdapterDriverList dlAdapter;
     FirebaseFirestore userDB;
     String driverID;
@@ -38,8 +37,22 @@ public class TouristDriverList extends AppCompatActivity {
 
         //initialize varaibles
         userDB = FirebaseFirestore.getInstance();
-        mdl = new ArrayList<>();
-        dlAdapter = new AdapterDriverList(TouristDriverList.this, mdl);
+        driverList = new ArrayList<>();
+        dlAdapter = new AdapterDriverList(
+                TouristDriverList.this,
+                driverList,
+                getIntent().getStringExtra("orderID"),
+                getIntent().getStringExtra("touristID"),
+                getIntent().getIntExtra("duration", 0),
+                getIntent().getStringExtra("startDate"),
+                getIntent().getStringExtra("endDate"),
+                getIntent().getStringExtra("time"),
+                getIntent().getStringExtra("carPlate"),
+                getIntent().getStringExtra("locality"),
+                getIntent().getStringExtra("address"),
+                getIntent().getStringExtra("comment"),
+                getIntent().getStringExtra("tripOption"),
+                getIntent().getStringExtra("dateID"));
 
         mrvDriver.setAdapter(dlAdapter);
 
@@ -49,7 +62,7 @@ public class TouristDriverList extends AppCompatActivity {
     /*check available driver that fulfill requirement*/
     private void getDetailsFromFirestore() {
         //declare variables
-        int numDate = getIntent().getIntExtra("duration", 0);
+        int numDays = getIntent().getIntExtra("duration", 0);
         String startDate = getIntent().getStringExtra("dateID");
 
         //initialize
@@ -61,7 +74,7 @@ public class TouristDriverList extends AppCompatActivity {
         dates.add(startDate);
 
         //calculate and add dates into arraylist
-        for(int i = 0; i < numDate; i++) {
+        for(int i = 0; i < numDays - 1; i++) {
             //calculate end date with duration
             try {
                 c.setTime(Objects.requireNonNull(sdf.parse(dates.get(i))));
@@ -96,7 +109,7 @@ public class TouristDriverList extends AppCompatActivity {
                             FirebaseFirestore dateDB = FirebaseFirestore.getInstance();
 
                             //check which driver match the requirements
-                            dateDB.collection("User Accounts").document(driverID).collection("Not Available").get()
+                            dateDB.collection("User Accounts").document(driverID).collection("Date Booked").get()
                                     .addOnCompleteListener(task -> {
                                         String checkStatus = "true";
                                         ArrayList<String> listID = new ArrayList<>();
@@ -123,7 +136,7 @@ public class TouristDriverList extends AppCompatActivity {
 
                                             //if true only allowed to set the details into model
                                             if (checkStatus.equals("true")) {
-                                                mdl.add(dc.getDocument().toObject(ModelDriverList.class));
+                                                driverList.add(dc.getDocument().toObject(ModelDriverList.class));
                                                 dlAdapter.notifyDataSetChanged();
                                             }
                                         }

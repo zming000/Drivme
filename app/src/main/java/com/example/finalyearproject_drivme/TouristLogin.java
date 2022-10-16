@@ -106,55 +106,71 @@ public class TouristLogin extends AppCompatActivity {
                                             String pw2 = docResult.getString("password");
                                             //check if the password matched
                                             if (pw.matches(Objects.requireNonNull(pw2))) {
-                                                int value = Objects.requireNonNull(docResult.getLong("Account Tourist")).intValue();
+                                                String accStatus = docResult.getString("accountStatus");
 
-                                                //check if id activated tourist role or not
-                                                if(value == 1) {
-                                                    int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Tourist")).intValue();
-                                                    String name = Objects.requireNonNull(docResult.getString("firstName"));
+                                                if(!accStatus.equals("Suspended")) {
+                                                    int value = Objects.requireNonNull(docResult.getLong("Account Tourist")).intValue();
 
-                                                    if (loginStat == 0){
-                                                        startActivity(new Intent(TouristLogin.this, WelcomeTo.class));
+                                                    //check if id activated tourist role or not
+                                                    if(value == 1) {
+                                                        int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Tourist")).intValue();
+                                                        String name = Objects.requireNonNull(docResult.getString("firstName"));
+
+                                                        if (loginStat == 0){
+                                                            startActivity(new Intent(TouristLogin.this, UserWelcomeTo.class));
+                                                        }
+                                                        else{
+                                                            startActivity(new Intent(TouristLogin.this, UserWelcomeBack.class));
+                                                        }
+
+                                                        //save necessary data for later use
+                                                        spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
+                                                        SharedPreferences.Editor spEditor = spDrivme.edit();
+                                                        spEditor.putString(KEY_FNAME, name);
+                                                        spEditor.putString(KEY_ID, id);
+                                                        spEditor.putString(KEY_ROLE, "Tourist");
+                                                        spEditor.apply();
+
+                                                        FirebaseMessaging.getInstance().getToken()
+                                                                .addOnCompleteListener(task1 -> {
+                                                                    if (!task1.isSuccessful()) {
+                                                                        return;
+                                                                    }
+
+                                                                    // Get new FCM registration token
+                                                                    String token = task1.getResult();
+                                                                    FirebaseFirestore updateToken = FirebaseFirestore.getInstance();
+
+                                                                    Map<String,Object> noToken = new HashMap<>();
+                                                                    noToken.put("notificationToken", token);
+                                                                    noToken.put("accountStatus", "Tourist");
+
+                                                                    updateToken.collection("User Accounts").document(id)
+                                                                            .update(noToken);
+                                                                });
+                                                        finish();
                                                     }
                                                     else{
-                                                        startActivity(new Intent(TouristLogin.this, WelcomeBack.class));
+                                                        Toast.makeText(TouristLogin.this, "Tourist Role haven't activated!", Toast.LENGTH_SHORT).show();
                                                     }
-
-                                                    //save necessary data for later use
-                                                    spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
-                                                    SharedPreferences.Editor spEditor = spDrivme.edit();
-                                                    spEditor.putString(KEY_FNAME, name);
-                                                    spEditor.putString(KEY_ID, id);
-                                                    spEditor.putString(KEY_ROLE, "Tourist");
-                                                    spEditor.apply();
-
-                                                    FirebaseMessaging.getInstance().getToken()
-                                                            .addOnCompleteListener(task1 -> {
-                                                                if (!task1.isSuccessful()) {
-                                                                    return;
-                                                                }
-
-                                                                // Get new FCM registration token
-                                                                String token = task1.getResult();
-                                                                FirebaseFirestore updateToken = FirebaseFirestore.getInstance();
-
-                                                                Map<String,Object> noToken = new HashMap<>();
-                                                                noToken.put("notificationToken", token);
-                                                                noToken.put("accountStatus", "Tourist");
-
-                                                                updateToken.collection("User Accounts").document(id)
-                                                                        .update(noToken);
-                                                            });
-                                                    finish();
                                                 }
                                                 else{
-                                                    Toast.makeText(TouristLogin.this, "Tourist Role haven't activated!", Toast.LENGTH_SHORT).show();
+                                                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+                                                    alertDialogBuilder.setTitle("Account Suspended");
+                                                    alertDialogBuilder
+                                                            .setMessage("Your account have been suspended!\nPlease check your email or contact Drivme support for further information.")
+                                                            .setCancelable(false)
+                                                            .setPositiveButton("OK", (dialog, iD) -> {
+                                                                dialog.cancel();
+                                                            });
+
+                                                    android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+                                                    alertDialog.show();
                                                 }
                                             }
                                             else {
                                                 Toast.makeText(TouristLogin.this, "Wrong ID or Password!", Toast.LENGTH_SHORT).show();
                                             }
-
                                     }
                                     else{
                                         mtilLoginTouristID.setError("ID does not exist!");
@@ -171,7 +187,7 @@ public class TouristLogin extends AppCompatActivity {
 
     //tourist login -> tourist sign up
     public void signupTourist(View view) {
-        Intent intent = new Intent(TouristLogin.this, AgreementPolicy.class);
+        Intent intent = new Intent(TouristLogin.this, UserAgreementPolicy.class);
         intent.putExtra("role", "Tourist");
         startActivity(intent);
     }
@@ -179,12 +195,12 @@ public class TouristLogin extends AppCompatActivity {
     //tourist login -> role
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(TouristLogin.this, Role.class));
+        startActivity(new Intent(TouristLogin.this, UserRole.class));
         finish();
     }
 
     public void touristForgot(View view) {
-        Intent intent = new Intent(TouristLogin.this, ForgotPassword.class);
+        Intent intent = new Intent(TouristLogin.this, UserForgotPassword.class);
         intent.putExtra("role", "Tourist");
 
         startActivity(intent);

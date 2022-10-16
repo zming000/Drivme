@@ -307,8 +307,8 @@ public class TouristSignUp extends AppCompatActivity {
                             intent.putExtra("tEmailNext", Objects.requireNonNull(metTouristEmail.getText()).toString());
                             intent.putExtra("tPasswordNext", Objects.requireNonNull(metTouristPassword.getText()).toString());
 
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);                        }
+                            startActivity(intent);
+                        }
                     }
                 });
     }

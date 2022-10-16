@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_option"
+    tools:context=".UserRole">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/logoDriv"
+                android:layout_width="213dp"
+                android:layout_height="217dp"
+                android:layout_gravity="center"
+                android:src="@drawable/app_logo_name" />
+
+            <TextView
+                android:id="@+id/tvChoose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="40dp"
+                android:text="Choose your role"
+                android:textColor="#0f7d63"
+                android:textSize="31sp"
+                android:textStyle="bold" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvDriver"
+                    android:layout_width="160dp"
+                    android:layout_height="260dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginBottom="10dp"
+                    app:cardCornerRadius="38dp"
+                    app:cardElevation="18dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/ivDriver"
+                            android:layout_width="151dp"
+                            android:layout_height="159dp"
+                            android:src="@drawable/logo_driver" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnDriver"
+                            android:layout_width="130dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/btn_rounded_green"
+                            android:text="Driver"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="24sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvTourist"
+                    android:layout_width="160dp"
+                    android:layout_height="260dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="2dp"
+                    app:cardCornerRadius="38dp"
+                    app:cardElevation="18dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/cvDriver"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cvDriver"
+                    app:layout_constraintTop_toTopOf="@+id/cvDriver">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/ivTourist"
+                            android:layout_width="151dp"
+                            android:layout_height="159dp"
+                            android:src="@drawable/logo_tourist" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnTourist"
+                            android:layout_width="130dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/btn_without_color"
+                            android:text="Tourist"
+                            android:textAllCaps="false"
+                            android:textColor="#0F7D63"
+                            android:textSize="24sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

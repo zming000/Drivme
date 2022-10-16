@@ -7,6 +7,38 @@
     tools:context=".TouristNavActivity"
     android:background="@drawable/bg_tourist_nav_activity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp">
+
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tabActivity">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Booking"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ongoing"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="History"/>
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/vpActivity"
+            android:layout_below="@+id/tabActivity"/>
+    </RelativeLayout>
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/btmTBar"
@@ -24,7 +56,7 @@
             android:layout_marginRight="16dp"
             android:background="@drawable/bg_transparent"
             app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/navigation_menu"/>
+            app:menu="@menu/tourist_navigation_menu"/>
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 
