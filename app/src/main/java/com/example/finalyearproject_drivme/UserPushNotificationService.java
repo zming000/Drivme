@@ -21,7 +21,6 @@ public class UserPushNotificationService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage message) {
         String noTitle = Objects.requireNonNull(message.getNotification()).getTitle();
         String noText = message.getNotification().getBody();
-        String noTag = message.getNotification().getTag();
         String CHANNEL_ID = "MESSAGE";
 
         NotificationChannel noChannel = new NotificationChannel(
@@ -32,74 +31,13 @@ public class UserPushNotificationService extends FirebaseMessagingService {
 
         Notification.Builder noBuilder = new Notification.Builder(this, CHANNEL_ID);
 
-        if(Objects.requireNonNull(noTitle).equals("New Request")) {
-            Intent reqIntent = new Intent(getApplicationContext(), DriverRequestDetails.class);
-            reqIntent.putExtra("orderID", noTag);
-            reqIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            PendingIntent orderPending = PendingIntent.getActivity(getApplicationContext(), 1, reqIntent, PendingIntent.FLAG_ONE_SHOT);
-
-            noBuilder.setContentTitle(noTitle);
-            noBuilder.setContentText(noText);
-            noBuilder.setSmallIcon(R.drawable.app_logo_wheel);
-            noBuilder.setAutoCancel(true);
-            noBuilder.setContentIntent(orderPending);
-        }
-        else if(Objects.requireNonNull(noTitle).equals("Request Rejected")){
-            Intent reqIntent = new Intent(getApplicationContext(), TouristBookingDetails.class);
-            reqIntent.putExtra("orderID", noTag);
-            reqIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            PendingIntent orderPending = PendingIntent.getActivity(getApplicationContext(), 1, reqIntent, PendingIntent.FLAG_ONE_SHOT);
-
-            noBuilder.setContentTitle(noTitle);
-            noBuilder.setContentText(noText);
-            noBuilder.setSmallIcon(R.drawable.app_logo_wheel);
-            noBuilder.setAutoCancel(true);
-            noBuilder.setContentIntent(orderPending);
-        }
-        else if(Objects.requireNonNull(noTitle).equals("Booking Cancelled by Tourist")){
-            Intent reqIntent = new Intent(getApplicationContext(), DriverRequestDetails.class);
-            reqIntent.putExtra("orderID", noTag);
-            reqIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            PendingIntent orderPending = PendingIntent.getActivity(getApplicationContext(), 1, reqIntent, PendingIntent.FLAG_ONE_SHOT);
-
-            noBuilder.setContentTitle(noTitle);
-            noBuilder.setContentText(noText);
-            noBuilder.setSmallIcon(R.drawable.app_logo_wheel);
-            noBuilder.setAutoCancel(true);
-            noBuilder.setContentIntent(orderPending);
-        }
-        else if(Objects.requireNonNull(noTitle).equals("Booking Cancelled by Driver")){
-            Intent reqIntent = new Intent(getApplicationContext(), TouristBookingDetails.class);
-            reqIntent.putExtra("orderID", noTag);
-            reqIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            PendingIntent orderPending = PendingIntent.getActivity(getApplicationContext(), 1, reqIntent, PendingIntent.FLAG_ONE_SHOT);
-
-            noBuilder.setContentTitle(noTitle);
-            noBuilder.setContentText(noText);
-            noBuilder.setSmallIcon(R.drawable.app_logo_wheel);
-            noBuilder.setAutoCancel(true);
-            noBuilder.setContentIntent(orderPending);
-        }
-        else if(Objects.requireNonNull(noTitle).equals("Booking Accepted")){
-            Intent reqIntent = new Intent(getApplicationContext(), TouristBookingDetails.class);
-            reqIntent.putExtra("orderID", noTag);
-            reqIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            PendingIntent orderPending = PendingIntent.getActivity(getApplicationContext(), 1, reqIntent, PendingIntent.FLAG_ONE_SHOT);
-
-            noBuilder.setContentTitle(noTitle);
-            noBuilder.setContentText(noText);
-            noBuilder.setSmallIcon(R.drawable.app_logo_wheel);
-            noBuilder.setAutoCancel(true);
-            noBuilder.setContentIntent(orderPending);
-        }
-        else if(Objects.requireNonNull(noTitle).equals("Booking Paid")){
+        if(Objects.requireNonNull(noTitle).equals("New Request") ||
+                Objects.requireNonNull(noTitle).equals("Booking Cancelled by Tourist") ||
+                Objects.requireNonNull(noTitle).equals("Booking Paid") ||
+                Objects.requireNonNull(noTitle).equals("Trip Started") ||
+                Objects.requireNonNull(noTitle).equals("Trip Ended") ||
+                Objects.requireNonNull(noTitle).equals("Driver Trip Reminder")) {
             Intent reqIntent = new Intent(getApplicationContext(), DriverNavActivity.class);
-            reqIntent.putExtra("orderID", noTag);
             reqIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             PendingIntent orderPending = PendingIntent.getActivity(getApplicationContext(), 1, reqIntent, PendingIntent.FLAG_ONE_SHOT);
@@ -110,35 +48,13 @@ public class UserPushNotificationService extends FirebaseMessagingService {
             noBuilder.setAutoCancel(true);
             noBuilder.setContentIntent(orderPending);
         }
-        else if(Objects.requireNonNull(noTitle).equals("I'm Here")){
+        else if(Objects.requireNonNull(noTitle).equals("Request Rejected") ||
+                Objects.requireNonNull(noTitle).equals("Booking Cancelled by Driver") ||
+                Objects.requireNonNull(noTitle).equals("Booking Accepted") ||
+                Objects.requireNonNull(noTitle).equals("I'm Here") ||
+                Objects.requireNonNull(noTitle).equals("Tourist Trip Reminder") ||
+                Objects.requireNonNull(noTitle).equals("Refunded Successfully")){
             Intent reqIntent = new Intent(getApplicationContext(), TouristNavActivity.class);
-            reqIntent.putExtra("orderID", noTag);
-            reqIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            PendingIntent orderPending = PendingIntent.getActivity(getApplicationContext(), 1, reqIntent, PendingIntent.FLAG_ONE_SHOT);
-
-            noBuilder.setContentTitle(noTitle);
-            noBuilder.setContentText(noText);
-            noBuilder.setSmallIcon(R.drawable.app_logo_wheel);
-            noBuilder.setAutoCancel(true);
-            noBuilder.setContentIntent(orderPending);
-        }
-        else if(Objects.requireNonNull(noTitle).equals("Trip Started")){
-            Intent reqIntent = new Intent(getApplicationContext(), DriverNavActivity.class);
-            reqIntent.putExtra("orderID", noTag);
-            reqIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            PendingIntent orderPending = PendingIntent.getActivity(getApplicationContext(), 1, reqIntent, PendingIntent.FLAG_ONE_SHOT);
-
-            noBuilder.setContentTitle(noTitle);
-            noBuilder.setContentText(noText);
-            noBuilder.setSmallIcon(R.drawable.app_logo_wheel);
-            noBuilder.setAutoCancel(true);
-            noBuilder.setContentIntent(orderPending);
-        }
-        else if(Objects.requireNonNull(noTitle).equals("Trip Ended")){
-            Intent reqIntent = new Intent(getApplicationContext(), DriverNavHomepage.class);
-            reqIntent.putExtra("orderID", noTag);
             reqIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             PendingIntent orderPending = PendingIntent.getActivity(getApplicationContext(), 1, reqIntent, PendingIntent.FLAG_ONE_SHOT);

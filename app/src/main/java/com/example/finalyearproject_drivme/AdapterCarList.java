@@ -23,6 +23,7 @@ public class AdapterCarList extends RecyclerView.Adapter<AdapterCarList.CarListV
     private static final String SP_NAME = "drivmePref";
     private static final String KEY_ID = "userID";
 
+    //constructor
     public AdapterCarList(Context carContext, ArrayList<String> carArrayList) {
         this.carContext = carContext;
         this.carArrayList = carArrayList;
@@ -37,11 +38,15 @@ public class AdapterCarList extends RecyclerView.Adapter<AdapterCarList.CarListV
 
     @Override
     public void onBindViewHolder(@NonNull AdapterCarList.CarListViewHolder holder, int position) {
+        //get position
         String carPlate = carArrayList.get(position);
         spDrivme = carContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         String uID = spDrivme.getString(KEY_ID, null);
 
+        //set text
         holder.mtvCarPlate.setText(carPlate);
+
+        //car list -> car more details
         holder.mcvCarDetails.setOnClickListener(view -> {
             Intent intent = new Intent(carContext, TouristCarDetails.class);
             intent.putExtra("id", uID);

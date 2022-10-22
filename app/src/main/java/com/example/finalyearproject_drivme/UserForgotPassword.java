@@ -105,9 +105,7 @@ public class UserForgotPassword extends AppCompatActivity {
             else{
                 String id = Objects.requireNonNull(metFpwID.getText()).toString();
 
-                userDB.collection("User Accounts")
-                        .document(id)
-                        .get()
+                userDB.collection("User Accounts").document(id).get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot document = task.getResult();

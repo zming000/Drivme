@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,13 +41,12 @@ public class TouristDayTrip extends AppCompatActivity implements DatePickerDialo
     //initialize variables
     TextInputLayout mtilDDuration, mtilDStartDate, mtilDTime, mtilDCarPlate, mtilDState, mtilDLocality, mtilDAddress;
     TextInputEditText metDDuration, metDStartDate, metDEndDate, metDTime, metDCarPlate, metDState, metDLocality, metDAddress, metDComment;
-
     String dateForID, endDate, muTime, locality, address;
     Button mbtnOK, mbtnDayNext;
     TextView mtvSelect;
     NumberPicker mnpHour, mnpMin, mnpPicker;
     SharedPreferences spDrivme;
-    int dayOfWeek, duration;
+    int duration;
     ArrayList<String> cpList;
 
     //key name
@@ -136,7 +134,6 @@ public class TouristDayTrip extends AppCompatActivity implements DatePickerDialo
 
                 durationDialog.dismiss();
             });
-
         });
     }
 
@@ -174,6 +171,8 @@ public class TouristDayTrip extends AppCompatActivity implements DatePickerDialo
             Date currentTimeDate = sdf.parse(sdf.format(new Date()));
             Date endTimeDate = sdf.parse("22:00");
             int state = Objects.requireNonNull(currentTimeDate).compareTo(endTimeDate); // false / current time has not passed end time.
+
+            //set limit to available date within a week
             if(state > 0){
                 dpd.getDatePicker().setMinDate(System.currentTimeMillis() + (1000*60*60*24*2));
                 dpd.getDatePicker().setMaxDate(System.currentTimeMillis() + (1000*60*60*24*8));
@@ -191,10 +190,6 @@ public class TouristDayTrip extends AppCompatActivity implements DatePickerDialo
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-        GregorianCalendar gc = new GregorianCalendar(year, month, dayOfMonth - 1);
-
-        //get day of week
-        dayOfWeek = gc.get(Calendar.DAY_OF_WEEK);
         String date = String.format("%02d/%02d/" + year, dayOfMonth, (month + 1));
         dateForID = String.format("%02d%02d" + year, dayOfMonth, (month + 1));
 
@@ -267,8 +262,7 @@ public class TouristDayTrip extends AppCompatActivity implements DatePickerDialo
         FirebaseFirestore drivmeDB = FirebaseFirestore.getInstance();
         CollectionReference crDrivme = drivmeDB.collection("User Accounts").document(getID).collection("Car Details");
 
-        crDrivme.whereNotEqualTo("carStatus", "N/A").get()
-                .addOnCompleteListener(task -> {
+        crDrivme.get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         cpList.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {

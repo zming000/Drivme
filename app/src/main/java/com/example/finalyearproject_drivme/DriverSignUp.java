@@ -69,7 +69,7 @@ public class DriverSignUp extends AppCompatActivity {
         alertDialogBuilder
                 .setMessage("Do you wish to discard and go back login?")
                 .setCancelable(false)
-                .setPositiveButton("DISCARD",
+                .setPositiveButton("Discard",
                         (dialog, id) -> {
                             startActivity(new Intent(DriverSignUp.this, DriverLogin.class));
                             finish();
@@ -86,7 +86,7 @@ public class DriverSignUp extends AppCompatActivity {
         alertDialogBuilder
                 .setMessage("Do you wish to discard and go back login?")
                 .setCancelable(false)
-                .setPositiveButton("DISCARD",
+                .setPositiveButton("Discard",
                         (dialog, id) -> {
                             startActivity(new Intent(DriverSignUp.this, DriverLogin.class));
                             finish();

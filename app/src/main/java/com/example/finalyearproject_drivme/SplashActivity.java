@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class SplashActivity extends AppCompatActivity {
@@ -73,17 +75,40 @@ public class SplashActivity extends AppCompatActivity {
                                     DocumentSnapshot docResult = task.getResult();
 
                                     if (docResult != null) {
-                                        int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Tourist")).intValue();
+                                        String accountState = docResult.getString("accountStatus");
 
-                                        if (loginStat == 0){
-                                            startActivity(new Intent(SplashActivity.this, UserWelcomeTo.class));
+                                        if(accountState.equals("Suspended")){
+                                            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+                                            alertDialogBuilder.setTitle("Account Suspended");
+                                            alertDialogBuilder
+                                                    .setMessage("Your account have been suspended!\nPlease check your email or contact Drivme support for further information.")
+                                                    .setCancelable(false)
+                                                    .setPositiveButton("OK", (dialog, iD) -> {
+                                                        spDrivme.edit().clear().commit();
+
+                                                        startActivity(new Intent(getApplicationContext(), UserRole.class));
+                                                        dialog.dismiss();
+                                                        finishAffinity();
+                                                        finish();
+                                                    });
+
+                                            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+                                            alertDialog.show();
                                         }
-                                        else{
-                                            startActivity(new Intent(SplashActivity.this, UserWelcomeBack.class));
+                                        else {
+                                            int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Tourist")).intValue();
+
+                                            if (loginStat == 0) {
+                                                startActivity(new Intent(SplashActivity.this, UserWelcomeTo.class));
+                                            } else {
+                                                startActivity(new Intent(SplashActivity.this, UserWelcomeBack.class));
+                                            }
+
+                                            overridePendingTransition(0, 0);
+                                            finishAffinity();
+                                            finish();
                                         }
 
-                                        overridePendingTransition(0, 0);
-                                        finish();
                                     }
                                 }
                             });

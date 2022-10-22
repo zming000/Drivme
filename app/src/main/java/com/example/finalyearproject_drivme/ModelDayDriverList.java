@@ -1,12 +1,13 @@
 package com.example.finalyearproject_drivme;
 
-public class ModelDriverList {
+public class ModelDayDriverList {
+    //declare variables
     String userID, firstName, lastName, gender;
     float priceDay, rating;
 
-    public ModelDriverList(){/*empty constructor*/}
+    public ModelDayDriverList(){/*empty constructor*/}
 
-    public ModelDriverList(String userID, String firstName, String lastName, String gender, float priceDay, float rating) {
+    public ModelDayDriverList(String userID, String firstName, String lastName, String gender, float priceDay, float rating) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;

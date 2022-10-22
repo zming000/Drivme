@@ -80,7 +80,7 @@ public class DriverProfile extends AppCompatActivity {
             boolean statusVerification = validationOnEachFields();
             if(statusVerification) {
                 android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverProfile.this);
-                alertDialogBuilder.setTitle("Discard Process");
+                alertDialogBuilder.setTitle("Edit Profile");
                 alertDialogBuilder
                         .setMessage("Do you wish to edit your details?")
                         .setCancelable(false)

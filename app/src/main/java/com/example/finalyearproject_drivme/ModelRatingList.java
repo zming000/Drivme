@@ -1,16 +1,18 @@
 package com.example.finalyearproject_drivme;
 
 public class ModelRatingList {
-    String orderID, rateCompliment, rateComment;
+    //declare variables
+    String orderID, rateCompliment, rateComment, tripOption;
     float rateStar, total;
 
     public ModelRatingList() {/*empty constructor*/
     }
 
-    public ModelRatingList(String orderID, String rateCompliment, String rateComment, float rateStar, float total) {
+    public ModelRatingList(String orderID, String rateCompliment, String rateComment, String tripOption, float rateStar, float total) {
         this.orderID = orderID;
         this.rateCompliment = rateCompliment;
         this.rateComment = rateComment;
+        this.tripOption = tripOption;
         this.rateStar = rateStar;
         this.total = total;
     }
@@ -37,6 +39,14 @@ public class ModelRatingList {
 
     public void setRateComment(String rateComment) {
         this.rateComment = rateComment;
+    }
+
+    public String getTripOption() {
+        return tripOption;
+    }
+
+    public void setTripOption(String tripOption) {
+        this.tripOption = tripOption;
     }
 
     public float getRateStar() {

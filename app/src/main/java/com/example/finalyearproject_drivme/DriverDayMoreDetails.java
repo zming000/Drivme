@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class DriverMoreDetails extends AppCompatActivity {
+public class DriverDayMoreDetails extends AppCompatActivity {
     //declare variables
     ImageView mivGender;
     TextView mtvFName, mtvLName, mtvRating, mtvAge, mtvRace, mtvDrivExp, mtvLanguages, mtvState, mtvAreas, mtvPriceDay;
@@ -38,7 +38,7 @@ public class DriverMoreDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver_more_details);
+        setContentView(R.layout.activity_driver_day_more_details);
 
         //assign variables
         mivGender = findViewById(R.id.ivGender);
@@ -59,7 +59,7 @@ public class DriverMoreDetails extends AppCompatActivity {
 
         //initialize firestore
         detailsDB = FirebaseFirestore.getInstance();
-
+        //get driver id
         String driverID = getIntent().getStringExtra("driverID");
 
         detailsDB.collection("User Accounts").document(driverID).get()
@@ -139,7 +139,7 @@ public class DriverMoreDetails extends AppCompatActivity {
         mbtnBack.setOnClickListener(view -> finish());
 
         mbtnSelect.setOnClickListener(view -> {
-            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverMoreDetails.this);
+            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverDayMoreDetails.this);
             alertDialogBuilder.setTitle("Selecting Driver");
             alertDialogBuilder
                     .setMessage("Do you wish to book him/her?")
@@ -157,12 +157,9 @@ public class DriverMoreDetails extends AppCompatActivity {
         FirebaseFirestore addOrder = FirebaseFirestore.getInstance();
         FirebaseFirestore updateDriver = FirebaseFirestore.getInstance();
         FirebaseFirestore updateTourist = FirebaseFirestore.getInstance();
-        FirebaseFirestore updateTouristCar = FirebaseFirestore.getInstance();
         String driID = getIntent().getStringExtra("driverID");
         String orderID = getIntent().getStringExtra("orderID");
         String tourID = getIntent().getStringExtra("touristID");
-        String tripOpt = getIntent().getStringExtra("tripOption");
-        String carP = getIntent().getStringExtra("carPlate");
         float price = getIntent().getIntExtra("priceDay", 0);
         int dur = getIntent().getIntExtra("duration", 0);
 
@@ -170,34 +167,31 @@ public class DriverMoreDetails extends AppCompatActivity {
 
         /* add trip details */
         Map<String, Object> tripDetails = new HashMap<>();
-        if(tripOpt.equals("Day")) {
-            tripDetails.put("driverID", getIntent().getStringExtra("driverID"));
-            tripDetails.put("orderID", getIntent().getStringExtra("orderID"));
-            tripDetails.put("touristID", getIntent().getStringExtra("touristID"));
-            tripDetails.put("duration", getIntent().getIntExtra("duration", 0));
-            tripDetails.put("startDate", getIntent().getStringExtra("startDate"));
-            tripDetails.put("endDate", getIntent().getStringExtra("endDate"));
-            tripDetails.put("time", getIntent().getStringExtra("time"));
-            tripDetails.put("carPlate", getIntent().getStringExtra("carPlate"));
-            tripDetails.put("locality", getIntent().getStringExtra("locality"));
-            tripDetails.put("address", getIntent().getStringExtra("address"));
-            tripDetails.put("tripOption", getIntent().getStringExtra("tripOption"));
-            tripDetails.put("note", getIntent().getStringExtra("comment"));
-            tripDetails.put("priceDay", price);
-            tripDetails.put("total", total);
-            tripDetails.put("orderStatus", "Pending Driver Accept");
-            tripDetails.put("tripStart", 0);
-            tripDetails.put("tripEnd", 0);
-            tripDetails.put("rateStatus", 0);
-        }else{
-            //slot
-        }
+        tripDetails.put("driverID", getIntent().getStringExtra("driverID"));
+        tripDetails.put("orderID", getIntent().getStringExtra("orderID"));
+        tripDetails.put("touristID", getIntent().getStringExtra("touristID"));
+        tripDetails.put("duration", getIntent().getIntExtra("duration", 0));
+        tripDetails.put("meetDate", getIntent().getStringExtra("startDate"));
+        tripDetails.put("endDate", getIntent().getStringExtra("endDate"));
+        tripDetails.put("meetTime", getIntent().getStringExtra("time"));
+        tripDetails.put("carPlate", getIntent().getStringExtra("carPlate"));
+        tripDetails.put("locality", getIntent().getStringExtra("locality"));
+        tripDetails.put("address", getIntent().getStringExtra("address"));
+        tripDetails.put("tripOption", getIntent().getStringExtra("tripOption"));
+        tripDetails.put("note", getIntent().getStringExtra("comment"));
+        tripDetails.put("priceDriver", price);
+        tripDetails.put("total", total);
+        tripDetails.put("orderStatus", "Pending Driver Accept");
+        tripDetails.put("tripStart", 0);
+        tripDetails.put("tripEnd", 0);
+        tripDetails.put("rateStatus", 0);
 
+        //add order into firestore
         addOrder.collection("Trip Details").document(orderID)
                 .set(tripDetails);
 
         /* calculate dates */
-        String startDate = getIntent().getStringExtra("dateID");
+        String meetDate = getIntent().getStringExtra("dateID");
         int days = getIntent().getIntExtra("duration", 0);
 
         //initialize
@@ -206,11 +200,11 @@ public class DriverMoreDetails extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
 
         //add start date
-        dates.add(startDate);
+        dates.add(meetDate);
 
         //calculate and add dates into arraylist
         for(int i = 0; i < days - 1; i++) {
-            //calculate end date with duration
+            //set date
             try {
                 c.setTime(Objects.requireNonNull(sdf.parse(dates.get(i))));
             } catch (ParseException e) {
@@ -220,6 +214,7 @@ public class DriverMoreDetails extends AppCompatActivity {
             //add 1 day
             c.add(Calendar.DATE, 1);
 
+            //save into array list
             Date resultDate = new Date(c.getTimeInMillis());
             dates.add(sdf.format(resultDate));
         }
@@ -228,38 +223,22 @@ public class DriverMoreDetails extends AppCompatActivity {
         Map<String, Object> driverDate = new HashMap<>();
         driverDate.put("tripOption", getIntent().getStringExtra("tripOption"));
 
-        if(tripOpt.equals("Slot")) {
-            //checkboxes
-        }
-        else{
-            for (int i = 0; i < dates.size(); i++) {
-                String dateID = dates.get(i);
-                updateDriver.collection("User Accounts").document(driID).collection("Date Booked").document(dateID)
-                        .set(driverDate);
-            }
+        //create documents based on the array list size
+        for (int i = 0; i < dates.size(); i++) {
+            String dateID = dates.get(i);
+            updateDriver.collection("User Accounts").document(driID).collection("Date Booked").document(dateID)
+                    .set(driverDate);
         }
 
         /* update tourist */
         Map<String, Object> touristDate = new HashMap<>();
         touristDate.put("tripOption", getIntent().getStringExtra("tripOption"));
 
-        if(tripOpt.equals("Slot")) {
-            //checkboxes
+        for (int i = 0; i < dates.size(); i++) {
+            String dateID = dates.get(i);
+            updateTourist.collection("User Accounts").document(tourID).collection("Date Booked").document(dateID)
+                    .set(touristDate);
         }
-        else{
-            for (int i = 0; i < dates.size(); i++) {
-                String dateID = dates.get(i);
-                updateTourist.collection("User Accounts").document(tourID).collection("Date Booked").document(dateID)
-                        .set(touristDate);
-            }
-        }
-
-        /* update tourist car */
-        Map<String, Object> touristCar = new HashMap<>();
-        touristCar.put("carStatus", "N/A");
-
-        updateTouristCar.collection("User Accounts").document(tourID).collection("Car Details").document(carP)
-                .update(touristCar);
 
         getToken.collection("User Accounts").document(driID).get()
                 .addOnCompleteListener(task -> {
@@ -268,13 +247,12 @@ public class DriverMoreDetails extends AppCompatActivity {
                         String token = doc.getString("notificationToken");
 
                         UserFCMSend.pushNotification(
-                                DriverMoreDetails.this,
+                                DriverDayMoreDetails.this,
                                 token,
                                 "New Request",
-                                "You have received a request from a customer!",
-                                getIntent().getStringExtra("orderID"));
+                                "You have received a request from a customer!");
 
-                        startActivity(new Intent(DriverMoreDetails.this, TouristBookSuccess.class));
+                        startActivity(new Intent(DriverDayMoreDetails.this, TouristBookSuccess.class));
                         finish();
                     }
                 });

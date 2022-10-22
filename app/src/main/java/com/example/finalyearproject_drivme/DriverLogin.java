@@ -89,14 +89,12 @@ public class DriverLogin extends AppCompatActivity {
                 mtilLoginDPW.setError("Field cannot be empty!");
             }
             else{
-                //return instance of the class
+                //initialize firestore
                 FirebaseFirestore userDB = FirebaseFirestore.getInstance();
                 String dID = metLoginDID.getText().toString();
                 String dPW = metLoginDPW.getText().toString();
 
-                userDB.collection("User Accounts")
-                        .document(dID)
-                        .get()
+                userDB.collection("User Accounts").document(dID).get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot docResult = task.getResult();
@@ -105,11 +103,35 @@ public class DriverLogin extends AppCompatActivity {
                                     //check the existence of ID
                                     if (docResult.exists()) {
                                             String docPW = docResult.getString("password");
+
                                             //check if password matched
                                             if (dPW.matches(Objects.requireNonNull(docPW))) {
                                                 String accStatus = docResult.getString("accountStatus");
 
-                                                if(!accStatus.equals("Suspended")) {
+                                                //check if account is suspended
+                                                if(!Objects.requireNonNull(accStatus).equals("Suspended")) {
+                                                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+                                                    alertDialogBuilder.setTitle("Account Suspended");
+                                                    alertDialogBuilder
+                                                            .setMessage("Your account have been suspended!\nPlease check your email or contact Drivme support for further information.")
+                                                            .setCancelable(false)
+                                                            .setPositiveButton("OK", (dialog, id) -> dialog.cancel());
+
+                                                    android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+                                                    alertDialog.show();
+                                                }
+                                                else if(!accStatus.equals("Offline")){ //check if account being logged in
+                                                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+                                                    alertDialogBuilder.setTitle("Account Logged In");
+                                                    alertDialogBuilder
+                                                            .setMessage("Your account already logged in on another device, please log out from that device first!")
+                                                            .setCancelable(false)
+                                                            .setPositiveButton("OK", (dialog, iD) -> dialog.cancel());
+
+                                                    android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+                                                    alertDialog.show();
+                                                }
+                                                else{
                                                     int sem = Objects.requireNonNull(docResult.getLong("Account Driver")).intValue();
 
                                                     //check if id activated driver role or not
@@ -117,6 +139,7 @@ public class DriverLogin extends AppCompatActivity {
                                                         int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Driver")).intValue();
                                                         String name = Objects.requireNonNull(docResult.getString("firstName"));
 
+                                                        //check if driver go through on-boarding or not
                                                         if (loginStat == 0) {
                                                             startActivity(new Intent(DriverLogin.this, UserWelcomeTo.class));
                                                         } else {
@@ -130,6 +153,7 @@ public class DriverLogin extends AppCompatActivity {
                                                         spEditor.putString(KEY_ROLE, "Driver");
                                                         spEditor.apply();
 
+                                                        //get device token
                                                         FirebaseMessaging.getInstance().getToken()
                                                                 .addOnCompleteListener(task1 -> {
                                                                     if (!task1.isSuccessful()) {
@@ -147,24 +171,10 @@ public class DriverLogin extends AppCompatActivity {
                                                                     updateToken.collection("User Accounts").document(dID)
                                                                             .update(noToken);
                                                                 });
-
                                                         finish();
                                                     } else {
                                                         Toast.makeText(DriverLogin.this, "Driver Role haven't activated!", Toast.LENGTH_SHORT).show();
                                                     }
-                                                }
-                                                else{
-                                                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
-                                                    alertDialogBuilder.setTitle("Account Suspended");
-                                                    alertDialogBuilder
-                                                            .setMessage("Your account have been suspended!\nPlease check your email or contact Drivme support for further information.")
-                                                            .setCancelable(false)
-                                                            .setPositiveButton("OK", (dialog, id) -> {
-                                                                dialog.cancel();
-                                                            });
-
-                                                    android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-                                                    alertDialog.show();
                                                 }
                                             }
                                             else {

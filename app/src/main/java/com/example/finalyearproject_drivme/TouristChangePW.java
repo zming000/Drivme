@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TouristChangePW extends AppCompatActivity {
+    //declare variables
     TextInputLayout mtilTOld, mtilTNew, mtilTConfirm;
     TextInputEditText metTOld, metTNew, metTConfirm;
     Button mbtnChange;
@@ -36,6 +37,7 @@ public class TouristChangePW extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourist_change_pw);
 
+        //assign variables
         mtilTOld = findViewById(R.id.tilTOld);
         mtilTNew = findViewById(R.id.tilTNew);
         mtilTConfirm = findViewById(R.id.tilTConfirm);
@@ -44,8 +46,10 @@ public class TouristChangePW extends AppCompatActivity {
         metTConfirm = findViewById(R.id.etTConfirm);
         mbtnChange = findViewById(R.id.btnChange);
 
+        //initialize shared preference
         spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
 
+        //change error
         errorChangeOnEachFields();
 
         mbtnChange.setOnClickListener(view -> {

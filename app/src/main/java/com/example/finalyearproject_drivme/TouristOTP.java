@@ -86,11 +86,11 @@ public class TouristOTP extends AppCompatActivity {
 
         @Override
         public void onVerificationCompleted(@NonNull PhoneAuthCredential authCred) {
-            String verificationCodeT = authCred.getSmsCode(); //get from sms
-            mpvTOTP.setText(verificationCodeT);
-
-            if(verificationCodeT != null){
-                verifyCode(verificationCodeT);
+            if(!mpvTOTP.getText().toString().isEmpty()){
+                verifyCode(mpvTOTP.getText().toString());
+            }
+            else{
+                Toast.makeText(TouristOTP.this, "Please input code!", Toast.LENGTH_SHORT).show();
             }
         }
 

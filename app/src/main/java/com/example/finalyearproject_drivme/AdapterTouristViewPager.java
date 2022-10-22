@@ -17,13 +17,13 @@ public class AdapterTouristViewPager extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        //change the view
         switch (position){
-            case 0:
-                return new TouristBookingFragment();
             case 1:
                 return new TouristOngoingFragment();
             case 2:
                 return new TouristHistoryFragment();
+            case 0:
             default:
                 return new TouristBookingFragment();
         }

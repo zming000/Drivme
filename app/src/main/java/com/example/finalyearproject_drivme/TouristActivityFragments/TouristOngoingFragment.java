@@ -14,9 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.finalyearproject_drivme.AdapterOngoingList;
-import com.example.finalyearproject_drivme.AdapterOrderList;
 import com.example.finalyearproject_drivme.ModelOngoingList;
-import com.example.finalyearproject_drivme.ModelRequestList;
 import com.example.finalyearproject_drivme.R;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,7 +35,7 @@ public class TouristOngoingFragment extends Fragment {
     private static final String KEY_ID = "userID";
 
     public TouristOngoingFragment() {
-        // Required empty public constructor
+        //empty public constructor
     }
 
     @Override
@@ -61,7 +59,7 @@ public class TouristOngoingFragment extends Fragment {
         mswipeOngoing = ongoingView.findViewById(R.id.swipeOngoing);
         mrvTOngoing.setLayoutManager(new LinearLayoutManager(ongoingView.getContext()));
 
-        //initialize varaibles
+        //initialize variables
         ongoingDB = FirebaseFirestore.getInstance();
         ongoingList = new ArrayList<>();
 
@@ -71,6 +69,7 @@ public class TouristOngoingFragment extends Fragment {
 
         getOrderDetailsFromFirestore(ongoingView);
 
+        //swipe down refresh
         mswipeOngoing.setOnRefreshListener(() -> {
             getOrderDetailsFromFirestore(ongoingView);
             mswipeOngoing.setRefreshing(false);
@@ -78,17 +77,18 @@ public class TouristOngoingFragment extends Fragment {
     }
 
     /*check order status*/
-    private void getOrderDetailsFromFirestore(View v) {
-        SharedPreferences spDrivme = v.getContext().getSharedPreferences(SP_NAME, v.getContext().MODE_PRIVATE);
+    private void getOrderDetailsFromFirestore(View ongoingView) {
+        SharedPreferences spDrivme = ongoingView.getContext().getSharedPreferences(SP_NAME, ongoingView.getContext().MODE_PRIVATE);
         //get user id from shared preference
         String uID = spDrivme.getString(KEY_ID, null);
 
+        //display category that belongs to ongoing
         ongoingDB.collection("Trip Details")
                 .whereEqualTo("touristID", uID)
                 .whereIn("orderStatus", Arrays.asList("Coming Soon", "Trip Ongoing"))
                 .addSnapshotListener((value, error) -> {
                     if(error != null){
-                        Toast.makeText(v.getContext(), "Error Loading Request!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ongoingView.getContext(), "Error Loading Request!", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -101,6 +101,12 @@ public class TouristOngoingFragment extends Fragment {
                             ongoingList.add(dc.getDocument().toObject(ModelOngoingList.class));
                         }
                     }
+
+                    //if no records found
+                    if(ongoingList.size() == 0){
+                        Toast.makeText(ongoingView.getContext(), "No ongoing orders!", Toast.LENGTH_SHORT).show();
+                    }
+
                     olAdapter.notifyDataSetChanged();
                 });
     }

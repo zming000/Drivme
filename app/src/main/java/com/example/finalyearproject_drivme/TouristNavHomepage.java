@@ -1,6 +1,5 @@
 package com.example.finalyearproject_drivme;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -13,9 +12,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.finalyearproject_drivme.TouristActivityFragments.TouristOngoingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -23,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class TouristNavHomepage extends AppCompatActivity {
     //declare variables
     TextView mtvTMoney;
+    FloatingActionButton mfabTReload;
     BottomNavigationView mbtmTNav;
     CardView mcvBooking;
     SharedPreferences spDrivme;
@@ -37,15 +37,24 @@ public class TouristNavHomepage extends AppCompatActivity {
         setContentView(R.layout.activity_tourist_nav_homepage);
 
         //assign variables
+        mfabTReload = findViewById(R.id.fabTReload);
         mcvBooking = findViewById(R.id.cvBooking);
         mbtmTNav = findViewById(R.id.btmTNav);
         mtvTMoney = findViewById(R.id.tvTMoney);
+
+        //go to reload ui
+        mfabTReload.setOnClickListener(view -> {
+            startActivity(new Intent(TouristNavHomepage.this, TouristReload.class));
+            finishAffinity();
+            finish();
+        });
 
         getDrivPay();
         navSelection();
         tripSelection();
     }
 
+    //set drivpay
     private void getDrivPay(){
         FirebaseFirestore getAmount = FirebaseFirestore.getInstance();
         spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
@@ -61,6 +70,7 @@ public class TouristNavHomepage extends AppCompatActivity {
                 });
     }
 
+    //choose trip option
     private void tripSelection() {
         mcvBooking.setOnClickListener(tripView -> {
             //set layout
@@ -72,16 +82,17 @@ public class TouristNavHomepage extends AppCompatActivity {
 
             tripOptDialog.show();
 
+            //assign variables
             ImageView mivTripClose = tripView.findViewById(R.id.ivTripClose);
-            Button mbtnSlot = tripView.findViewById(R.id.btnSlot);
+            Button mbtnHour = tripView.findViewById(R.id.btnHour);
             Button mbtnDay = tripView.findViewById(R.id.btnDay);
 
             mivTripClose.setOnClickListener(view -> tripOptDialog.dismiss());
 
-            mbtnSlot.setOnClickListener(view -> {
-                Intent slotIntent = new Intent(getApplicationContext(), TouristSlotTrip.class);
-                slotIntent.putExtra("tripOpt", "Slot");
-                startActivity(slotIntent);
+            mbtnHour.setOnClickListener(view -> {
+                Intent hourIntent = new Intent(getApplicationContext(), TouristHourTrip.class);
+                hourIntent.putExtra("tripOpt", "Hour");
+                startActivity(hourIntent);
                 finishAffinity();
                 finish();
             });
@@ -105,6 +116,7 @@ public class TouristNavHomepage extends AppCompatActivity {
             switch(item.getItemId()){
                 case R.id.activity:
                     startActivity(new Intent(getApplicationContext(), TouristNavActivity.class));
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new TouristOngoingFragment()).commit();
                     overridePendingTransition(0, 0);
                     finish();
                     return true;

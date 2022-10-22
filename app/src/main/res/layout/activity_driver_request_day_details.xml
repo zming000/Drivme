@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DriverRequestDetails">
+    tools:context=".DriverRequestDayDetails">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -721,19 +721,6 @@
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/btn_rounded"
                 android:text="Cancel"
-                android:textAllCaps="false"
-                android:textColor="@color/primary"
-                android:textSize="25sp"
-                android:visibility="gone"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnView"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/btn_rounded"
-                android:text="View Rating"
                 android:textAllCaps="false"
                 android:textColor="@color/primary"
                 android:textSize="25sp"

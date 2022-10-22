@@ -93,9 +93,7 @@ public class TouristLogin extends AppCompatActivity {
                 String id = metLoginTouristID.getText().toString();
                 String pw = metLoginTouristPW.getText().toString();
 
-                drivmeDB.collection("User Accounts")
-                        .document(id)
-                        .get()
+                drivmeDB.collection("User Accounts").document(id).get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot docResult = task.getResult();
@@ -108,7 +106,29 @@ public class TouristLogin extends AppCompatActivity {
                                             if (pw.matches(Objects.requireNonNull(pw2))) {
                                                 String accStatus = docResult.getString("accountStatus");
 
-                                                if(!accStatus.equals("Suspended")) {
+                                                if(Objects.requireNonNull(accStatus).equals("Suspended")) {
+                                                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+                                                    alertDialogBuilder.setTitle("Account Suspended");
+                                                    alertDialogBuilder
+                                                            .setMessage("Your account have been suspended!\nPlease check your email or contact Drivme support for further information.")
+                                                            .setCancelable(false)
+                                                            .setPositiveButton("OK", (dialog, iD) -> dialog.cancel());
+
+                                                    android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+                                                    alertDialog.show();
+                                                }
+                                                else if(!accStatus.equals("Offline")){
+                                                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+                                                    alertDialogBuilder.setTitle("Account Logged In");
+                                                    alertDialogBuilder
+                                                            .setMessage("Your account already logged in on another device, please log out from that device first!")
+                                                            .setCancelable(false)
+                                                            .setPositiveButton("OK", (dialog, iD) -> dialog.cancel());
+
+                                                    android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+                                                    alertDialog.show();
+                                                }
+                                                else{
                                                     int value = Objects.requireNonNull(docResult.getLong("Account Tourist")).intValue();
 
                                                     //check if id activated tourist role or not
@@ -154,19 +174,6 @@ public class TouristLogin extends AppCompatActivity {
                                                         Toast.makeText(TouristLogin.this, "Tourist Role haven't activated!", Toast.LENGTH_SHORT).show();
                                                     }
                                                 }
-                                                else{
-                                                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
-                                                    alertDialogBuilder.setTitle("Account Suspended");
-                                                    alertDialogBuilder
-                                                            .setMessage("Your account have been suspended!\nPlease check your email or contact Drivme support for further information.")
-                                                            .setCancelable(false)
-                                                            .setPositiveButton("OK", (dialog, iD) -> {
-                                                                dialog.cancel();
-                                                            });
-
-                                                    android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-                                                    alertDialog.show();
-                                                }
                                             }
                                             else {
                                                 Toast.makeText(TouristLogin.this, "Wrong ID or Password!", Toast.LENGTH_SHORT).show();
@@ -180,9 +187,6 @@ public class TouristLogin extends AppCompatActivity {
                         });
             }
         });
-    }
-
-    public void googleLogin(View view) {
     }
 
     //tourist login -> tourist sign up

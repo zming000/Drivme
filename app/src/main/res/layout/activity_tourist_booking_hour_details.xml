@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TouristBookingDetails">
+    tools:context=".TouristBookingHourDetails">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -229,12 +229,12 @@
                     app:layout_constraintTop_toTopOf="@+id/meetTime" />
 
                 <TextView
-                    android:id="@+id/startDate"
+                    android:id="@+id/startTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="Start Date:"
+                    android:text="Start Time:"
                     android:textColor="@color/black"
                     android:textSize="19sp"
                     android:textStyle="bold"
@@ -242,39 +242,39 @@
                     app:layout_constraintTop_toBottomOf="@+id/meetTime" />
 
                 <TextView
-                    android:id="@+id/tvBStartDate"
+                    android:id="@+id/tvBStartTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/black"
                     android:textSize="19sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/startDate"
-                    app:layout_constraintStart_toEndOf="@+id/startDate"
-                    app:layout_constraintTop_toTopOf="@+id/startDate" />
+                    app:layout_constraintBottom_toBottomOf="@+id/startTime"
+                    app:layout_constraintStart_toEndOf="@+id/startTime"
+                    app:layout_constraintTop_toTopOf="@+id/startTime" />
 
                 <TextView
-                    android:id="@+id/endDate"
+                    android:id="@+id/endTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="End Date:"
+                    android:text="End Time:"
                     android:textColor="@color/black"
                     android:textSize="19sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/startDate" />
+                    app:layout_constraintTop_toBottomOf="@+id/startTime" />
 
                 <TextView
-                    android:id="@+id/tvBEndDate"
+                    android:id="@+id/tvBEndTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/black"
                     android:textSize="19sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/endDate"
-                    app:layout_constraintStart_toEndOf="@+id/endDate"
-                    app:layout_constraintTop_toTopOf="@+id/endDate" />
+                    app:layout_constraintBottom_toBottomOf="@+id/endTime"
+                    app:layout_constraintStart_toEndOf="@+id/endTime"
+                    app:layout_constraintTop_toTopOf="@+id/endTime" />
 
                 <TextView
                     android:id="@+id/duration"
@@ -287,7 +287,7 @@
                     android:textSize="19sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/endDate" />
+                    app:layout_constraintTop_toBottomOf="@+id/endTime" />
 
                 <TextView
                     android:id="@+id/tvBDuration"
@@ -634,7 +634,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="Price per Day (RM):"
+                    android:text="Price per Hour (RM):"
                     android:textColor="@color/black"
                     android:textSize="19sp"
                     android:textStyle="bold"

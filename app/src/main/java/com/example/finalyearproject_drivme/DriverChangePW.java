@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class DriverChangePW extends AppCompatActivity {
+    //declare variables
     TextInputLayout mtilDOld, mtilDNew, mtilDConfirm;
     TextInputEditText metDOld, metDNew, metDConfirm;
     Button mbtnDChange;
@@ -36,6 +37,7 @@ public class DriverChangePW extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_change_pw);
 
+        //assign variables
         mtilDOld = findViewById(R.id.tilDOld);
         mtilDNew = findViewById(R.id.tilDNew);
         mtilDConfirm = findViewById(R.id.tilDConfirm);
@@ -44,8 +46,10 @@ public class DriverChangePW extends AppCompatActivity {
         metDConfirm = findViewById(R.id.etDConfirm);
         mbtnDChange = findViewById(R.id.btnDChange);
 
+        //initialize shared preference
         spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
 
+        //error change
         errorChangeOnEachFields();
 
         mbtnDChange.setOnClickListener(view -> {

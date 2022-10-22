@@ -23,6 +23,7 @@ public class AdapterOrderList extends RecyclerView.Adapter<AdapterOrderList.Requ
     ArrayList<ModelRequestList> reqArrayList;
     SharedPreferences spDrivme;
 
+    //key name
     private static final String SP_NAME = "drivmePref";
     private static final String KEY_ROLE = "role";
 
@@ -44,19 +45,22 @@ public class AdapterOrderList extends RecyclerView.Adapter<AdapterOrderList.Requ
     public void onBindViewHolder(@NonNull AdapterOrderList.RequestListViewHolder holder, int position) {
         //get position
         ModelRequestList mrl = reqArrayList.get(position);
+        //get user id and trip option
         String tid = mrl.touristID;
         String did = mrl.driverID;
+        String tripOpt = mrl.tripOption;
+        //get role
         spDrivme = reqContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         String uRole = spDrivme.getString(KEY_ROLE, null);
 
-        //set text
+        //set text based on the role
         if(uRole.equals("Driver")) {
+            holder.mtvNameTitle.setText("Tourist Name:");
             FirebaseFirestore touristDB = FirebaseFirestore.getInstance();
             touristDB.collection("User Accounts").document(tid).get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             DocumentSnapshot doc = task.getResult();
-
                             holder.mtvName.setText(doc.getString("lastName") + " " + doc.getString("firstName"));
                         }
                     });
@@ -68,25 +72,42 @@ public class AdapterOrderList extends RecyclerView.Adapter<AdapterOrderList.Requ
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             DocumentSnapshot doc = task.getResult();
-
                             holder.mtvName.setText(doc.getString("lastName") + " " + doc.getString("firstName"));
                         }
                     });
         }
 
-        holder.mtvMeetDateTime.setText(mrl.startDate + " " + mrl.time);
+        holder.mtvMeetDateTime.setText(mrl.meetDate + " " + mrl.meetTime);
         holder.mtvLocation.setText(mrl.locality);
-        holder.mtvPrice.setText("RM" + Math.round(mrl.total) + " (RM" + Math.round(mrl.priceDay) + " / day)");
         holder.mtvStatus.setText(mrl.orderStatus);
+
+        if(tripOpt.equals("Day")) {
+            holder.mtvPrice.setText("RM" + Math.round(mrl.total) + " (RM" + Math.round(mrl.priceDriver) + " / day)");
+        }
+        else{
+            holder.mtvPrice.setText("RM" + Math.round(mrl.total) + " (RM" + Math.round(mrl.priceDriver) + " / hour)");
+        }
+
 
         holder.mcvReqDetails.setOnClickListener(view -> {
             Intent intent;
             if(uRole.equals("Tourist")) {
-                intent = new Intent(reqContext, TouristBookingDetails.class);
+                if(tripOpt.equals("Day")) {
+                    intent = new Intent(reqContext, TouristBookingDayDetails.class);
+                }
+                else{
+                    intent = new Intent(reqContext, TouristBookingHourDetails.class);
+                }
             }
             else {
-                intent = new Intent(reqContext, DriverRequestDetails.class);
+                if(tripOpt.equals("Day")) {
+                    intent = new Intent(reqContext, DriverRequestDayDetails.class);
+                }
+                else{
+                    intent = new Intent(reqContext, DriverRequestHourDetails.class);
+                }
                 intent.putExtra("navRate", "Order");
+
             }
             intent.putExtra("orderID", mrl.orderID);
             reqContext.startActivity(intent);

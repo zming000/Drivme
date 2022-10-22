@@ -25,9 +25,9 @@ import java.util.Objects;
 
 public class TouristHistoryFragment extends Fragment {
     //declare variables
-    private ArrayList<ModelRequestList> reqList;
-    private AdapterOrderList rlAdapter;
-    private FirebaseFirestore reqDB;
+    private ArrayList<ModelRequestList> historyList;
+    private AdapterOrderList hlAdapter;
+    private FirebaseFirestore historyDB;
     private SwipeRefreshLayout mswipeRequest;
 
     //key name
@@ -35,7 +35,7 @@ public class TouristHistoryFragment extends Fragment {
     private static final String KEY_ID = "userID";
 
     public TouristHistoryFragment() {
-        // Required empty public constructor
+        //empty public constructor
     }
 
     @Override
@@ -47,59 +47,67 @@ public class TouristHistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View reqView = inflater.inflate(R.layout.fragment_driver_request, container, false);
-        InitializeRequestCardView(reqView);
+        View historyView = inflater.inflate(R.layout.fragment_driver_request, container, false);
+        InitializeRequestCardView(historyView);
 
-        return reqView;
+        return historyView;
     }
 
-    private void InitializeRequestCardView(View reqView) {
+    private void InitializeRequestCardView(View historyView) {
         //declare variables
-        RecyclerView mrvDRequest = reqView.findViewById(R.id.rvDRequest);
-        mswipeRequest = reqView.findViewById(R.id.swipeRequest);
-        mrvDRequest.setLayoutManager(new LinearLayoutManager(reqView.getContext()));
+        RecyclerView mrvDRequest = historyView.findViewById(R.id.rvDRequest);
+        mswipeRequest = historyView.findViewById(R.id.swipeRequest);
+        mrvDRequest.setLayoutManager(new LinearLayoutManager(historyView.getContext()));
 
         //initialize varaibles
-        reqDB = FirebaseFirestore.getInstance();
-        reqList = new ArrayList<>();
+        historyDB = FirebaseFirestore.getInstance();
+        historyList = new ArrayList<>();
 
         //initialize adapter
-        rlAdapter = new AdapterOrderList(reqView.getContext(), reqList);
-        mrvDRequest.setAdapter(rlAdapter);
+        hlAdapter = new AdapterOrderList(historyView.getContext(), historyList);
+        mrvDRequest.setAdapter(hlAdapter);
 
-        getRequestDetailsFromFirestore(reqView);
+        getRequestDetailsFromFirestore(historyView);
 
+        //swipe down refresh
         mswipeRequest.setOnRefreshListener(() -> {
-            getRequestDetailsFromFirestore(reqView);
+            getRequestDetailsFromFirestore(historyView);
             mswipeRequest.setRefreshing(false);
         });
     }
 
     /*check order status*/
-    private void getRequestDetailsFromFirestore(View v) {
-        SharedPreferences spDrivme = v.getContext().getSharedPreferences(SP_NAME, v.getContext().MODE_PRIVATE);
+    private void getRequestDetailsFromFirestore(View historyView) {
+        SharedPreferences spDrivme = historyView.getContext().getSharedPreferences(SP_NAME, historyView.getContext().MODE_PRIVATE);
         //get user id from shared preference
         String uID = spDrivme.getString(KEY_ID, null);
 
-        reqDB.collection("Trip Details")
+        //display category that belongs to history
+        historyDB.collection("Trip Details")
                 .whereEqualTo("touristID", uID)
-                .whereIn("orderStatus", Arrays.asList("Rejected by Driver", "Cancelled by Tourist", "Trip Finished"))
+                .whereIn("orderStatus", Arrays.asList("Rejected by Driver", "Cancelled by Tourist", "Cancelled by Driver", "Trip Finished"))
                 .addSnapshotListener((value, error) -> {
                     if(error != null){
-                        Toast.makeText(v.getContext(), "Error Loading Request!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(historyView.getContext(), "Error Loading Request!", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     //clear list
-                    reqList.clear();
+                    historyList.clear();
 
                     //use the id to check if the driver available within the duration requested
                     for(DocumentChange dc : Objects.requireNonNull(value).getDocumentChanges()){
                         if(dc.getType() == DocumentChange.Type.ADDED || dc.getType() == DocumentChange.Type.MODIFIED) {
-                            reqList.add(dc.getDocument().toObject(ModelRequestList.class));
+                            historyList.add(dc.getDocument().toObject(ModelRequestList.class));
                         }
                     }
-                    rlAdapter.notifyDataSetChanged();
+
+                    //if no records found
+                    if(historyList.size() == 0){
+                        Toast.makeText(historyView.getContext(), "No history records found!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    hlAdapter.notifyDataSetChanged();
                 });
     }
 }

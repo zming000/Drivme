@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -14,7 +15,6 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class DriverNavRating extends AppCompatActivity {
@@ -25,6 +25,10 @@ public class DriverNavRating extends AppCompatActivity {
     FirebaseFirestore rateDB;
     SwipeRefreshLayout mswipeRating;
     BottomNavigationView mbtmDNav;
+
+    //key name
+    private static final String SP_NAME = "drivmePref";
+    private static final String KEY_ID = "userID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +41,7 @@ public class DriverNavRating extends AppCompatActivity {
         mbtmDNav = findViewById(R.id.btmDNav);
         mrvDRating.setLayoutManager(new LinearLayoutManager(this));
 
-        //initialize varaibles
+        //initialize variables
         rateDB = FirebaseFirestore.getInstance();
         rateList = new ArrayList<>();
 
@@ -55,7 +59,12 @@ public class DriverNavRating extends AppCompatActivity {
     }
 
     private void getOrderDetailsFromFirestore() {
+        SharedPreferences spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
+        //get user id from shared preference
+        String uID = spDrivme.getString(KEY_ID, null);
+
         rateDB.collection("Trip Details")
+                .whereEqualTo("driverID", uID)
                 .whereEqualTo("orderStatus", "Trip Finished")
                 .addSnapshotListener((value, error) -> {
                     if(error != null){
@@ -72,6 +81,12 @@ public class DriverNavRating extends AppCompatActivity {
                             rateList.add(dc.getDocument().toObject(ModelRatingList.class));
                         }
                     }
+
+                    //if no records found
+                    if(rateList.size() == 0){
+                        Toast.makeText(DriverNavRating.this, "No ratings!", Toast.LENGTH_SHORT).show();
+                    }
+
                     rateAdapter.notifyDataSetChanged();
                 });
     }

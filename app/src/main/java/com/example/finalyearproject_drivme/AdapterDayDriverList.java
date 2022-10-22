@@ -15,17 +15,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class AdapterDriverList extends RecyclerView.Adapter<AdapterDriverList.DriverListViewHolder> {
+public class AdapterDayDriverList extends RecyclerView.Adapter<AdapterDayDriverList.DriverListViewHolder> {
     //declare variables
     Context driverContext;
-    ArrayList<ModelDriverList> driverArrayList;
+    ArrayList<ModelDayDriverList> driverArrayList;
     String orderID, touristID, startDate, endDate, time, carPlate, locality, address, comment, tripOption, dateID;
     int duration;
 
     //constructor
-    public AdapterDriverList(Context driverContext, ArrayList<ModelDriverList> driverArrayList, String orderID, String touristID, int duration,
-                             String startDate, String endDate, String time, String carPlate, String locality, String address, String comment,
-                             String tripOption, String dateID) {
+    public AdapterDayDriverList(Context driverContext, ArrayList<ModelDayDriverList> driverArrayList, String orderID, String touristID, int duration,
+                                String startDate, String endDate, String time, String carPlate, String locality, String address, String comment,
+                                String tripOption, String dateID) {
         this.driverContext = driverContext;
         this.driverArrayList = driverArrayList;
         this.orderID = orderID;
@@ -44,16 +44,16 @@ public class AdapterDriverList extends RecyclerView.Adapter<AdapterDriverList.Dr
 
     @NonNull
     @Override
-    public AdapterDriverList.DriverListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdapterDayDriverList.DriverListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View driverView = LayoutInflater.from(driverContext).inflate(R.layout.item_driver, parent, false);
 
         return new DriverListViewHolder(driverView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdapterDriverList.DriverListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AdapterDayDriverList.DriverListViewHolder holder, int position) {
         //get position
-        ModelDriverList mdl = driverArrayList.get(position);
+        ModelDayDriverList mdl = driverArrayList.get(position);
         String getGender = mdl.gender;
 
         //set values to display
@@ -71,7 +71,7 @@ public class AdapterDriverList extends RecyclerView.Adapter<AdapterDriverList.Dr
 
         //driver list -> driver more details
         holder.mcvDetails.setOnClickListener(view -> {
-            Intent intent = new Intent(driverContext, DriverMoreDetails.class);
+            Intent intent = new Intent(driverContext, DriverDayMoreDetails.class);
             intent.putExtra("driverID", mdl.userID);
             intent.putExtra("rating", mdl.rating);
             intent.putExtra("priceDay", Math.round(mdl.priceDay));

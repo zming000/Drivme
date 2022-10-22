@@ -83,7 +83,7 @@ public class UserFPWOtp extends AppCompatActivity {
 
         @Override
         public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-            String code = credential.getSmsCode(); //get from sms
+            String code = credential.getSmsCode(); //auto get from sms
             mpvFPWOtp.setText(code);
 
             if(code != null){

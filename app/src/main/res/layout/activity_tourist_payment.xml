@@ -204,9 +204,33 @@
                     app:layout_constraintStart_toEndOf="@+id/tripOption"
                     app:layout_constraintTop_toTopOf="@+id/tripOption" />
 
+                <TextView
+                    android:id="@+id/tvMeet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Meet Time:"
+                    android:textColor="@color/black"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tripOption" />
 
                 <TextView
-                    android:id="@+id/startDate"
+                    android:id="@+id/tvPMeet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="19sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvMeet"
+                    app:layout_constraintStart_toEndOf="@+id/tvMeet"
+                    app:layout_constraintTop_toTopOf="@+id/tvMeet" />
+
+
+                <TextView
+                    android:id="@+id/tvStart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -216,21 +240,21 @@
                     android:textSize="19sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tripOption" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvMeet" />
 
                 <TextView
-                    android:id="@+id/tvPStartDate"
+                    android:id="@+id/tvPStart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/black"
                     android:textSize="19sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/startDate"
-                    app:layout_constraintStart_toEndOf="@+id/startDate"
-                    app:layout_constraintTop_toTopOf="@+id/startDate" />
+                    app:layout_constraintBottom_toBottomOf="@+id/tvStart"
+                    app:layout_constraintStart_toEndOf="@+id/tvStart"
+                    app:layout_constraintTop_toTopOf="@+id/tvStart" />
 
                 <TextView
-                    android:id="@+id/endDate"
+                    android:id="@+id/tvEnd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -240,18 +264,18 @@
                     android:textSize="19sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/startDate" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvStart" />
 
                 <TextView
-                    android:id="@+id/tvPEndDate"
+                    android:id="@+id/tvPEnd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/black"
                     android:textSize="19sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/endDate"
-                    app:layout_constraintStart_toEndOf="@+id/endDate"
-                    app:layout_constraintTop_toTopOf="@+id/endDate" />
+                    app:layout_constraintBottom_toBottomOf="@+id/tvEnd"
+                    app:layout_constraintStart_toEndOf="@+id/tvEnd"
+                    app:layout_constraintTop_toTopOf="@+id/tvEnd" />
 
                 <TextView
                     android:id="@+id/duration"
@@ -264,7 +288,7 @@
                     android:textSize="19sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/endDate" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvEnd" />
 
                 <TextView
                     android:id="@+id/tvPDuration"
@@ -278,7 +302,7 @@
                     app:layout_constraintTop_toTopOf="@+id/duration" />
 
                 <TextView
-                    android:id="@+id/priceDay"
+                    android:id="@+id/tvPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -292,15 +316,15 @@
                     app:layout_constraintTop_toBottomOf="@+id/duration" />
 
                 <TextView
-                    android:id="@+id/tvPPriceDay"
+                    android:id="@+id/tvPPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/black"
                     android:textSize="19sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/priceDay"
-                    app:layout_constraintStart_toEndOf="@+id/priceDay"
-                    app:layout_constraintTop_toTopOf="@+id/priceDay" />
+                    app:layout_constraintBottom_toBottomOf="@+id/tvPrice"
+                    app:layout_constraintStart_toEndOf="@+id/tvPrice"
+                    app:layout_constraintTop_toTopOf="@+id/tvPrice" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -323,19 +347,31 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/driver"
+                    android:id="@+id/tvDriverDay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="- Driver's fee per day trip (Services, etc.)"
+                    android:text="- Driver's fee per day trip(Services, etc.)"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/included" />
 
                 <TextView
-                    android:id="@+id/meal"
+                    android:id="@+id/tvDriverHour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="- Driver's fee per hour trip(Services, etc.)"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/included" />
+
+                <TextView
+                    android:id="@+id/tvMeal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -344,7 +380,19 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/driver" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvDriverHour" />
+
+                <TextView
+                    android:id="@+id/bookingFee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="- Booking Fee"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMeal" />
 
                 <TextView
                     android:id="@+id/insurance"
@@ -356,7 +404,7 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/meal" />
+                    app:layout_constraintTop_toBottomOf="@+id/bookingFee" />
 
                 <TextView
                     android:id="@+id/tvPTotal"

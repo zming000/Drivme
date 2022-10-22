@@ -25,9 +25,9 @@ import java.util.Objects;
 
 public class TouristBookingFragment extends Fragment {
     //declare variables
-    private ArrayList<ModelRequestList> reqList;
-    private AdapterOrderList rlAdapter;
-    private FirebaseFirestore reqDB;
+    private ArrayList<ModelRequestList> pendingList;
+    private AdapterOrderList plAdapter;
+    private FirebaseFirestore pendingDB;
     private SwipeRefreshLayout mswipeRequest;
 
     //key name
@@ -35,7 +35,7 @@ public class TouristBookingFragment extends Fragment {
     private static final String KEY_ID = "userID";
 
     public TouristBookingFragment() {
-        // Required empty public constructor
+        //empty public constructor
     }
 
     @Override
@@ -47,31 +47,32 @@ public class TouristBookingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View reqView = inflater.inflate(R.layout.fragment_driver_request, container, false);
-        InitializeRequestCardView(reqView);
+        View pendingView = inflater.inflate(R.layout.fragment_driver_request, container, false);
+        InitializeRequestCardView(pendingView);
 
-        return reqView;
+        return pendingView;
     }
 
-    private void InitializeRequestCardView(View reqView) {
+    private void InitializeRequestCardView(View pendingView) {
         //assign variables
-        mswipeRequest = reqView.findViewById(R.id.swipeRequest);
+        mswipeRequest = pendingView.findViewById(R.id.swipeRequest);
         //declare variables
-        RecyclerView mrvDRequest = reqView.findViewById(R.id.rvDRequest);
-        mrvDRequest.setLayoutManager(new LinearLayoutManager(reqView.getContext()));
+        RecyclerView mrvDRequest = pendingView.findViewById(R.id.rvDRequest);
+        mrvDRequest.setLayoutManager(new LinearLayoutManager(pendingView.getContext()));
 
-        //initialize varaibles
-        reqDB = FirebaseFirestore.getInstance();
-        reqList = new ArrayList<>();
+        //initialize variables
+        pendingDB = FirebaseFirestore.getInstance();
+        pendingList = new ArrayList<>();
 
         //initialize adapter
-        rlAdapter = new AdapterOrderList(reqView.getContext(), reqList);
-        mrvDRequest.setAdapter(rlAdapter);
+        plAdapter = new AdapterOrderList(pendingView.getContext(), pendingList);
+        mrvDRequest.setAdapter(plAdapter);
 
-        getRequestDetailsFromFirestore(reqView);
+        getRequestDetailsFromFirestore(pendingView);
 
+        //swipe down refresh
         mswipeRequest.setOnRefreshListener(() -> {
-            getRequestDetailsFromFirestore(reqView);
+            getRequestDetailsFromFirestore(pendingView);
             mswipeRequest.setRefreshing(false);
         });
     }
@@ -82,7 +83,8 @@ public class TouristBookingFragment extends Fragment {
         //get user id from shared preference
         String uID = spDrivme.getString(KEY_ID, null);
 
-        reqDB.collection("Trip Details")
+        //display category that belongs to pending
+        pendingDB.collection("Trip Details")
                 .whereEqualTo("touristID", uID)
                 .whereIn("orderStatus", Arrays.asList("Pending Driver Accept", "Pending Tourist Payment"))
                 .addSnapshotListener((value, error) -> {
@@ -92,16 +94,22 @@ public class TouristBookingFragment extends Fragment {
                     }
 
                     //clear list
-                    reqList.clear();
+                    pendingList.clear();
 
                     //use the id to check if the driver available within the duration requested
                     for(DocumentChange dc : Objects.requireNonNull(value).getDocumentChanges()){
 
                         if(dc.getType() == DocumentChange.Type.ADDED || dc.getType() == DocumentChange.Type.MODIFIED) {
-                            reqList.add(dc.getDocument().toObject(ModelRequestList.class));
+                            pendingList.add(dc.getDocument().toObject(ModelRequestList.class));
                         }
                     }
-                    rlAdapter.notifyDataSetChanged();
+
+                    //if no records found
+                    if(pendingList.size() == 0){
+                        Toast.makeText(v.getContext(), "No pending found!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    plAdapter.notifyDataSetChanged();
                 });
     }
 }

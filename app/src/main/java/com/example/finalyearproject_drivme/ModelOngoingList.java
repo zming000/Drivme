@@ -1,20 +1,22 @@
 package com.example.finalyearproject_drivme;
 
 public class ModelOngoingList {
-    String orderID, touristID, driverID, startDate, endDate, time, locality, orderStatus;
+    //declare variables
+    String orderID, touristID, driverID, meetDate, endDate, meetTime, locality, orderStatus, tripOption;
     float total;
 
     public ModelOngoingList() {/*empty constructor*/}
 
-    public ModelOngoingList(String orderID, String touristID, String driverID, String startDate, String endDate, String time, String locality, String orderStatus, float total) {
+    public ModelOngoingList(String orderID, String touristID, String driverID, String meetDate, String endDate, String meetTime, String locality, String orderStatus, String tripOption, float total) {
         this.orderID = orderID;
         this.touristID = touristID;
         this.driverID = driverID;
-        this.startDate = startDate;
+        this.meetDate = meetDate;
         this.endDate = endDate;
-        this.time = time;
+        this.meetTime = meetTime;
         this.locality = locality;
         this.orderStatus = orderStatus;
+        this.tripOption = tripOption;
         this.total = total;
     }
 
@@ -42,12 +44,12 @@ public class ModelOngoingList {
         this.driverID = driverID;
     }
 
-    public String getStartDate() {
-        return startDate;
+    public String getMeetDate() {
+        return meetDate;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public void setMeetDate(String meetDate) {
+        this.meetDate = meetDate;
     }
 
     public String getEndDate() {
@@ -58,12 +60,12 @@ public class ModelOngoingList {
         this.endDate = endDate;
     }
 
-    public String getTime() {
-        return time;
+    public String getMeetTime() {
+        return meetTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setMeetTime(String meetTime) {
+        this.meetTime = meetTime;
     }
 
     public String getLocality() {
@@ -80,6 +82,14 @@ public class ModelOngoingList {
 
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public String getTripOption() {
+        return tripOption;
+    }
+
+    public void setTripOption(String tripOption) {
+        this.tripOption = tripOption;
     }
 
     public float getTotal() {

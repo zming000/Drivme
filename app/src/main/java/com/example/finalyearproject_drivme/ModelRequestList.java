@@ -1,20 +1,22 @@
 package com.example.finalyearproject_drivme;
 
 public class ModelRequestList {
-    String orderID, touristID, driverID, startDate, time, locality, orderStatus;
-    float priceDay, total;
+    //declare variables
+    String orderID, touristID, driverID, meetDate, meetTime, locality, orderStatus, tripOption;
+    float priceDriver, total;
 
     public ModelRequestList() {/*empty constructor*/}
 
-    public ModelRequestList(String orderID, String touristID, String driverID, String startDate, String time, String locality, String orderStatus, float priceDay, float total) {
+    public ModelRequestList(String orderID, String touristID, String driverID, String meetDate, String meetTime, String locality, String orderStatus, String tripOption, float priceDriver, float total) {
         this.orderID = orderID;
         this.touristID = touristID;
         this.driverID = driverID;
-        this.startDate = startDate;
-        this.time = time;
+        this.meetDate = meetDate;
+        this.meetTime = meetTime;
         this.locality = locality;
         this.orderStatus = orderStatus;
-        this.priceDay = priceDay;
+        this.tripOption = tripOption;
+        this.priceDriver = priceDriver;
         this.total = total;
     }
 
@@ -42,20 +44,20 @@ public class ModelRequestList {
         this.driverID = driverID;
     }
 
-    public String getStartDate() {
-        return startDate;
+    public String getMeetDate() {
+        return meetDate;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public void setMeetDate(String meetDate) {
+        this.meetDate = meetDate;
     }
 
-    public String getTime() {
-        return time;
+    public String getMeetTime() {
+        return meetTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setMeetTime(String meetTime) {
+        this.meetTime = meetTime;
     }
 
     public String getLocality() {
@@ -74,12 +76,20 @@ public class ModelRequestList {
         this.orderStatus = orderStatus;
     }
 
-    public float getPriceDay() {
-        return priceDay;
+    public String getTripOption() {
+        return tripOption;
     }
 
-    public void setPriceDay(float priceDay) {
-        this.priceDay = priceDay;
+    public void setTripOption(String tripOption) {
+        this.tripOption = tripOption;
+    }
+
+    public float getPriceDriver() {
+        return priceDriver;
+    }
+
+    public void setPriceDriver(float priceDriver) {
+        this.priceDriver = priceDriver;
     }
 
     public float getTotal() {

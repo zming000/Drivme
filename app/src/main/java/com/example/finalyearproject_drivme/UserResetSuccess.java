@@ -37,6 +37,10 @@ public class UserResetSuccess extends AppCompatActivity {
             mbtnGotoSetting.setVisibility(View.VISIBLE);
             mbtnGotoLogin.setVisibility(View.GONE);
         }
+        else{
+            mbtnGotoSetting.setVisibility(View.GONE);
+            mbtnGotoLogin.setVisibility(View.VISIBLE);
+        }
 
         mbtnGotoSetting.setOnClickListener(view -> {
             if (uRole.equals("Tourist")) {

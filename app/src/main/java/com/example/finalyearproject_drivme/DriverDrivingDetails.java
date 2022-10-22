@@ -33,7 +33,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_driving_details);
 
-        //obtaining the View with specific ID
+        //assign variables
         mtilDAge = findViewById(R.id.tilDAge);
         mtilDGender = findViewById(R.id.tilDGender);
         mtilDRace = findViewById(R.id.tilDRace);
@@ -65,6 +65,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
     //age dialog
     private void ageMenu() {
         metDAge.setOnClickListener(ageView -> {
+            //set layout
             LayoutInflater dialogInflater = getLayoutInflater();
             ageView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
 
@@ -97,6 +98,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
     //gender dialog
     private void genderMenu() {
         metDGender.setOnClickListener(genderView -> {
+            //set layout
             LayoutInflater dialogInflater = getLayoutInflater();
             genderView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
 
@@ -130,6 +132,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
     //race dialog
     private void raceMenu() {
         metDRace.setOnClickListener(raceView -> {
+            //set layout
             LayoutInflater dialogInflater = getLayoutInflater();
             raceView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
 
@@ -163,6 +166,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
     //driving experience dialog
     private void drivingExpMenu() {
         metDExp.setOnClickListener(expView -> {
+            //set layout
             LayoutInflater dialogInflater = getLayoutInflater();
             expView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
 

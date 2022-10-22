@@ -482,7 +482,7 @@ public class TouristInputCar extends AppCompatActivity {
 
     //check empty fields
     private void checkDropdownMenus(){
-        if(!metCPlate.getText().toString().isEmpty()) {
+        if(!Objects.requireNonNull(metCPlate.getText()).toString().isEmpty()) {
             FirebaseFirestore checkCar = FirebaseFirestore.getInstance();
             String checkID = spDrivme.getString(KEY_ID, null);
             String checkCarPlate = metCPlate.getText().toString().replaceAll("\\s", "").toUpperCase();
@@ -532,7 +532,6 @@ public class TouristInputCar extends AppCompatActivity {
                                 carDetails.put("carTransmission", metCTransmission.getText().toString());
                                 carDetails.put("petrolCompany", metCPCompany.getText().toString());
                                 carDetails.put("petrolType", metCPType.getText().toString());
-                                carDetails.put("carStatus", "Available");
 
                                 carDB.collection("User Accounts").document(id)
                                         .update(userAcc);

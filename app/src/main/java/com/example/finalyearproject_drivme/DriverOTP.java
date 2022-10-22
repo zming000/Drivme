@@ -88,7 +88,7 @@ public class DriverOTP extends AppCompatActivity {
 
         @Override
         public void onVerificationCompleted(@NonNull PhoneAuthCredential authCred) {
-            String verificationCodeD = authCred.getSmsCode(); //get from sms
+            String verificationCodeD = authCred.getSmsCode(); //auto get from sms
             mpvDOTP.setText(verificationCodeD);
 
             if(verificationCodeD != null){
@@ -163,6 +163,7 @@ public class DriverOTP extends AppCompatActivity {
         driverAcc.put("2 Stars", 0);
         driverAcc.put("1 Star", 0);
         driverAcc.put("priceDay", 300);
+        driverAcc.put("priceHour", 15);
         driverAcc.put("drivPay", "0.00");
 
         drivmeDB.collection("Reference Code Details").document(referenceCode)

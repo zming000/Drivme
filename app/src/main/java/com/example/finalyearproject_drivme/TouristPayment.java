@@ -3,9 +3,12 @@ package com.example.finalyearproject_drivme;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +16,7 @@ import android.widget.Toast;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,7 +29,8 @@ import java.util.Objects;
 public class TouristPayment extends AppCompatActivity {
     //declare variables
     CardView mcvDrivPay, mcvCard, mcvOnline;
-    TextView mtvDrivPay, mtvCard, mtvOnline, mtvPTripOption, mtvPStartDate, mtvPEndDate, mtvPDuration, mtvPPriceDay, mtvPTotal;
+    TextView mtvDrivPay, mtvCard, mtvOnline, mtvPTripOption, mtvMeet, mtvPMeet, mtvStart, mtvPStart,
+            mtvEnd, mtvPEnd, mtvPDuration, mtvPrice, mtvPPrice, mtvPTotal, mtvDriverDay, mtvDriverHour, mtvMeal;
     Button mbtnPayNow;
     FirebaseFirestore getOrder;
 
@@ -42,10 +47,18 @@ public class TouristPayment extends AppCompatActivity {
         mtvCard = findViewById(R.id.tvCard);
         mtvOnline = findViewById(R.id.tvOnline);
         mtvPTripOption = findViewById(R.id.tvPTripOption);
-        mtvPStartDate = findViewById(R.id.tvPStartDate);
-        mtvPEndDate = findViewById(R.id.tvPEndDate);
+        mtvMeet = findViewById(R.id.tvMeet);
+        mtvPMeet = findViewById(R.id.tvPMeet);
+        mtvStart = findViewById(R.id.tvStart);
+        mtvPStart = findViewById(R.id.tvPStart);
+        mtvEnd = findViewById(R.id.tvEnd);
+        mtvPEnd = findViewById(R.id.tvPEnd);
         mtvPDuration = findViewById(R.id.tvPDuration);
-        mtvPPriceDay = findViewById(R.id.tvPPriceDay);
+        mtvPrice = findViewById(R.id.tvPrice);
+        mtvPPrice = findViewById(R.id.tvPPrice);
+        mtvDriverDay = findViewById(R.id.tvDriverDay);
+        mtvDriverHour = findViewById(R.id.tvDriverHour);
+        mtvMeal = findViewById(R.id.tvMeal);
         mtvPTotal = findViewById(R.id.tvPTotal);
         mbtnPayNow = findViewById(R.id.btnPayNow);
 
@@ -63,20 +76,53 @@ public class TouristPayment extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot doc = task.getResult();
-
-                        mtvPTripOption.setText("By " + doc.getString("tripOption"));
-                        mtvPStartDate.setText(doc.getString("startDate"));
-                        mtvPEndDate.setText(doc.getString("endDate"));
+                        String tripOption = doc.getString("tripOption");
                         int numDay = Objects.requireNonNull(doc.getLong("duration")).intValue();
 
-                        if(numDay > 1) {
-                            mtvPDuration.setText(numDay + " days");
+                        mtvPTripOption.setText("By " + tripOption);
+                        mtvPPrice.setText("RM " + Objects.requireNonNull(doc.getLong("priceDriver")).intValue());
+                        mtvPTotal.setText("Total RM " + Objects.requireNonNull(doc.getLong("total")).intValue());
+
+                        if(Objects.requireNonNull(tripOption).equals("Day")){
+                            mtvMeet.setText("Meet Time:");
+                            mtvPMeet.setText(doc.getString("meetTime"));
+                            mtvStart.setText("Start Date:");
+                            mtvPStart.setText(doc.getString("meetDate"));
+                            mtvEnd.setText("End Date:");
+                            mtvPEnd.setText(doc.getString("endDate"));
+
+                            if(numDay > 1) {
+                                mtvPDuration.setText(numDay + " days");
+                            }
+                            else{
+                                mtvPDuration.setText(numDay + " day");
+                            }
+
+                            mtvPrice.setText("Price per Day:");
+                            mtvDriverDay.setVisibility(View.VISIBLE);
+                            mtvDriverHour.setVisibility(View.GONE);
+                            mtvMeal.setVisibility(View.VISIBLE);
                         }
                         else{
-                            mtvPDuration.setText(numDay + " day");
+                            mtvMeet.setText("Meet Date:");
+                            mtvPMeet.setText(doc.getString("meetDate"));
+                            mtvStart.setText("Start Time:");
+                            mtvPStart.setText(doc.getString("meetTime"));
+                            mtvEnd.setText("End Time:");
+                            mtvPEnd.setText(doc.getString("endTime"));
+
+                            if(numDay > 1) {
+                                mtvPDuration.setText(numDay + " hours");
+                            }
+                            else{
+                                mtvPDuration.setText(numDay + " hour");
+                            }
+
+                            mtvPrice.setText("Price per Hour:");
+                            mtvDriverDay.setVisibility(View.GONE);
+                            mtvDriverHour.setVisibility(View.VISIBLE);
+                            mtvMeal.setVisibility(View.GONE);
                         }
-                        mtvPPriceDay.setText("RM " + Objects.requireNonNull(doc.getLong("priceDay")).intValue());
-                        mtvPTotal.setText("Total RM " + Objects.requireNonNull(doc.getLong("total")).intValue());
                     }
                 });
 
@@ -123,9 +169,11 @@ public class TouristPayment extends AppCompatActivity {
 
             //initialize
             ArrayList<String> dates = new ArrayList<>();
-            SimpleDateFormat dateStart = new SimpleDateFormat("dd/MM/yyyy");
-            SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+            SimpleDateFormat dateStart = new SimpleDateFormat("dd/MM/yyyy"); //date format
+            SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy"); //date id
+            DateFormat fullFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm"); //date time
             Calendar c = Calendar.getInstance();
+            Calendar oneDayBefore = Calendar.getInstance();
 
             //update order status
             Map<String,Object> order = new HashMap<>();
@@ -143,19 +191,19 @@ public class TouristPayment extends AppCompatActivity {
 
                             String tourID = doc.getString("touristID");
                             String driID = doc.getString("driverID");
-                            String price = String.valueOf(doc.getLong("total").intValue());
-                            String startDate = doc.getString("startDate");
+                            String price = String.valueOf(Objects.requireNonNull(doc.getLong("total")).intValue());
+                            String tripOption = doc.getString("tripOption");
                             float duration = doc.getLong("duration");
                             int days = Math.round(duration);
 
                             if(mtvDrivPay.getCurrentTextColor() == -1){
-                                getDrivPay.collection("User Accounts").document(tourID).get()
+                                getDrivPay.collection("User Accounts").document(Objects.requireNonNull(tourID)).get()
                                         .addOnCompleteListener(task1 -> {
                                             if (task1.isSuccessful()) {
                                                 DocumentSnapshot snap = task1.getResult();
 
                                                 double total = Double.parseDouble(price);
-                                                double drivpay = Double.parseDouble(snap.getString("drivPay"));
+                                                double drivpay = Double.parseDouble(Objects.requireNonNull(snap.getString("drivPay")));
 
                                                 //check drivpay balance
                                                 if(drivpay < total){
@@ -175,25 +223,27 @@ public class TouristPayment extends AppCompatActivity {
 
                                                     //add start date
                                                     try {
-                                                        dates.add(sdf.format((Objects.requireNonNull(dateStart.parse(Objects.requireNonNull(startDate))))));
+                                                        dates.add(sdf.format((Objects.requireNonNull(dateStart.parse(Objects.requireNonNull(doc.getString("meetDate")))))));
                                                     } catch (ParseException e) {
                                                         e.printStackTrace();
                                                     }
 
-                                                    //calculate and add dates into arraylist
-                                                    for(int i = 0; i < days - 1; i++) {
-                                                        //calculate end date with duration
-                                                        try {
-                                                            c.setTime(Objects.requireNonNull(sdf.parse(dates.get(i))));
-                                                        } catch (ParseException e) {
-                                                            e.printStackTrace();
+                                                    if(Objects.requireNonNull(tripOption).equals("Day")) {
+                                                        //calculate and add dates into arraylist
+                                                        for (int i = 0; i < days - 1; i++) {
+                                                            //calculate end date with duration
+                                                            try {
+                                                                c.setTime(Objects.requireNonNull(sdf.parse(dates.get(i))));
+                                                            } catch (ParseException e) {
+                                                                e.printStackTrace();
+                                                            }
+
+                                                            //add 1 day
+                                                            c.add(Calendar.DATE, 1);
+
+                                                            Date resultDate = new Date(c.getTimeInMillis());
+                                                            dates.add(sdf.format(resultDate));
                                                         }
-
-                                                        //add 1 day
-                                                        c.add(Calendar.DATE, 1);
-
-                                                        Date resultDate = new Date(c.getTimeInMillis());
-                                                        dates.add(sdf.format(resultDate));
                                                     }
 
                                                     //create firestore documents for each date
@@ -205,37 +255,60 @@ public class TouristPayment extends AppCompatActivity {
                                                                 .set(orderDate);
                                                     }
 
-                                                    sendNotificationToTourist(driID, orderID);
+                                                    //calculate one day before start date
+                                                    try {
+                                                        oneDayBefore.setTime(Objects.requireNonNull(fullFormat.parse(doc.getString("meetDate") + " " + doc.getString("MeetTime"))));
+                                                    } catch (ParseException e) {
+                                                        e.printStackTrace();
+                                                    }
+
+                                                    //deduct 1 day
+                                                    oneDayBefore.add(Calendar.DATE, -1);
+
+                                                    Intent intent = new Intent(this, UserReminderReceiver.class);
+                                                    intent.putExtra("driverID", driID);
+                                                    intent.putExtra("touristID", tourID);
+
+                                                    //set reminder
+                                                    sendBroadcast(intent);
+                                                    PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                                                            this.getApplicationContext(), 234, intent, 0);
+                                                    AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                                    am.set(AlarmManager.RTC_WAKEUP, oneDayBefore.getTimeInMillis(), pendingIntent);
+
+                                                    sendNotificationToTourist(driID);
                                                 }
                                             }
                                         });
                             }
-                            else if(mtvCard.getCurrentTextColor() == -1){
+                            else if(mtvCard.getCurrentTextColor() == -1 || mtvOnline.getCurrentTextColor() == -1){
                                 //update order status
                                 updateOrderStatus.collection("Trip Details").document(orderID)
                                         .update(order);
 
                                 //add start date
                                 try {
-                                    dates.add(sdf.format((Objects.requireNonNull(dateStart.parse(Objects.requireNonNull(startDate))))));
+                                    dates.add(sdf.format((Objects.requireNonNull(dateStart.parse(Objects.requireNonNull(doc.getString("meetDate")))))));
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
 
-                                //calculate and add dates into arraylist
-                                for(int i = 0; i < days - 1; i++) {
-                                    //calculate end date with duration
-                                    try {
-                                        c.setTime(Objects.requireNonNull(sdf.parse(dates.get(i))));
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
+                                if(Objects.requireNonNull(tripOption).equals("Day")) {
+                                    //calculate and add dates into arraylist
+                                    for (int i = 0; i < days - 1; i++) {
+                                        //calculate end date with duration
+                                        try {
+                                            c.setTime(Objects.requireNonNull(sdf.parse(dates.get(i))));
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        //add 1 day
+                                        c.add(Calendar.DATE, 1);
+
+                                        Date resultDate = new Date(c.getTimeInMillis());
+                                        dates.add(sdf.format(resultDate));
                                     }
-
-                                    //add 1 day
-                                    c.add(Calendar.DATE, 1);
-
-                                    Date resultDate = new Date(c.getTimeInMillis());
-                                    dates.add(sdf.format(resultDate));
                                 }
 
                                 //create firestore documents for each date
@@ -247,46 +320,28 @@ public class TouristPayment extends AppCompatActivity {
                                             .set(orderDate);
                                 }
 
-                                sendNotificationToTourist(driID, orderID);
-                            }
-                            else if(mtvOnline.getCurrentTextColor() == -1){
-                                //update order status
-                                updateOrderStatus.collection("Trip Details").document(orderID)
-                                        .update(order);
-
-                                //add start date
+                                //calculate one day before start date
                                 try {
-                                    dates.add(sdf.format((Objects.requireNonNull(dateStart.parse(Objects.requireNonNull(startDate))))));
+                                    oneDayBefore.setTime(Objects.requireNonNull(fullFormat.parse(doc.getString("meetDate") + " " + doc.getString("MeetTime"))));
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
 
-                                //calculate and add dates into arraylist
-                                for(int i = 0; i < days - 1; i++) {
-                                    //calculate end date with duration
-                                    try {
-                                        c.setTime(Objects.requireNonNull(sdf.parse(dates.get(i))));
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
+                                //deduct 1 day
+                                oneDayBefore.add(Calendar.DATE, -1);
 
-                                    //add 1 day
-                                    c.add(Calendar.DATE, 1);
+                                Intent intent = new Intent(this, UserReminderReceiver.class);
+                                intent.putExtra("orderID", orderID);
+                                intent.putExtra("driverID", driID);
+                                intent.putExtra("touristID", tourID);
 
-                                    Date resultDate = new Date(c.getTimeInMillis());
-                                    dates.add(sdf.format(resultDate));
-                                }
+                                sendBroadcast(intent);
+                                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                                        this.getApplicationContext(), 234, intent, 0);
+                                AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                am.set(AlarmManager.RTC_WAKEUP, oneDayBefore.getTimeInMillis(), pendingIntent);
 
-                                //create firestore documents for each date
-                                for (int i = 0; i < dates.size(); i++) {
-                                    orderDate.put("numDay", (i + 1));
-
-                                    String dateID = dates.get(i);
-                                    addDays.collection("Trip Details").document(orderID).collection("Days").document(dateID)
-                                            .set(orderDate);
-                                }
-
-                                sendNotificationToTourist(driID, orderID);
+                                sendNotificationToTourist(driID);
                             }
                             else{
                                 Toast.makeText(TouristPayment.this, "Please choose a payment method!", Toast.LENGTH_SHORT).show();
@@ -297,7 +352,7 @@ public class TouristPayment extends AppCompatActivity {
         });
     }
 
-    private void sendNotificationToTourist(String dID, String oID) {
+    private void sendNotificationToTourist(String dID) {
         FirebaseFirestore getToken = FirebaseFirestore.getInstance();
 
         /*send notification to tourist*/
@@ -311,8 +366,7 @@ public class TouristPayment extends AppCompatActivity {
                                 TouristPayment.this,
                                 token,
                                 "Booking Paid",
-                                "Tourist paid for the booking!",
-                                oID);
+                                "Tourist paid for the booking!");
 
                         Toast.makeText(TouristPayment.this, "Paid Successfully!", Toast.LENGTH_SHORT).show();
 

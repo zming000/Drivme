@@ -38,12 +38,12 @@ public class DriverNavActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                //nothing
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                //nothing
             }
         });
 

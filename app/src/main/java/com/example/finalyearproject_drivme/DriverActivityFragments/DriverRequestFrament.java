@@ -25,9 +25,9 @@ import java.util.Objects;
 
 public class DriverRequestFrament extends Fragment {
     //declare variables
-    private ArrayList<ModelRequestList> reqList;
-    private AdapterOrderList rlAdapter;
-    private FirebaseFirestore reqDB;
+    private ArrayList<ModelRequestList> requestList;
+    private AdapterOrderList reqlAdapter;
+    private FirebaseFirestore requestDB;
     private SwipeRefreshLayout mswipeRequest;
 
     //key name
@@ -35,7 +35,7 @@ public class DriverRequestFrament extends Fragment {
     private static final String KEY_ID = "userID";
 
     public DriverRequestFrament() {
-        // Required empty public constructor
+        //empty public constructor
     }
 
     @Override
@@ -47,31 +47,31 @@ public class DriverRequestFrament extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View reqView = inflater.inflate(R.layout.fragment_driver_request, container, false);
-        InitializeRequestCardView(reqView);
+        View requestView = inflater.inflate(R.layout.fragment_driver_request, container, false);
+        InitializeRequestCardView(requestView);
 
-        return reqView;
+        return requestView;
     }
 
-    private void InitializeRequestCardView(View reqView) {
-        //assign variables
-        mswipeRequest = reqView.findViewById(R.id.swipeRequest);
+    private void InitializeRequestCardView(View requestView) {
         //declare variables
-        RecyclerView mrvDRequest = reqView.findViewById(R.id.rvDRequest);
-        mrvDRequest.setLayoutManager(new LinearLayoutManager(reqView.getContext()));
+        RecyclerView mrvDRequest = requestView.findViewById(R.id.rvDRequest);
+        mswipeRequest = requestView.findViewById(R.id.swipeRequest);
+        mrvDRequest.setLayoutManager(new LinearLayoutManager(requestView.getContext()));
 
-        //initialize varaibles
-        reqDB = FirebaseFirestore.getInstance();
-        reqList = new ArrayList<>();
+        //initialize variables
+        requestDB = FirebaseFirestore.getInstance();
+        requestList = new ArrayList<>();
 
         //initialize adapter
-        rlAdapter = new AdapterOrderList(reqView.getContext(), reqList);
-        mrvDRequest.setAdapter(rlAdapter);
+        reqlAdapter = new AdapterOrderList(requestView.getContext(), requestList);
+        mrvDRequest.setAdapter(reqlAdapter);
 
-        getRequestDetailsFromFirestore(reqView);
+        getRequestDetailsFromFirestore(requestView);
 
+        //swipe down refresh
         mswipeRequest.setOnRefreshListener(() -> {
-            getRequestDetailsFromFirestore(reqView);
+            getRequestDetailsFromFirestore(requestView);
             mswipeRequest.setRefreshing(false);
         });
     }
@@ -82,7 +82,8 @@ public class DriverRequestFrament extends Fragment {
         //get user id from shared preference
         String uID = spDrivme.getString(KEY_ID, null);
 
-        reqDB.collection("Trip Details")
+        //display category that belongs to request
+        requestDB.collection("Trip Details")
                 .whereEqualTo("driverID", uID)
                 .whereIn("orderStatus", Arrays.asList("Pending Driver Accept", "Pending Tourist Payment"))
                 .addSnapshotListener((value, error) -> {
@@ -92,16 +93,22 @@ public class DriverRequestFrament extends Fragment {
                     }
 
                     //clear list
-                    reqList.clear();
+                    requestList.clear();
 
                     //use the id to check if the driver available within the duration requested
                     for(DocumentChange dc : Objects.requireNonNull(value).getDocumentChanges()){
 
                         if(dc.getType() == DocumentChange.Type.ADDED || dc.getType() == DocumentChange.Type.MODIFIED) {
-                            reqList.add(dc.getDocument().toObject(ModelRequestList.class));
+                            requestList.add(dc.getDocument().toObject(ModelRequestList.class));
                         }
                     }
-                    rlAdapter.notifyDataSetChanged();
+
+                    //if no records found
+                    if(requestList.size() == 0){
+                        Toast.makeText(v.getContext(), "No request found!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    reqlAdapter.notifyDataSetChanged();
                 });
     }
 }

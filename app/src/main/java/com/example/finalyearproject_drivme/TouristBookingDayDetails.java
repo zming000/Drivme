@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class TouristBookingDetails extends AppCompatActivity {
+public class TouristBookingDayDetails extends AppCompatActivity {
     //declare variables
     TextView mtvBOrderID, mtvBName, mtvBContact, mtvBTripOption, mtvBMeetDate, mtvBMeetTime, mtvBStartDate,
             mtvBEndDate, mtvBDuration, mtvBLocality, mtvBAddress, mtvBCarPlate, mtvBCarModel, mtvBCarColour,
@@ -38,7 +38,7 @@ public class TouristBookingDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tourist_booking_details);
+        setContentView(R.layout.activity_tourist_booking_day_details);
 
         //assign variables
         mtvBOrderID = findViewById(R.id.tvBOrderID);
@@ -87,9 +87,9 @@ public class TouristBookingDetails extends AppCompatActivity {
                         }
 
                         mtvBTripOption.setText("By " + doc.getString("tripOption"));
-                        mtvBMeetDate.setText(doc.getString("startDate"));
-                        mtvBMeetTime.setText(doc.getString("time"));
-                        mtvBStartDate.setText(doc.getString("startDate"));
+                        mtvBMeetDate.setText(doc.getString("meetDate"));
+                        mtvBMeetTime.setText(doc.getString("meetTime"));
+                        mtvBStartDate.setText(doc.getString("meetDate"));
                         mtvBEndDate.setText(doc.getString("endDate"));
 
                         int num = Objects.requireNonNull(doc.getLong("duration")).intValue();
@@ -104,7 +104,7 @@ public class TouristBookingDetails extends AppCompatActivity {
                         mtvBLocality.setText(doc.getString("locality"));
                         mtvBAddress.setText(doc.getString("address"));
                         mtvBNotes.setText(doc.getString("note"));
-                        mtvBPriceDay.setText(String.valueOf(Objects.requireNonNull(doc.getLong("priceDay")).intValue()));
+                        mtvBPriceDay.setText(String.valueOf(Objects.requireNonNull(doc.getLong("priceDriver")).intValue()));
                         mtvBTotal.setText(String.valueOf(Objects.requireNonNull(doc.getLong("total")).intValue()));
 
                         String touristID = doc.getString("touristID");
@@ -142,11 +142,11 @@ public class TouristBookingDetails extends AppCompatActivity {
             ClipData address = ClipData.newPlainText("address", mtvBAddress.getText().toString());
             copyAddress.setPrimaryClip(address);
 
-            Toast.makeText(TouristBookingDetails.this, "Copied address to clipboard!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TouristBookingDayDetails.this, "Copied address to clipboard!", Toast.LENGTH_SHORT).show();
         });
 
         mbtnPayment.setOnClickListener(view -> {
-            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristBookingDetails.this);
+            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristBookingDayDetails.this);
             alertDialogBuilder.setTitle("Booking Payment");
             alertDialogBuilder
                     .setMessage("Do you wish to pay for booking?")
@@ -161,7 +161,7 @@ public class TouristBookingDetails extends AppCompatActivity {
         mbtnCancel.setOnClickListener(view -> {
             String orderStatus = getIntent().getStringExtra("orderStatus");
             if(orderStatus.equals("Coming Soon")){
-                android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristBookingDetails.this);
+                android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristBookingDayDetails.this);
                 alertDialogBuilder.setTitle("Cancel Booking");
                 alertDialogBuilder
                         .setMessage("You can only refund 90% of total price paid! Do you still wish to cancel and refund the booking?")
@@ -173,7 +173,7 @@ public class TouristBookingDetails extends AppCompatActivity {
                 alertDialog.show();
             }
             else {
-                android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristBookingDetails.this);
+                android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristBookingDayDetails.this);
                 alertDialogBuilder.setTitle("Cancel Booking");
                 alertDialogBuilder
                         .setMessage("Do you wish to cancel the booking?")
@@ -188,7 +188,7 @@ public class TouristBookingDetails extends AppCompatActivity {
     }
 
     private void bookingPayment() {
-        Intent booking = new Intent(TouristBookingDetails.this, TouristPayment.class);
+        Intent booking = new Intent(TouristBookingDayDetails.this, TouristPayment.class);
         booking.putExtra("orderID", orderID);
 
         startActivity(booking);
@@ -196,11 +196,11 @@ public class TouristBookingDetails extends AppCompatActivity {
 
     private void cancelBooking() {
         FirebaseFirestore getToken = FirebaseFirestore.getInstance();
+        FirebaseFirestore getAdminToken = FirebaseFirestore.getInstance();
         FirebaseFirestore getTouristID = FirebaseFirestore.getInstance();
         FirebaseFirestore updateOrderStatus = FirebaseFirestore.getInstance();
         FirebaseFirestore updateDriver = FirebaseFirestore.getInstance();
         FirebaseFirestore updateTourist = FirebaseFirestore.getInstance();
-        FirebaseFirestore updateTouristCar = FirebaseFirestore.getInstance();
         String orderStatus = getIntent().getStringExtra("orderStatus");
 
         //update order status
@@ -221,7 +221,6 @@ public class TouristBookingDetails extends AppCompatActivity {
                         DocumentSnapshot doc = task.getResult();
                         String tID = doc.getString("touristID");
                         String dID = doc.getString("driverID");
-                        String cp = doc.getString("carPlate");
                         String startDate = doc.getString("startDate");
                         float duration = doc.getLong("duration");
                         int days = Math.round(duration);
@@ -270,13 +269,6 @@ public class TouristBookingDetails extends AppCompatActivity {
                                     .delete();
                         }
 
-                        /* update tourist car */
-                        Map<String, Object> touristCar = new HashMap<>();
-                        touristCar.put("carStatus", "Available");
-
-                        updateTouristCar.collection("User Accounts").document(Objects.requireNonNull(tID)).collection("Car Details").document(Objects.requireNonNull(cp))
-                                .update(touristCar);
-
                         /*send notification to driver*/
                         getToken.collection("User Accounts").document(Objects.requireNonNull(dID)).get()
                                 .addOnCompleteListener(task1 -> {
@@ -285,22 +277,35 @@ public class TouristBookingDetails extends AppCompatActivity {
                                         String token = tourToken.getString("notificationToken");
 
                                         UserFCMSend.pushNotification(
-                                                TouristBookingDetails.this,
+                                                TouristBookingDayDetails.this,
                                                 token,
                                                 "Booking Cancelled by Tourist",
-                                                "Tourist have cancelled the booking!",
-                                                orderID);
+                                                "Tourist have cancelled the booking!");
 
-                                        if(orderStatus.equals("Coming Soon")){
-                                            Toast.makeText(TouristBookingDetails.this, "Booking cancelled successfully! Refund will be done in 5 working days!", Toast.LENGTH_SHORT).show();
-                                        }
-                                        else {
-                                            Toast.makeText(TouristBookingDetails.this, "Booking cancelled successfully!", Toast.LENGTH_SHORT).show();
-                                        }
+                                        getAdminToken.collection("User Accounts").document("admin001").get()
+                                                .addOnCompleteListener(task2 -> {
+                                                    if (task2.isSuccessful()) {
+                                                        DocumentSnapshot doc2 = task2.getResult();
+                                                        String adminToken = doc2.getString("notificationToken");
 
-                                        startActivity(new Intent(TouristBookingDetails.this, TouristNavActivity.class));
-                                        finishAffinity();
-                                        finish();
+                                                        UserFCMSend.pushNotification(
+                                                                TouristBookingDayDetails.this,
+                                                                adminToken,
+                                                                "Refund Needed",
+                                                                "Tourist have cancelled a booking and requested a refund! Please review the order at the refund list!");
+
+                                                        if(orderStatus.equals("Coming Soon")){
+                                                            Toast.makeText(TouristBookingDayDetails.this, "Booking cancelled successfully! Refund will be done in 5 working days!", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                        else {
+                                                            Toast.makeText(TouristBookingDayDetails.this, "Booking cancelled successfully!", Toast.LENGTH_SHORT).show();
+                                                        }
+
+                                                        startActivity(new Intent(TouristBookingDayDetails.this, TouristNavActivity.class));
+                                                        finishAffinity();
+                                                        finish();
+                                                    }
+                                                });
                                     }
                                 });
                     }
@@ -309,7 +314,7 @@ public class TouristBookingDetails extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(TouristBookingDetails.this, TouristNavActivity.class));
+        startActivity(new Intent(TouristBookingDayDetails.this, TouristNavActivity.class));
         finish();
     }
 }

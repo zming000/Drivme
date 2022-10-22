@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalYearProjectDrivme">
         <activity
+            android:name=".DriverRequestHourDetails"
+            android:exported="false" />
+        <activity
+            android:name=".TouristBookingHourDetails"
+            android:exported="false" />
+        <activity
+            android:name=".DriverHourMoreDetails"
+            android:exported="false" />
+        <activity
+            android:name=".TouristReload"
+            android:exported="false" />
+        <activity
             android:name=".DriverAboutUs"
             android:screenOrientation="portrait" />
         <activity
@@ -39,16 +51,16 @@
             android:name=".TouristPayment"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TouristBookingDetails"
+            android:name=".TouristBookingDayDetails"
             android:screenOrientation="portrait" />
         <activity
             android:name=".TouristBookSuccess"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TouristSlotTrip"
+            android:name=".TouristHourTrip"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DriverRequestDetails"
+            android:name=".DriverRequestDayDetails"
             android:screenOrientation="portrait" /> <!-- Account UI -->
         <activity
             android:name=".UserResetSuccess"
@@ -129,7 +141,7 @@
             android:name=".TouristDriverList"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DriverMoreDetails"
+            android:name=".DriverDayMoreDetails"
             android:screenOrientation="portrait" /> <!-- App UI -->
         <activity
             android:name=".UserRole"
@@ -160,6 +172,8 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/app_logo_wheel" />
+
+        <receiver android:name=".UserReminderReceiver" />
 
         <service
             android:name=".UserPushNotificationService"

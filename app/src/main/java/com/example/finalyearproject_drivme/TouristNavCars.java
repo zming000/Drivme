@@ -8,7 +8,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -57,10 +56,10 @@ public class TouristNavCars extends AppCompatActivity {
         getCarDetailsFromFirestore();
         navSelection();
 
-        mbtnAddCar.setOnClickListener(view -> {
-            startActivity(new Intent(TouristNavCars.this, TouristInputCar.class));
-        });
+        //go to add car ui
+        mbtnAddCar.setOnClickListener(view -> startActivity(new Intent(TouristNavCars.this, TouristInputCar.class)));
 
+        //swipe down refresh
         mswipeCars.setOnRefreshListener(() -> {
             getCarDetailsFromFirestore();
             mswipeCars.setRefreshing(false);
@@ -88,6 +87,12 @@ public class TouristNavCars extends AppCompatActivity {
                             carList.add(dc.getDocument().getId());
                         }
                     }
+
+                    //if no records found
+                    if(carList.size() == 0){
+                        Toast.makeText(TouristNavCars.this, "No car!", Toast.LENGTH_SHORT).show();
+                    }
+
                     carAdapter.notifyDataSetChanged();
                 });
     }

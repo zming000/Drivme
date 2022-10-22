@@ -1,6 +1,5 @@
 package com.example.finalyearproject_drivme;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ClipData;
@@ -8,11 +7,9 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class DriverRequestDetails extends AppCompatActivity {
+public class DriverRequestDayDetails extends AppCompatActivity {
     //declare variables
     TextView mtvOrderID, mtvName, mtvContact, mtvTripOption, mtvMeetDate, mtvMeetTime, mtvStartDate,
             mtvEndDate, mtvDuration, mtvLocality, mtvAddress, mtvCarPlate, mtvCarModel, mtvCarColour,
@@ -41,7 +38,7 @@ public class DriverRequestDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver_request_details);
+        setContentView(R.layout.activity_driver_request_day_details);
 
         //assign variables
         mtvOrderID = findViewById(R.id.tvOrderID);
@@ -83,7 +80,7 @@ public class DriverRequestDetails extends AppCompatActivity {
                         DocumentSnapshot doc = task.getResult();
                         String status = doc.getString("orderStatus");
 
-                        if(status.equals("Rejected by Driver") || status.equals("Cancelled by Tourist") || status.equals("Cancelled by Driver")
+                        if(Objects.requireNonNull(status).equals("Rejected by Driver") || status.equals("Cancelled by Tourist") || status.equals("Cancelled by Driver")
                                 || status.equals("Coming Soon") || status.equals("Trip Ongoing") || status.equals("Trip Finished")){
                             mbtnReject.setVisibility(View.GONE);
                             mbtnAccept.setVisibility(View.GONE);
@@ -96,9 +93,9 @@ public class DriverRequestDetails extends AppCompatActivity {
                         }
 
                         mtvTripOption.setText("By " + doc.getString("tripOption"));
-                        mtvMeetDate.setText(doc.getString("startDate"));
-                        mtvMeetTime.setText(doc.getString("time"));
-                        mtvStartDate.setText(doc.getString("startDate"));
+                        mtvMeetDate.setText(doc.getString("meetDate"));
+                        mtvMeetTime.setText(doc.getString("meetTime"));
+                        mtvStartDate.setText(doc.getString("meetDate"));
                         mtvEndDate.setText(doc.getString("endDate"));
 
                         int num = Objects.requireNonNull(doc.getLong("duration")).intValue();
@@ -113,7 +110,7 @@ public class DriverRequestDetails extends AppCompatActivity {
                         mtvLocality.setText(doc.getString("locality"));
                         mtvAddress.setText(doc.getString("address"));
                         mtvNotes.setText(doc.getString("note"));
-                        mtvPriceDay.setText(String.valueOf(Objects.requireNonNull(doc.getLong("priceDay")).intValue()));
+                        mtvPriceDay.setText(String.valueOf(Objects.requireNonNull(doc.getLong("priceDriver")).intValue()));
                         mtvTotal.setText(String.valueOf(Objects.requireNonNull(doc.getLong("total")).intValue()));
 
                         String touristID = doc.getString("touristID");
@@ -124,12 +121,10 @@ public class DriverRequestDetails extends AppCompatActivity {
                         touristDetails.collection("User Accounts").document(Objects.requireNonNull(touristID)).get()
                                 .addOnCompleteListener(task1 -> {
                                     DocumentSnapshot tour = task1.getResult();
-
                                     String fName = tour.getString("firstName");
                                     String lName = tour.getString("lastName");
-                                    String fullName = lName + " " + fName;
 
-                                    mtvName.setText(fullName);
+                                    mtvName.setText(lName + " " + fName);
                                     mtvContact.setText(tour.getString("phoneNumber"));
                                 });
 
@@ -154,11 +149,11 @@ public class DriverRequestDetails extends AppCompatActivity {
             ClipData address = ClipData.newPlainText("address", mtvAddress.getText().toString());
             copyAddress.setPrimaryClip(address);
 
-            Toast.makeText(DriverRequestDetails.this, "Copied address to clipboard!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DriverRequestDayDetails.this, "Copied address to clipboard!", Toast.LENGTH_SHORT).show();
         });
 
         mbtnReject.setOnClickListener(view -> {
-            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverRequestDetails.this);
+            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverRequestDayDetails.this);
             alertDialogBuilder.setTitle("Reject Tourist");
             alertDialogBuilder
                     .setMessage("Do you wish to reject him/her?")
@@ -171,7 +166,7 @@ public class DriverRequestDetails extends AppCompatActivity {
         });
 
         mbtnAccept.setOnClickListener(view -> {
-            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverRequestDetails.this);
+            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverRequestDayDetails.this);
             alertDialogBuilder.setTitle("Accept Booking");
             alertDialogBuilder
                     .setMessage("Do you wish to accept the booking?")
@@ -184,7 +179,7 @@ public class DriverRequestDetails extends AppCompatActivity {
         });
 
         mbtnCancel.setOnClickListener(view -> {
-            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverRequestDetails.this);
+            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(DriverRequestDayDetails.this);
             alertDialogBuilder.setTitle("Cancel Booking");
             alertDialogBuilder
                     .setMessage("Do you wish to cancel the booking?")
@@ -201,7 +196,6 @@ public class DriverRequestDetails extends AppCompatActivity {
         FirebaseFirestore getToken = FirebaseFirestore.getInstance();
         FirebaseFirestore getTouristID = FirebaseFirestore.getInstance();
         FirebaseFirestore updateOrderStatus = FirebaseFirestore.getInstance();
-        FirebaseFirestore addDays = FirebaseFirestore.getInstance();
 
         //update order status
         Map<String,Object> order = new HashMap<>();
@@ -218,22 +212,21 @@ public class DriverRequestDetails extends AppCompatActivity {
                         String tID = doc.getString("touristID");
 
                         /*send notification to tourist*/
-                        getToken.collection("User Accounts").document(tID).get()
+                        getToken.collection("User Accounts").document(Objects.requireNonNull(tID)).get()
                                 .addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
                                         DocumentSnapshot tourToken = task1.getResult();
                                         String token = tourToken.getString("notificationToken");
 
                                         UserFCMSend.pushNotification(
-                                                DriverRequestDetails.this,
+                                                DriverRequestDayDetails.this,
                                                 token,
                                                 "Booking Accepted",
-                                                "Your request have been accepted by the driver!",
-                                                orderID);
+                                                "Your request have been accepted by the driver!");
 
-                                        Toast.makeText(DriverRequestDetails.this, "Request accepted successfully!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(DriverRequestDayDetails.this, "Request accepted successfully!", Toast.LENGTH_SHORT).show();
 
-                                        startActivity(new Intent(DriverRequestDetails.this, DriverNavActivity.class));
+                                        startActivity(new Intent(DriverRequestDayDetails.this, DriverNavActivity.class));
                                         finishAffinity();
                                         finish();
                                     }
@@ -248,7 +241,6 @@ public class DriverRequestDetails extends AppCompatActivity {
         FirebaseFirestore updateOrderStatus = FirebaseFirestore.getInstance();
         FirebaseFirestore updateDriver = FirebaseFirestore.getInstance();
         FirebaseFirestore updateTourist = FirebaseFirestore.getInstance();
-        FirebaseFirestore updateTouristCar = FirebaseFirestore.getInstance();
 
         //update order status
         Map<String,Object> order = new HashMap<>();
@@ -264,7 +256,6 @@ public class DriverRequestDetails extends AppCompatActivity {
                         DocumentSnapshot doc = task.getResult();
                         String tID = doc.getString("touristID");
                         String dID = doc.getString("driverID");
-                        String cp = doc.getString("carPlate");
                         String startDate = doc.getString("startDate");
                         float duration = doc.getLong("duration");
                         int days = Math.round(duration);
@@ -313,30 +304,22 @@ public class DriverRequestDetails extends AppCompatActivity {
                                     .delete();
                         }
 
-                        /* update tourist car */
-                        Map<String, Object> touristCar = new HashMap<>();
-                        touristCar.put("carStatus", "Available");
-
-                        updateTouristCar.collection("User Accounts").document(Objects.requireNonNull(tID)).collection("Car Details").document(Objects.requireNonNull(cp))
-                                .update(touristCar);
-
                         /*send notification to tourist*/
-                        getToken.collection("User Accounts").document(tID).get()
+                        getToken.collection("User Accounts").document(Objects.requireNonNull(tID)).get()
                                 .addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
                                         DocumentSnapshot tourToken = task1.getResult();
                                         String token = tourToken.getString("notificationToken");
 
                                         UserFCMSend.pushNotification(
-                                                DriverRequestDetails.this,
+                                                DriverRequestDayDetails.this,
                                                 token,
                                                 "Request Rejected",
-                                                "Your request have been rejected by the driver!",
-                                                orderID);
+                                                "Your request have been rejected by the driver!");
 
-                                        Toast.makeText(DriverRequestDetails.this, "Request rejected successfully!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(DriverRequestDayDetails.this, "Request rejected successfully!", Toast.LENGTH_SHORT).show();
 
-                                        startActivity(new Intent(DriverRequestDetails.this, DriverNavActivity.class));
+                                        startActivity(new Intent(DriverRequestDayDetails.this, DriverNavActivity.class));
                                         finishAffinity();
                                         finish();
                                     }
@@ -351,7 +334,6 @@ public class DriverRequestDetails extends AppCompatActivity {
         FirebaseFirestore updateOrderStatus = FirebaseFirestore.getInstance();
         FirebaseFirestore updateDriver = FirebaseFirestore.getInstance();
         FirebaseFirestore updateTourist = FirebaseFirestore.getInstance();
-        FirebaseFirestore updateTouristCar = FirebaseFirestore.getInstance();
 
         //update order status
         Map<String,Object> order = new HashMap<>();
@@ -367,7 +349,6 @@ public class DriverRequestDetails extends AppCompatActivity {
                         DocumentSnapshot doc = task.getResult();
                         String tID = doc.getString("touristID");
                         String dID = doc.getString("driverID");
-                        String cp = doc.getString("carPlate");
                         String startDate = doc.getString("startDate");
                         float duration = doc.getLong("duration");
                         int days = Math.round(duration);
@@ -416,13 +397,6 @@ public class DriverRequestDetails extends AppCompatActivity {
                                     .delete();
                         }
 
-                        /* update tourist car */
-                        Map<String, Object> touristCar = new HashMap<>();
-                        touristCar.put("carStatus", "Available");
-
-                        updateTouristCar.collection("User Accounts").document(Objects.requireNonNull(tID)).collection("Car Details").document(Objects.requireNonNull(cp))
-                                .update(touristCar);
-
                         /*send notification to tourist*/
                         getToken.collection("User Accounts").document(Objects.requireNonNull(tID)).get()
                                 .addOnCompleteListener(task1 -> {
@@ -431,15 +405,14 @@ public class DriverRequestDetails extends AppCompatActivity {
                                         String token = tourToken.getString("notificationToken");
 
                                         UserFCMSend.pushNotification(
-                                                DriverRequestDetails.this,
+                                                DriverRequestDayDetails.this,
                                                 token,
                                                 "Booking Cancelled by Driver",
-                                                "Driver have cancelled the booking!",
-                                                orderID);
+                                                "Driver have cancelled the booking!");
 
-                                        Toast.makeText(DriverRequestDetails.this, "Booking cancelled successfully!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(DriverRequestDayDetails.this, "Booking cancelled successfully!", Toast.LENGTH_SHORT).show();
 
-                                        startActivity(new Intent(DriverRequestDetails.this, TouristNavActivity.class));
+                                        startActivity(new Intent(DriverRequestDayDetails.this, TouristNavActivity.class));
                                         finishAffinity();
                                         finish();
                                     }
@@ -453,10 +426,10 @@ public class DriverRequestDetails extends AppCompatActivity {
         String nav = getIntent().getStringExtra("navRate");
 
         if(nav.equals("Rate")){
-            startActivity(new Intent(DriverRequestDetails.this, DriverNavRating.class));
+            startActivity(new Intent(DriverRequestDayDetails.this, DriverNavRating.class));
         }
         else{
-            startActivity(new Intent(DriverRequestDetails.this, DriverNavActivity.class));
+            startActivity(new Intent(DriverRequestDayDetails.this, DriverNavActivity.class));
         }
         finish();
     }

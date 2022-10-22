@@ -4,16 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Pair;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.taufiqrahman.reviewratings.BarLabels;
+import com.taufiqrahman.reviewratings.RatingReviews;
+
+import java.util.Objects;
 
 public class DriverNavHomepage extends AppCompatActivity {
     //declare variable
-    TextView mtvDMoney;
+    TextView mtvDMoney, mtvFullName, mtvHomeRating;
+    RatingBar mrbHomeDriver;
+    RatingReviews mrrHomeDriver;
     BottomNavigationView mbtmDNav;
     SharedPreferences spDrivme;
 
@@ -29,12 +38,16 @@ public class DriverNavHomepage extends AppCompatActivity {
         //assign variable
         mbtmDNav = findViewById(R.id.btmDNav);
         mtvDMoney = findViewById(R.id.tvDMoney);
+        mtvFullName = findViewById(R.id.tvFullName);
+        mtvHomeRating = findViewById(R.id.tvHomeRating);
+        mrbHomeDriver = findViewById(R.id.rbHomeDriver);
+        mrrHomeDriver = findViewById(R.id.rrHomeDriver);
 
-        getDrivPay();
+        setDetails();
         navSelection();
     }
 
-    private void getDrivPay(){
+    private void setDetails(){
         FirebaseFirestore getAmount = FirebaseFirestore.getInstance();
         spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
         String id = spDrivme.getString(KEY_ID, null);
@@ -45,6 +58,28 @@ public class DriverNavHomepage extends AppCompatActivity {
                         DocumentSnapshot doc = task.getResult();
 
                         mtvDMoney.setText("RM " + doc.getString("drivPay"));
+                        mtvFullName.setText(doc.getString("lastName") + " " + doc.getString("firstName"));
+                        mtvHomeRating.setText(String.valueOf(doc.getDouble("rating")));
+                        mrbHomeDriver.setRating(Float.parseFloat(String.valueOf(doc.getDouble("rating"))));
+
+                        //rating and reviews
+                        Pair[] colors = new Pair[]{
+                                new Pair<>(Color.parseColor("#0c96c7"), Color.parseColor("#00fe77")),
+                                new Pair<>(Color.parseColor("#7b0ab4"), Color.parseColor("#ff069c")),
+                                new Pair<>(Color.parseColor("#fe6522"), Color.parseColor("#fdd116")),
+                                new Pair<>(Color.parseColor("#104bff"), Color.parseColor("#67cef6")),
+                                new Pair<>(Color.parseColor("#ff5d9b"), Color.parseColor("#ffaa69"))
+                        };
+
+                        int[] raters = new int[]{
+                                Objects.requireNonNull(doc.getLong("5 stars")).intValue(),
+                                Objects.requireNonNull(doc.getLong("4 stars")).intValue(),
+                                Objects.requireNonNull(doc.getLong("3 stars")).intValue(),
+                                Objects.requireNonNull(doc.getLong("2 stars")).intValue(),
+                                Objects.requireNonNull(doc.getLong("1 star")).intValue()
+                        };
+
+                        mrrHomeDriver.createRatingBars(100, BarLabels.STYPE3, colors, raters);
                     }
                 });
     }

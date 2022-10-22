@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class DriverAvailability extends AppCompatActivity {
     //declare variables
@@ -122,7 +123,7 @@ public class DriverAvailability extends AppCompatActivity {
     //area dialog
     private void areaMenu() {
         metDArea.setOnClickListener(view -> {
-            String getState = metDState.getText().toString();
+            String getState = Objects.requireNonNull(metDState.getText()).toString();
             areaList = new ArrayList<>();
 
             //check if state field is empty
@@ -190,10 +191,10 @@ public class DriverAvailability extends AppCompatActivity {
 
     //check empty fields
     private void checkMenus(){
-        if(metDState.getText().toString().isEmpty()){
+        if(Objects.requireNonNull(metDState.getText()).toString().isEmpty()){
             mtilDState.setError("Field cannot be empty!");
         }
-        else if(metDArea.getText().toString().isEmpty()){
+        else if(Objects.requireNonNull(metDArea.getText()).toString().isEmpty()){
             mtilDArea.setError("Field cannot be empty!");
         }
         else{
@@ -217,7 +218,6 @@ public class DriverAvailability extends AppCompatActivity {
             drivingDetails.put("state", metDState.getText().toString());
             drivingDetails.put("familiarAreas", Arrays.asList(area));
             drivingDetails.put("Login Status Driver", 1);
-            drivingDetails.put("accountStatus", "Driver");
 
             drivingDB.collection("User Accounts").document(id)
                     .update(drivingDetails)

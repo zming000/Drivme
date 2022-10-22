@@ -25,9 +25,9 @@ import java.util.Objects;
 
 public class DriverOngoingFragment extends Fragment {
     //declare variables
-    private ArrayList<ModelOngoingList> ongoingList;
-    private AdapterOngoingList olAdapter;
-    private FirebaseFirestore ongoingDB;
+    private ArrayList<ModelOngoingList> ongoingOrderList;
+    private AdapterOngoingList onlAdapter;
+    private FirebaseFirestore ongoingOrderDB;
     private SwipeRefreshLayout mswipeOngoing;
 
     //key name
@@ -35,7 +35,7 @@ public class DriverOngoingFragment extends Fragment {
     private static final String KEY_ID = "userID";
 
     public DriverOngoingFragment() {
-        // Required empty public constructor
+        //empty public constructor
     }
 
     @Override
@@ -59,16 +59,17 @@ public class DriverOngoingFragment extends Fragment {
         mswipeOngoing = ongoingView.findViewById(R.id.swipeOngoing);
         mrvDOngoing.setLayoutManager(new LinearLayoutManager(ongoingView.getContext()));
 
-        //initialize varaibles
-        ongoingDB = FirebaseFirestore.getInstance();
-        ongoingList = new ArrayList<>();
+        //initialize variables
+        ongoingOrderDB = FirebaseFirestore.getInstance();
+        ongoingOrderList = new ArrayList<>();
 
         //initialize adapter
-        olAdapter = new AdapterOngoingList(ongoingView.getContext(), ongoingList);
-        mrvDOngoing.setAdapter(olAdapter);
+        onlAdapter = new AdapterOngoingList(ongoingView.getContext(), ongoingOrderList);
+        mrvDOngoing.setAdapter(onlAdapter);
 
         getOrderDetailsFromFirestore(ongoingView);
 
+        //swipe down refresh
         mswipeOngoing.setOnRefreshListener(() -> {
             getOrderDetailsFromFirestore(ongoingView);
             mswipeOngoing.setRefreshing(false);
@@ -76,30 +77,37 @@ public class DriverOngoingFragment extends Fragment {
     }
 
     /*check order status*/
-    private void getOrderDetailsFromFirestore(View v) {
-        SharedPreferences spDrivme = v.getContext().getSharedPreferences(SP_NAME, v.getContext().MODE_PRIVATE);
+    private void getOrderDetailsFromFirestore(View ongoingView) {
+        SharedPreferences spDrivme = ongoingView.getContext().getSharedPreferences(SP_NAME, ongoingView.getContext().MODE_PRIVATE);
         //get user id from shared preference
         String uID = spDrivme.getString(KEY_ID, null);
 
-        ongoingDB.collection("Trip Details")
+        //display category that belongs to ongoing
+        ongoingOrderDB.collection("Trip Details")
                 .whereEqualTo("driverID", uID)
                 .whereIn("orderStatus", Arrays.asList("Coming Soon", "Trip Ongoing"))
                 .addSnapshotListener((value, error) -> {
                     if(error != null){
-                        Toast.makeText(v.getContext(), "Error Loading Request!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ongoingView.getContext(), "Error Loading Request!", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     //clear list
-                    ongoingList.clear();
+                    ongoingOrderList.clear();
 
                     //use the id to check if the driver available within the duration requested
                     for(DocumentChange dc : Objects.requireNonNull(value).getDocumentChanges()){
                         if(dc.getType() == DocumentChange.Type.ADDED || dc.getType() == DocumentChange.Type.MODIFIED) {
-                            ongoingList.add(dc.getDocument().toObject(ModelOngoingList.class));
+                            ongoingOrderList.add(dc.getDocument().toObject(ModelOngoingList.class));
                         }
                     }
-                    olAdapter.notifyDataSetChanged();
+
+                    //if no records found
+                    if(ongoingOrderList.size() == 0){
+                        Toast.makeText(ongoingView.getContext(), "No ongoing orders!", Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    onlAdapter.notifyDataSetChanged();
                 });
     }
 }

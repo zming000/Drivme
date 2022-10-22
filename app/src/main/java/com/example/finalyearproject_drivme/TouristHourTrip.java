@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
@@ -25,32 +24,30 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
-public class TouristSlotTrip extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class TouristHourTrip extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     //initialize variables
-    TextInputLayout mtilHDate, mtilHStartTime, mtilHEndTime, mtilHCarPlate, mtilHState, mtilHLocality, mtilHAddress;
-    TextInputEditText metHDate, metHStartTime, metHEndTime, metHLocality, metHAddress, metHComment;
-    AutoCompleteTextView mtvHCarPlate, mtvHState;
+    TextInputLayout mtilHDate, mtilHDuration, mtilHStartTime, mtilHCarPlate, mtilHState, mtilHLocality, mtilHAddress;
+    TextInputEditText metHDate, metHDuration, metHStartTime, metHEndTime, metHCarPlate, metHState, metHLocality, metHAddress, metHComment;
     String dateForID, locality, address;
     Button mbtnOK, mbtnHourNext;
     TextView mtvSelect;
     NumberPicker mnpHour, mnpMin, mnpPicker;
     SharedPreferences spDrivme;
-    int dayOfWeek, valueHourStart, valueMinStart, valueHourEnd, valueMinEnd, duration;
+    int valueHourStart, duration;
     ArrayList<String> cpList;
 
     //key name
@@ -60,21 +57,22 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tourist_slot_trip);
+        setContentView(R.layout.activity_tourist_hour_trip);
 
         //assign variables
         mtilHDate = findViewById(R.id.tilHDate);
+        mtilHDuration = findViewById(R.id.tilHDuration);
         mtilHStartTime = findViewById(R.id.tilHStartTime);
-        mtilHEndTime = findViewById(R.id.tilHEndTime);
         mtilHCarPlate = findViewById(R.id.tilHCarPlate);
         mtilHState = findViewById(R.id.tilHState);
         mtilHLocality = findViewById(R.id.tilHLocality);
         mtilHAddress = findViewById(R.id.tilHAddress);
         metHDate = findViewById(R.id.etHDate);
+        metHDuration = findViewById(R.id.etHDuration);
         metHStartTime = findViewById(R.id.etHStartTime);
         metHEndTime = findViewById(R.id.etHEndTime);
-        mtvHCarPlate = findViewById(R.id.tvHCarPlate);
-        mtvHState = findViewById(R.id.tvHState);
+        metHCarPlate = findViewById(R.id.etHCarPlate);
+        metHState = findViewById(R.id.etHState);
         metHLocality = findViewById(R.id.etHLocality);
         metHAddress = findViewById(R.id.etHAddress);
         metHComment = findViewById(R.id.etHComment);
@@ -88,8 +86,8 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
 
         //get inputs
         getDate();
-        startTimeMenu();
-        endTimeMenu();
+        durationMenu();
+        getTime();
         carPlateMenu();
         stateMenu();
         getPlaceSearch();
@@ -116,13 +114,15 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
             Date currentTimeDate = sdf.parse(sdf.format(new Date()));
             Date endTimeDate = sdf.parse("22:00");
             int state = Objects.requireNonNull(currentTimeDate).compareTo(endTimeDate); // false / current time has not passed end time.
+
+            //set limit to available date within a week
             if(state > 0){
                 dpd.getDatePicker().setMinDate(System.currentTimeMillis() + (1000*60*60*24*2));
-                dpd.getDatePicker().setMaxDate(System.currentTimeMillis() + (1000*60*60*24*2));
+                dpd.getDatePicker().setMaxDate(System.currentTimeMillis() + (1000*60*60*24*8));
             }
             else{
                 dpd.getDatePicker().setMinDate(System.currentTimeMillis() + (1000*60*60*24));
-                dpd.getDatePicker().setMaxDate(System.currentTimeMillis() + (1000*60*60*24));
+                dpd.getDatePicker().setMaxDate(System.currentTimeMillis() + (1000*60*60*24*7));
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -133,13 +133,54 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-        GregorianCalendar gc = new GregorianCalendar(year, month, dayOfMonth - 1);
-
-        dayOfWeek = gc.get(Calendar.DAY_OF_WEEK);
-        String date = dayOfMonth + "/" + (month + 1) + "/" + year;
-        dateForID = dayOfMonth + "" + (month + 1) + "" + year;
+        String date = String.format("%02d/%02d/" + year, dayOfMonth, (month + 1));
+        dateForID = String.format("%02d%02d" + year, dayOfMonth, (month + 1));
 
         metHDate.setText(date);
+    }
+
+    /*duration dialog*/
+    private void durationMenu() {
+        metHDuration.setOnClickListener(view -> {
+            //set layout
+            LayoutInflater dialogInflater = getLayoutInflater();
+            view = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
+
+            androidx.appcompat.app.AlertDialog.Builder dialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(TouristHourTrip.this, R.style.dialog);
+            androidx.appcompat.app.AlertDialog durationDialog = dialogBuilder.setView(view).create();
+
+            //obtaining the View with specific ID
+            mtvSelect = view.findViewById(R.id.tvSelectOption);
+            mnpPicker = view.findViewById(R.id.npPicker);
+            mbtnOK = view.findViewById(R.id.btnOK);
+
+            //set the values
+            mtvSelect.setText("Set Trip Duration");
+            mnpPicker.setMaxValue(19);
+            mnpPicker.setMinValue(1);
+            mnpPicker.setValue(1);
+
+            //show pop out dialog
+            durationDialog.show();
+            durationDialog.getWindow().setLayout(450, 580);
+
+            mbtnOK.setOnClickListener(view1 -> {
+                duration = mnpPicker.getValue();
+
+                if (duration == 1) {
+                    metHDuration.setText(duration + " Hour");
+                }
+                else {
+                    metHDuration.setText(duration + " Hours");
+                }
+
+                metHStartTime.setText("");
+                metHEndTime.setText("");
+
+                durationDialog.dismiss();
+            });
+
+        });
     }
 
     /*start time dialog*/
@@ -159,11 +200,11 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
 
             //set the values
             mnpHour.setMaxValue(23);
-            mnpHour.setMinValue(6);
-            mnpHour.setValue(6);
+            mnpHour.setMinValue(5);
+            mnpHour.setValue(5);
             mnpHour.setFormatter(i -> String.format("%02d", i));
 
-            mnpMin.setMaxValue(59);
+            mnpMin.setMaxValue(0);
             mnpMin.setMinValue(0);
             mnpMin.setValue(0);
             mnpMin.setFormatter(i -> String.format("%02d", i));
@@ -174,79 +215,32 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
 
             mbtnOK.setOnClickListener(view1 -> {
                 valueHourStart = mnpHour.getValue();
-                valueMinStart = mnpMin.getValue();
 
-                if(valueHourStart == 23 && valueMinStart > 0){
-                    Toast.makeText(TouristSlotTrip.this, "Latest Start Time is 23:00!", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    metHStartTime.setText(String.format("%02d", valueHourStart) + ":" + String.format("%02d", valueMinStart));
-                    metHEndTime.setText("");
-                    startTimeDialog.dismiss();
-                }
+                metHStartTime.setText(String.format("%02d", valueHourStart) + ":00");
+                metHEndTime.setText(String.format("%02d", valueHourStart + duration) + ":00");
+                startTimeDialog.dismiss();
+
             });
         });
     }
 
-    /*end time dialog*/
-    private void endTimeMenu() {
-        metHEndTime.setOnClickListener(timeView -> {
-            String getTime = Objects.requireNonNull(metHStartTime.getText()).toString();
-            if(!getTime.equals("")){
-                //set layout
-                LayoutInflater dialogInflater = getLayoutInflater();
-                timeView = dialogInflater.inflate(R.layout.activity_time_picker, null);
-
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.dialog);
-                AlertDialog timeDialog = dialogBuilder.setView(timeView).create();
-
-                //obtaining the View with specific ID
-                mbtnOK = timeView.findViewById(R.id.btnOK);
-                mnpHour = timeView.findViewById(R.id.npHour);
-                mnpMin = timeView.findViewById(R.id.npMin);
-
-                //set the values
-                if (valueMinStart > 0) {
-                    mnpHour.setMaxValue(23);
-                } else {
-                    mnpHour.setMaxValue(24);
-                }
-                mnpHour.setMinValue(valueHourStart + 1);
-                mnpHour.setValue(valueHourStart + 1);
-                mnpHour.setFormatter(i -> String.format("%02d", i));
-
-                mnpMin.setMaxValue(valueMinStart);
-                mnpMin.setMinValue(valueMinStart);
-                mnpMin.setValue(valueMinStart);
-                mnpMin.setFormatter(i -> String.format("%02d", i));
-
-                //show pop out dialog
-                timeDialog.show();
-                timeDialog.getWindow().setLayout(450, 500);
-
-                mbtnOK.setOnClickListener(view1 -> {
-                    valueHourEnd = mnpHour.getValue();
-                    valueMinEnd = mnpMin.getValue();
-
-                    if (valueHourEnd == valueHourStart) {
-                        Toast.makeText(TouristSlotTrip.this, "At least 1 hour duration!", Toast.LENGTH_SHORT).show();
-                    } else if (valueHourEnd == 24 && valueMinEnd > 0) {
-                        Toast.makeText(TouristSlotTrip.this, "Latest End Time is 24:00!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        metHEndTime.setText(String.format("%02d", valueHourEnd) + ":" + String.format("%02d", valueMinEnd));
-                        duration = valueHourEnd - valueHourStart;
-                        if(duration == 1){
-                            Toast.makeText(TouristSlotTrip.this, "Duration: " + duration + " Hour", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            Toast.makeText(TouristSlotTrip.this, "Duration: " + duration + " Hours", Toast.LENGTH_SHORT).show();
-                        }
-                        timeDialog.dismiss();
-                    }
-                });
+    /*Getting time*/
+    private void getTime() {
+        metHStartTime.setOnClickListener(view -> {
+            if(Objects.requireNonNull(metHDuration.getText()).toString().isEmpty()) {
+                mtilHDuration.setError("Set Duration!");
             }
-            else {
-                mtilHStartTime.setError("Set Time!");
+            else{
+                startTimeMenu();
+            }
+        });
+
+        metHEndTime.setOnClickListener(timeView -> {
+            if(Objects.requireNonNull(metHEndTime.getText()).toString().isEmpty()) {
+                mtilHStartTime.setError("Set Date!");
+            }
+            else{
+                Toast.makeText(TouristHourTrip.this, "Only can adjust Duration or Start Time!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -255,15 +249,13 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
     private void carPlateMenu() {
         cpList = new ArrayList<>();
         //get id
-        String getID = "sad02167";
-        //spDrivme.getString(KEY_ID, null);
+        String getID = spDrivme.getString(KEY_ID, null);
 
         //get specific collection
         FirebaseFirestore drivmeDB = FirebaseFirestore.getInstance();
         CollectionReference crDrivme = drivmeDB.collection("User Accounts").document(getID).collection("Car Details");
 
-        crDrivme.whereNotEqualTo("Car Status", "N/A").get()
-                .addOnCompleteListener(task -> {
+        crDrivme.get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         cpList.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
@@ -272,11 +264,11 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
                         if(cpList.size() == 0){
                             cpList.add("No Cars");
                         }
-                        mtvHCarPlate.setText(cpList.get(0));
+                        metHCarPlate.setText(cpList.get(0));
                     }
                 });
 
-        mtvHCarPlate.setOnClickListener(cpView -> {
+        metHCarPlate.setOnClickListener(cpView -> {
             //set layout
             LayoutInflater dialogInflater = getLayoutInflater();
             cpView = dialogInflater.inflate(R.layout.activity_scroll_picker, null);
@@ -305,7 +297,7 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
-                mtvHCarPlate.setText(cpList.get(value));
+                metHCarPlate.setText(cpList.get(value));
                 carPlateDialog.dismiss();
             });
         });
@@ -313,7 +305,7 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
 
     /*state dialog*/
     private void stateMenu() {
-        mtvHState.setOnClickListener(stateView -> {
+        metHState.setOnClickListener(stateView -> {
             //set layout
             LayoutInflater dialogInflater = getLayoutInflater();
             stateView = dialogInflater.inflate(R.layout.activity_scroll_picker_long, null);
@@ -339,7 +331,7 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
-                mtvHState.setText(ModelDriverDetails.getDetailsArrayList().get(value).getDetailsOption());
+                metHState.setText(ModelDriverDetails.getDetailsArrayList().get(value).getDetailsOption());
 
                 stateDialog.dismiss();
             });
@@ -352,7 +344,7 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
             //initialize place field list
             List<Place.Field> placeList = Arrays.asList(Place.Field.ADDRESS, Place.Field.NAME);
 
-            Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, placeList).build(TouristSlotTrip.this);
+            Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, placeList).setCountry("MY").build(TouristHourTrip.this);
             startActivityForResult(intent, 100);
         });
     }
@@ -377,16 +369,16 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
         if (Objects.requireNonNull(metHDate.getText()).toString().isEmpty()) {
             mtilHDate.setError("Field cannot be empty!");
         }
+        else if (Objects.requireNonNull(metHDuration.getText()).toString().isEmpty()) {
+            mtilHDuration.setError("Field cannot empty!");
+        }
         else if (Objects.requireNonNull(metHStartTime.getText()).toString().isEmpty()) {
             mtilHStartTime.setError("Field empty!");
         }
-        else if (Objects.requireNonNull(metHEndTime.getText()).toString().isEmpty()) {
-            mtilHEndTime.setError("Field empty!");
-        }
-        else if (mtvHCarPlate.getText().toString().equals("No Cars")) {
+        else if (Objects.requireNonNull(metHCarPlate.getText()).toString().equals("No Cars")) {
             mtilHCarPlate.setError("No Cars Available!");
         }
-        else if (mtvHState.getText().toString().isEmpty()) {
+        else if (Objects.requireNonNull(metHState.getText()).toString().isEmpty()) {
             mtilHState.setError("Field cannot be empty!");
         }
         else if (Objects.requireNonNull(metHLocality.getText()).toString().isEmpty()) {
@@ -396,40 +388,100 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
             mtilHAddress.setError("Field cannot be empty!");
         }
         else {
-            //get id
-            String getID = "sad02167";
-            //spDrivme.getString(KEY_ID, null);
-
-            //insert database
+            //get id and order id
+            String getID = spDrivme.getString(KEY_ID, null);
+            String carPlate = Objects.requireNonNull(metHCarPlate.getText()).toString();
+            //get current date time
+            DateFormat df = new SimpleDateFormat("ddMMyyyyHHmm");
+            String date = df.format(Calendar.getInstance().getTime());
+            String getOrderID = date + carPlate;
             FirebaseFirestore orderDB = FirebaseFirestore.getInstance();
-            String carPlate = Objects.requireNonNull(mtvHCarPlate.getText()).toString();
-            String getOrderID = dateForID + carPlate;
 
-            Map<String,Object> orderDetails = new HashMap<>();
-            orderDetails.put("Tourist ID", getID);
-            orderDetails.put("Date", Objects.requireNonNull(metHDate.getText()).toString());
-            orderDetails.put("Start Time", Objects.requireNonNull(metHStartTime.getText()).toString());
-            orderDetails.put("End Time", Objects.requireNonNull(metHEndTime.getText()).toString());
-            orderDetails.put("Car Plate", Objects.requireNonNull(mtvHCarPlate.getText()).toString());
-            orderDetails.put("State", Objects.requireNonNull(mtvHState.getText()).toString());
-            orderDetails.put("Locality Name", Objects.requireNonNull(metHLocality.getText()).toString());
-            orderDetails.put("Address", Objects.requireNonNull(metHAddress.getText()).toString());
-            if(Objects.requireNonNull(metHComment.getText()).toString().isEmpty()){
-                orderDetails.put("Comment", "No comment.");
-            }
-            else{
-                orderDetails.put("Comment", Objects.requireNonNull(metHComment.getText()).toString());
+            //initialize
+            ArrayList<String> time = new ArrayList<>();
+
+            //calculate and add hour into arraylist
+            for(int i = 0; i < duration; i++) {
+                //add 1 hour
+                time.add(String.valueOf(valueHourStart + i));
             }
 
-            orderDB.collection("Order Details").document(getOrderID)
-                    .set(orderDetails)
-                    .addOnSuccessListener(unused -> {
-                        Intent intent = new Intent(TouristSlotTrip.this, TouristDriverList.class);
-                        intent.putExtra("orderID", getOrderID);
-                        intent.putExtra("touristID", getID);
+            //check which driver match the requirements
+            orderDB.collection("User Accounts").document(getID).collection("Date Booked").document(dateForID).get()
+                    .addOnCompleteListener(task -> {
+                        String checkStatus = "true";
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot doc = task.getResult();
 
-                        startActivity(intent);
-                        finish();
+                            if(doc.exists()) {
+                                String tripOption = doc.getString("tripOption");
+
+                                if (Objects.requireNonNull(tripOption).equals("Hour")) {
+                                    for (int i = 0; i < time.size(); i++) {
+                                        String timeState = doc.getString(time.get(i));
+
+                                        if (Objects.requireNonNull(timeState).equals("Not Available")) {
+                                            checkStatus = "false";
+                                            break;
+                                        }
+                                    }
+
+                                    //if true only allowed to proceed
+                                    if (checkStatus.equals("true")) {
+                                        //booking details -> driver list
+                                        Intent intent = new Intent(TouristHourTrip.this, TouristDriverList.class);
+                                        intent.putExtra("orderID", getOrderID);
+                                        intent.putExtra("touristID", getID);
+                                        intent.putExtra("dateID", dateForID);
+                                        intent.putExtra("duration", duration);
+                                        intent.putExtra("date", metHDate.getText().toString());
+                                        intent.putExtra("startTime", Objects.requireNonNull(metHStartTime.getText()).toString());
+                                        intent.putExtra("endTime", Objects.requireNonNull(metHEndTime.getText()).toString());
+                                        intent.putExtra("hourStart", valueHourStart);
+                                        intent.putExtra("carPlate", carPlate);
+                                        intent.putExtra("state", metHState.getText().toString());
+                                        intent.putExtra("locality", metHLocality.getText().toString());
+                                        intent.putExtra("address", metHAddress.getText().toString());
+                                        intent.putExtra("tripOption", getIntent().getStringExtra("tripOpt"));
+
+                                        if (Objects.requireNonNull(metHComment.getText()).toString().isEmpty()) {
+                                            intent.putExtra("comment", "No comment.");
+                                        } else {
+                                            intent.putExtra("comment", Objects.requireNonNull(metHComment.getText()).toString());
+                                        }
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(TouristHourTrip.this, "Time selected have been booked! Please choose another time!", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(TouristHourTrip.this, "Date selected have been booked! Please choose another date!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else{
+                                //booking details -> driver list
+                                Intent intent = new Intent(TouristHourTrip.this, TouristDriverList.class);
+                                intent.putExtra("orderID", getOrderID);
+                                intent.putExtra("touristID", getID);
+                                intent.putExtra("dateID", dateForID);
+                                intent.putExtra("duration", duration);
+                                intent.putExtra("date", metHDate.getText().toString());
+                                intent.putExtra("startTime", Objects.requireNonNull(metHStartTime.getText()).toString());
+                                intent.putExtra("endTime", Objects.requireNonNull(metHEndTime.getText()).toString());
+                                intent.putExtra("hourStart", valueHourStart);
+                                intent.putExtra("carPlate", carPlate);
+                                intent.putExtra("state", metHState.getText().toString());
+                                intent.putExtra("locality", metHLocality.getText().toString());
+                                intent.putExtra("address", metHAddress.getText().toString());
+                                intent.putExtra("tripOption", getIntent().getStringExtra("tripOpt"));
+
+                                if (Objects.requireNonNull(metHComment.getText()).toString().isEmpty()) {
+                                    intent.putExtra("comment", "No comment.");
+                                } else {
+                                    intent.putExtra("comment", Objects.requireNonNull(metHComment.getText()).toString());
+                                }
+                                startActivity(intent);
+                            }
+                        }
                     });
         }
     }
@@ -470,7 +522,7 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
             }
         });
 
-        metHEndTime.addTextChangedListener(new TextWatcher() {
+        metHDuration.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -478,7 +530,7 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mtilHEndTime.setErrorEnabled(false);
+                mtilHDuration.setErrorEnabled(false);
             }
 
             @Override
@@ -487,7 +539,7 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
             }
         });
 
-        mtvHCarPlate.addTextChangedListener(new TextWatcher() {
+        metHCarPlate.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -504,7 +556,7 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
             }
         });
 
-        mtvHState.addTextChangedListener(new TextWatcher() {
+        metHState.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Nothing
@@ -558,14 +610,14 @@ public class TouristSlotTrip extends AppCompatActivity implements DatePickerDial
 
     @Override
     public void onBackPressed() {
-        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristSlotTrip.this);
+        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristHourTrip.this);
         alertDialogBuilder.setTitle("Discard Process");
         alertDialogBuilder
                 .setMessage("Do you wish to discard and go back homepage?")
                 .setCancelable(false)
                 .setPositiveButton("DISCARD",
                         (dialog, id) -> {
-                            startActivity(new Intent(TouristSlotTrip.this, TouristNavHomepage.class));
+                            startActivity(new Intent(TouristHourTrip.this, TouristNavHomepage.class));
                             finishAffinity();
                             finish();
                         });

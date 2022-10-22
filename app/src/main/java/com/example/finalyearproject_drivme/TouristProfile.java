@@ -37,12 +37,14 @@ public class TouristProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourist_profile);
 
+        //initialize
         getDetails = FirebaseFirestore.getInstance();
         checkDetails = FirebaseFirestore.getInstance();
         editDetails = FirebaseFirestore.getInstance();
         spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
         String uID = spDrivme.getString(KEY_ID, null);
 
+        //assign variables
         mtilPEmail = findViewById(R.id.tilPEmail);
         mtilPPhoneNumber = findViewById(R.id.tilPPhoneNumber);
         metPID = findViewById(R.id.etPID);
@@ -80,7 +82,7 @@ public class TouristProfile extends AppCompatActivity {
             boolean statusVerification = validationOnEachFields();
             if(statusVerification) {
                 android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(TouristProfile.this);
-                alertDialogBuilder.setTitle("Discard Process");
+                alertDialogBuilder.setTitle("Edit Profile");
                 alertDialogBuilder
                         .setMessage("Do you wish to edit your details?")
                         .setCancelable(false)

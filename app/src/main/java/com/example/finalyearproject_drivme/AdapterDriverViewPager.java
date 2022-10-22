@@ -17,13 +17,13 @@ public class AdapterDriverViewPager extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        //changing the view
         switch (position){
-            case 0:
-                return new DriverRequestFrament();
             case 1:
                 return new DriverOngoingFragment();
             case 2:
                 return new DriverHistoryFragment();
+            case 0:
             default:
                 return new DriverRequestFrament();
         }

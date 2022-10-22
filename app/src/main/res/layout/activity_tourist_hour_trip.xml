@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TouristSlotTrip">
+    tools:context=".TouristHourTrip">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -44,6 +44,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
+                    android:focusableInTouchMode="true"
+                    tools:ignore="Deprecated" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilHDuration"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:hint="Duration">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etHDuration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="false"
+                    android:focusableInTouchMode="false"
                     tools:ignore="Deprecated" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -67,6 +87,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:editable="false"
+                        android:focusableInTouchMode="false"
                         tools:ignore="Deprecated" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -93,6 +114,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:editable="false"
+                        android:focusableInTouchMode="false"
                         tools:ignore="Deprecated" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -100,36 +122,38 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilHCarPlate"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:hint="Car Plate">
 
-                <AutoCompleteTextView
-                    android:id="@+id/tvHCarPlate"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etHCarPlate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
+                    android:focusableInTouchMode="false"
                     tools:ignore="Deprecated" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilHState"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:hint="State">
 
-                <AutoCompleteTextView
-                    android:id="@+id/tvHState"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etHState"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
+                    android:focusableInTouchMode="false"
                     tools:ignore="Deprecated" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -148,6 +172,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
+                    android:focusableInTouchMode="false"
                     tools:ignore="Deprecated" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -164,8 +189,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etHAddress"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:ignore="Deprecated" />
+                    android:layout_height="wrap_content" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -181,8 +205,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etHComment"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:ignore="Deprecated" />
+                    android:layout_height="match_parent" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

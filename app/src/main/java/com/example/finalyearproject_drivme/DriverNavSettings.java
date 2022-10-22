@@ -1,21 +1,14 @@
 package com.example.finalyearproject_drivme;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -26,7 +19,7 @@ import java.util.Objects;
 public class DriverNavSettings extends AppCompatActivity {
     //declare variables
     BottomNavigationView mbtmDNav;
-    ConstraintLayout mclickDProfile, mclickDCP, mclickDHelp, mclickDSwitch, mclickDAbout;
+    ConstraintLayout mclickDProfile, mclickDCP, mclickDSwitch, mclickDAbout;
     Button mbtnDLogout;
     SharedPreferences spDrivme;
     FirebaseFirestore checkTourist, updateAcc;
@@ -44,12 +37,12 @@ public class DriverNavSettings extends AppCompatActivity {
         //assign variable
         mclickDProfile = findViewById(R.id.clickDProfile);
         mclickDCP = findViewById(R.id.clickDCP);
-        mclickDHelp = findViewById(R.id.clickDHelp);
         mclickDSwitch = findViewById(R.id.clickDSwitch);
         mclickDAbout = findViewById(R.id.clickDAbout);
         mbtnDLogout = findViewById(R.id.btnDLogout);
         mbtmDNav = findViewById(R.id.btmDNav);
         spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
+
         navSelection();
 
         mclickDProfile.setOnClickListener(view -> {
@@ -64,10 +57,6 @@ public class DriverNavSettings extends AppCompatActivity {
             finish();
         });
 
-        mclickDHelp.setOnClickListener(view -> {
-            //go help center ui
-        });
-
         mclickDSwitch.setOnClickListener(view -> {
             //go switch account ui
             String uID = spDrivme.getString(KEY_ID, null);
@@ -78,49 +67,70 @@ public class DriverNavSettings extends AppCompatActivity {
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
                             DocumentSnapshot doc = task.getResult();
-                            int touristAcc = doc.getLong("Account Tourist").intValue();
+                            String accState = doc.getString("accountStatus");
 
-                            if(touristAcc == 0){
+                            if(Objects.requireNonNull(accState).equals("Suspended")){
                                 android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
-                                alertDialogBuilder.setTitle("Activate Tourist Account");
+                                alertDialogBuilder.setTitle("Account Suspended");
                                 alertDialogBuilder
-                                        .setMessage("Do you wish to activate Tourist Account?")
+                                        .setMessage("Your account have been suspended!\nPlease check your email or contact Drivme support for further information.")
                                         .setCancelable(false)
-                                        .setPositiveButton("Activate", (dialog, id) -> {
-                                            SharedPreferences.Editor spEditor = spDrivme.edit();
-                                            spEditor.putString(KEY_ROLE, "Tourist");
-                                            spEditor.apply();
+                                        .setPositiveButton("OK", (dialog, iD) -> {
+                                            spDrivme.edit().clear().apply();
 
-                                            Map<String,Object> acc = new HashMap<>();
-                                            acc.put("accountStatus", "Tourist");
-                                            acc.put("Account Tourist", 1);
-
-                                            updateAcc.collection("User Accounts").document(uID)
-                                                    .update(acc);
-
-                                            startActivity(new Intent(DriverNavSettings.this, TouristInputCar.class));
+                                            startActivity(new Intent(getApplicationContext(), UserRole.class));
+                                            dialog.dismiss();
                                             finishAffinity();
                                             finish();
-                                        })
-                                        .setNegativeButton("No", (dialog, id) -> dialog.cancel());
+                                        });
 
                                 android.app.AlertDialog alertDialog = alertDialogBuilder.create();
                                 alertDialog.show();
                             }
-                            else{
-                                SharedPreferences.Editor spEditor = spDrivme.edit();
-                                spEditor.putString(KEY_ROLE, "Tourist");
-                                spEditor.apply();
+                            else {
+                                int touristAcc = Objects.requireNonNull(doc.getLong("Account Tourist")).intValue();
 
-                                Map<String,Object> acc = new HashMap<>();
-                                acc.put("accountStatus", "Tourist");;
+                                if (touristAcc == 0) {
+                                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+                                    alertDialogBuilder.setTitle("Activate Tourist Account");
+                                    alertDialogBuilder
+                                            .setMessage("Do you wish to activate Tourist Account?")
+                                            .setCancelable(false)
+                                            .setPositiveButton("Activate", (dialog, id) -> {
+                                                SharedPreferences.Editor spEditor = spDrivme.edit();
+                                                spEditor.putString(KEY_ROLE, "Tourist");
+                                                spEditor.apply();
 
-                                updateAcc.collection("User Accounts").document(uID)
-                                        .update(acc);
+                                                Map<String, Object> acc = new HashMap<>();
+                                                acc.put("accountStatus", "Tourist");
+                                                acc.put("Account Tourist", 1);
 
-                                startActivity(new Intent(DriverNavSettings.this, TouristNavHomepage.class));
-                                finishAffinity();
-                                finish();
+                                                updateAcc.collection("User Accounts").document(uID)
+                                                        .update(acc);
+
+                                                startActivity(new Intent(DriverNavSettings.this, TouristInputCar.class));
+                                                finishAffinity();
+                                                finish();
+                                            })
+                                            .setNegativeButton("No", (dialog, id) -> dialog.cancel());
+
+                                    android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+                                    alertDialog.show();
+                                } else {
+                                    SharedPreferences.Editor spEditor = spDrivme.edit();
+                                    spEditor.putString(KEY_ROLE, "Tourist");
+                                    spEditor.apply();
+
+                                    Map<String, Object> acc = new HashMap<>();
+                                    acc.put("accountStatus", "Tourist");
+
+                                    updateAcc.collection("User Accounts").document(uID)
+                                            .update(acc);
+
+                                    startActivity(new Intent(DriverNavSettings.this, TouristNavHomepage.class));
+                                    finishAffinity();
+                                    finish();
+                                }
                             }
                         }
                     });
@@ -135,7 +145,7 @@ public class DriverNavSettings extends AppCompatActivity {
         mbtnDLogout.setOnClickListener(view -> {
             //logout
             String id = spDrivme.getString(KEY_ID, null);
-            spDrivme.edit().clear().commit();
+            spDrivme.edit().clear().apply();
 
             FirebaseFirestore updateStatus = FirebaseFirestore.getInstance();
             Map<String,Object> noToken = new HashMap<>();

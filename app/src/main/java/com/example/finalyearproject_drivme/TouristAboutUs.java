@@ -32,6 +32,7 @@ public class TouristAboutUs extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tourist_about_us);
 
+        //assign variables
         mclickTUA = findViewById(R.id.clickTUA);
         mclickTPP = findViewById(R.id.clickTPP);
         mclickTF = findViewById(R.id.clickTF);

@@ -32,6 +32,7 @@ public class DriverAboutUs extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_about_us);
 
+        //assign variables
         mclickDUA = findViewById(R.id.clickDUA);
         mclickDPP = findViewById(R.id.clickDPP);
         mclickDF = findViewById(R.id.clickDF);
@@ -132,6 +133,7 @@ public class DriverAboutUs extends AppCompatActivity {
         });
     }
 
+    //driver about us -> settings
     @Override
     public void onBackPressed() {
         startActivity(new Intent(DriverAboutUs.this, DriverNavSettings.class));

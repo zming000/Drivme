@@ -2,7 +2,6 @@ package com.example.finalyearproject_drivme;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,14 +36,22 @@ public class AdapterRatingList extends RecyclerView.Adapter<AdapterRatingList.Ra
     public void onBindViewHolder(@NonNull AdapterRatingList.RatingListViewHolder holder, int position) {
         //get position
         ModelRatingList mrl = rateArrayList.get(position);
+        String tripOption = mrl.tripOption;
 
         holder.morderRating.setRating(mrl.rateStar);
         holder.mtvCompliment.setText(mrl.rateCompliment);
         holder.mtvCNW.setText(mrl.rateComment);
         holder.mtvEarning.setText("RM " + String.format("%.2f", mrl.total));
 
+        //rating list -> order details
         holder.mcvRatingDetails.setOnClickListener(view -> {
-            Intent intent = new Intent(rateContext, DriverRequestDetails.class);
+            Intent intent;
+            if(tripOption.equals("Day")) {
+                intent = new Intent(rateContext, DriverRequestDayDetails.class);
+            }
+            else{
+                intent = new Intent(rateContext, DriverRequestHourDetails.class);
+            }
             intent.putExtra("orderID", mrl.orderID);
             intent.putExtra("navRate", "Rate");
             rateContext.startActivity(intent);

@@ -23,7 +23,7 @@ public class UserWelcomeTo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_welcome_to);
 
-        //obtaining the View with specific ID
+        //assign variable
         mtvHello = findViewById(R.id.tvHelloTo);
 
         //initialize shared preference
