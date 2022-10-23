@@ -47,10 +47,10 @@ public class TouristOngoingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View ongoingView = inflater.inflate(R.layout.fragment_tourist_ongoing, container, false);
-        InitializeRequestCardView(ongoingView);
+        View ongoingOrderView = inflater.inflate(R.layout.fragment_tourist_ongoing, container, false);
+        InitializeRequestCardView(ongoingOrderView);
 
-        return ongoingView;
+        return ongoingOrderView;
     }
 
     private void InitializeRequestCardView(View ongoingView) {

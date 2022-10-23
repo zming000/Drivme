@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalYearProjectDrivme">
         <activity
+            android:name=".UserTransactionHistory"
+            android:exported="false" />
+        <activity
             android:name=".DriverRequestHourDetails"
             android:exported="false" />
         <activity

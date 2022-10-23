@@ -15,7 +15,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -115,6 +118,7 @@ public class TouristRating extends AppCompatActivity {
             FirebaseFirestore getDriverRating = FirebaseFirestore.getInstance();
             FirebaseFirestore updateDriverRating = FirebaseFirestore.getInstance();
             FirebaseFirestore getToken = FirebaseFirestore.getInstance();
+            FirebaseFirestore updateHistory = FirebaseFirestore.getInstance();
 
             String orderID = getIntent().getStringExtra("orderID");
             String driverID = getIntent().getStringExtra("driverID");
@@ -214,14 +218,31 @@ public class TouristRating extends AppCompatActivity {
                                                         TouristRating.this,
                                                         token,
                                                         "Trip Ended",
-                                                        "Tourist rated you! We are thankful for your services!",
-                                                        orderID);
+                                                        "Tourist rated you! We are thankful for your services!");
 
-                                                Toast.makeText(TouristRating.this, "Rated Successfully!", Toast.LENGTH_SHORT).show();
 
-                                                startActivity(new Intent(TouristRating.this, TouristNavHomepage.class));
-                                                finishAffinity();
-                                                finish();
+                                                DateFormat docID = new SimpleDateFormat("ddMMyyyyHHmmss"); //record time of button clicked
+                                                DateFormat fullFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm"); //record time of button clicked
+
+                                                //get current date time for id
+                                                String transID = docID.format(Calendar.getInstance().getTime());
+                                                //get current date time
+                                                String dateTime = fullFormat.format(Calendar.getInstance().getTime());
+
+                                                Map<String,Object> updateTrans = new HashMap<>();
+                                                updateTrans.put("transType", "Reload");
+                                                updateTrans.put("transAmount", String.format("%.2f", earn));
+                                                updateTrans.put("transDateTime", dateTime);
+
+                                                updateHistory.collection("User Accounts").document(driverID).collection("Transaction History").document(transID)
+                                                        .set(updateTrans)
+                                                        .addOnSuccessListener(unused1 -> {
+                                                            Toast.makeText(TouristRating.this, "Rated Successfully!", Toast.LENGTH_SHORT).show();
+
+                                                            startActivity(new Intent(TouristRating.this, TouristNavHomepage.class));
+                                                            finishAffinity();
+                                                            finish();
+                                                        });
                                             }
                                         });
                             }

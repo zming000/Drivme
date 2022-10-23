@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,7 +25,7 @@ public class TouristNavHomepage extends AppCompatActivity {
     TextView mtvTMoney;
     FloatingActionButton mfabTReload;
     BottomNavigationView mbtmTNav;
-    CardView mcvBooking;
+    CardView mcvBooking, mcvTransaction;
     SharedPreferences spDrivme;
 
     //key name
@@ -39,6 +40,7 @@ public class TouristNavHomepage extends AppCompatActivity {
         //assign variables
         mfabTReload = findViewById(R.id.fabTReload);
         mcvBooking = findViewById(R.id.cvBooking);
+        mcvTransaction = findViewById(R.id.cvTransaction);
         mbtmTNav = findViewById(R.id.btmTNav);
         mtvTMoney = findViewById(R.id.tvTMoney);
 
@@ -47,6 +49,10 @@ public class TouristNavHomepage extends AppCompatActivity {
             startActivity(new Intent(TouristNavHomepage.this, TouristReload.class));
             finishAffinity();
             finish();
+        });
+
+        mcvTransaction.setOnClickListener(view -> {
+            startActivity(new Intent(TouristNavHomepage.this, UserTransactionHistory.class));
         });
 
         getDrivPay();
@@ -116,7 +122,6 @@ public class TouristNavHomepage extends AppCompatActivity {
             switch(item.getItemId()){
                 case R.id.activity:
                     startActivity(new Intent(getApplicationContext(), TouristNavActivity.class));
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, new TouristOngoingFragment()).commit();
                     overridePendingTransition(0, 0);
                     finish();
                     return true;

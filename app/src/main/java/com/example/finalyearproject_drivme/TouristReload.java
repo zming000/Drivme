@@ -1,32 +1,29 @@
 package com.example.finalyearproject_drivme;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.DecimalFormat;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class TouristReload extends AppCompatActivity {
     //declare variables
@@ -36,7 +33,7 @@ public class TouristReload extends AppCompatActivity {
     TextView mtvCard, mtvOnline;
     Button mbtnReload;
     SharedPreferences spDrivme;
-    FirebaseFirestore getPay, updatePay;
+    FirebaseFirestore getPay, updatePay, updateHistory;
 
     //key name
     private static final String SP_NAME = "drivmePref";
@@ -71,17 +68,11 @@ public class TouristReload extends AppCompatActivity {
         mcvCard.setCardBackgroundColor(Color.parseColor("#E6E6E6"));
         mcvOnline.setCardBackgroundColor(Color.parseColor("#E6E6E6"));
 
-        mcv100.setOnClickListener(view -> {
-            metReload.setText("100.00");
-        });
+        mcv100.setOnClickListener(view -> metReload.setText("100.00"));
 
-        mcv300.setOnClickListener(view -> {
-            metReload.setText("300.00");
-        });
+        mcv300.setOnClickListener(view -> metReload.setText("300.00"));
 
-        mcv500.setOnClickListener(view -> {
-            metReload.setText("500.00");
-        });
+        mcv500.setOnClickListener(view -> metReload.setText("500.00"));
 
         mcvCard.setOnClickListener(view -> {
             //set card view color
@@ -120,17 +111,21 @@ public class TouristReload extends AppCompatActivity {
 
         mbtnReload.setOnClickListener(view -> {
             String tID = spDrivme.getString(KEY_ID, null);
-            float amount = Float.parseFloat(metReload.getText().toString());
+            float amount = Float.parseFloat(Objects.requireNonNull(metReload.getText()).toString());
             getPay = FirebaseFirestore.getInstance();
             updatePay = FirebaseFirestore.getInstance();
+            updateHistory = FirebaseFirestore.getInstance();
+
+            DateFormat docID = new SimpleDateFormat("ddMMyyyyHHmmss"); //record time of button clicked
+            DateFormat fullFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm"); //record time of button clicked
 
             if(amount >= 10){
-                if(mtvCard.getCurrentTextColor() == -1){
+                if(mtvCard.getCurrentTextColor() == -1 || mtvOnline.getCurrentTextColor() == -1){
                     getPay.collection("User Accounts").document(tID).get()
                             .addOnCompleteListener(task -> {
                                 if(task.isSuccessful()){
                                    DocumentSnapshot doc = task.getResult();
-                                   float pay = Float.parseFloat(doc.getString("drivPay"));
+                                   float pay = Float.parseFloat(Objects.requireNonNull(doc.getString("drivPay")));
                                    float newPay = amount + pay;
 
                                     Map<String,Object> updateTotal = new HashMap<>();
@@ -139,32 +134,24 @@ public class TouristReload extends AppCompatActivity {
                                     updatePay.collection("User Accounts").document(tID)
                                             .update(updateTotal)
                                             .addOnSuccessListener(unused -> {
-                                                Toast.makeText(TouristReload.this, "Reloaded Successfully!", Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(TouristReload.this, TouristNavHomepage.class));
-                                                finishAffinity();
-                                                finish();
-                                            });
-                                }
-                            });
-                }
-                else if(mtvOnline.getCurrentTextColor() == -1){
-                    getPay.collection("User Accounts").document(tID).get()
-                            .addOnCompleteListener(task -> {
-                                if(task.isSuccessful()){
-                                    DocumentSnapshot doc = task.getResult();
-                                    float pay = Float.parseFloat(doc.getString("drivPay"));
-                                    float newPay = amount + pay;
+                                                //get current date time for id
+                                                String transID = docID.format(Calendar.getInstance().getTime());
+                                                //get current date time
+                                                String dateTime = fullFormat.format(Calendar.getInstance().getTime());
 
-                                    Map<String,Object> updateTotal = new HashMap<>();
-                                    updateTotal.put("drivPay", String.format("%.2f", newPay));
+                                                Map<String,Object> updateTrans = new HashMap<>();
+                                                updateTrans.put("transType", "Reload");
+                                                updateTrans.put("transAmount", String.format("%.2f", amount));
+                                                updateTrans.put("transDateTime", dateTime);
 
-                                    updatePay.collection("User Accounts").document(tID)
-                                            .update(updateTotal)
-                                            .addOnSuccessListener(unused -> {
-                                                Toast.makeText(TouristReload.this, "Reloaded Successfully!", Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(TouristReload.this, TouristNavHomepage.class));
-                                                finishAffinity();
-                                                finish();
+                                                updateHistory.collection("User Accounts").document(tID).collection("Transaction History").document(transID)
+                                                                .set(updateTrans)
+                                                                .addOnSuccessListener(unused1 -> {
+                                                                    Toast.makeText(TouristReload.this, "Reloaded Successfully!", Toast.LENGTH_SHORT).show();
+                                                                    startActivity(new Intent(TouristReload.this, TouristNavHomepage.class));
+                                                                    finishAffinity();
+                                                                    finish();
+                                                                });
                                             });
                                 }
                             });

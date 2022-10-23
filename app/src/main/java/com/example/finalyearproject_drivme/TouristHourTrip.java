@@ -156,7 +156,7 @@ public class TouristHourTrip extends AppCompatActivity implements DatePickerDial
 
             //set the values
             mtvSelect.setText("Set Trip Duration");
-            mnpPicker.setMaxValue(19);
+            mnpPicker.setMaxValue(18);
             mnpPicker.setMinValue(1);
             mnpPicker.setValue(1);
 
@@ -199,7 +199,7 @@ public class TouristHourTrip extends AppCompatActivity implements DatePickerDial
             mnpMin = timeView.findViewById(R.id.npMin);
 
             //set the values
-            mnpHour.setMaxValue(23);
+            mnpHour.setMaxValue(24 - duration);
             mnpHour.setMinValue(5);
             mnpHour.setValue(5);
             mnpHour.setFormatter(i -> String.format("%02d", i));

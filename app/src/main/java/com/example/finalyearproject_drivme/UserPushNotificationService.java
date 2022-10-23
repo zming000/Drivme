@@ -36,7 +36,8 @@ public class UserPushNotificationService extends FirebaseMessagingService {
                 Objects.requireNonNull(noTitle).equals("Booking Paid") ||
                 Objects.requireNonNull(noTitle).equals("Trip Started") ||
                 Objects.requireNonNull(noTitle).equals("Trip Ended") ||
-                Objects.requireNonNull(noTitle).equals("Driver Trip Reminder")) {
+                Objects.requireNonNull(noTitle).equals("Driver Trip Reminder") ||
+                Objects.requireNonNull(noTitle).equals("Cancellation Fee")) {
             Intent reqIntent = new Intent(getApplicationContext(), DriverNavActivity.class);
             reqIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
 

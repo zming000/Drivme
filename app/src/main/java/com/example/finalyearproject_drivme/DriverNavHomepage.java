@@ -1,6 +1,7 @@
 package com.example.finalyearproject_drivme;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +24,7 @@ public class DriverNavHomepage extends AppCompatActivity {
     TextView mtvDMoney, mtvFullName, mtvHomeRating;
     RatingBar mrbHomeDriver;
     RatingReviews mrrHomeDriver;
+    CardView mcvDrivPay;
     BottomNavigationView mbtmDNav;
     SharedPreferences spDrivme;
 
@@ -39,9 +41,14 @@ public class DriverNavHomepage extends AppCompatActivity {
         mbtmDNav = findViewById(R.id.btmDNav);
         mtvDMoney = findViewById(R.id.tvDMoney);
         mtvFullName = findViewById(R.id.tvFullName);
+        mcvDrivPay = findViewById(R.id.cvDrivPay);
         mtvHomeRating = findViewById(R.id.tvHomeRating);
         mrbHomeDriver = findViewById(R.id.rbHomeDriver);
         mrrHomeDriver = findViewById(R.id.rrHomeDriver);
+
+        mcvDrivPay.setOnClickListener(view -> {
+            startActivity(new Intent(DriverNavHomepage.this, UserTransactionHistory.class));
+        });
 
         setDetails();
         navSelection();

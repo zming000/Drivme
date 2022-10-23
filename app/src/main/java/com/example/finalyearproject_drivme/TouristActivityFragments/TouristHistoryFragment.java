@@ -102,11 +102,6 @@ public class TouristHistoryFragment extends Fragment {
                         }
                     }
 
-                    //if no records found
-                    if(historyList.size() == 0){
-                        Toast.makeText(historyView.getContext(), "No history records found!", Toast.LENGTH_SHORT).show();
-                    }
-
                     hlAdapter.notifyDataSetChanged();
                 });
     }

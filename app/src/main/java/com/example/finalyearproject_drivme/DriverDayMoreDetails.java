@@ -182,8 +182,7 @@ public class DriverDayMoreDetails extends AppCompatActivity {
         tripDetails.put("priceDriver", price);
         tripDetails.put("total", total);
         tripDetails.put("orderStatus", "Pending Driver Accept");
-        tripDetails.put("tripStart", 0);
-        tripDetails.put("tripEnd", 0);
+        tripDetails.put("tripStart", "Not yet started");
         tripDetails.put("rateStatus", 0);
 
         //add order into firestore

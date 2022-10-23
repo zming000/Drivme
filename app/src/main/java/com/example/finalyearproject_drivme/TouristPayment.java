@@ -166,12 +166,14 @@ public class TouristPayment extends AppCompatActivity {
             FirebaseFirestore addDays = FirebaseFirestore.getInstance();
             FirebaseFirestore updateOrderStatus = FirebaseFirestore.getInstance();
             FirebaseFirestore updatePay = FirebaseFirestore.getInstance();
+            FirebaseFirestore updateHistory = FirebaseFirestore.getInstance();
 
             //initialize
             ArrayList<String> dates = new ArrayList<>();
             SimpleDateFormat dateStart = new SimpleDateFormat("dd/MM/yyyy"); //date format
             SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy"); //date id
             DateFormat fullFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm"); //date time
+            DateFormat docID = new SimpleDateFormat("ddMMyyyyHHmmss"); //record time of button clicked
             Calendar c = Calendar.getInstance();
             Calendar oneDayBefore = Calendar.getInstance();
 
@@ -193,8 +195,20 @@ public class TouristPayment extends AppCompatActivity {
                             String driID = doc.getString("driverID");
                             String price = String.valueOf(Objects.requireNonNull(doc.getLong("total")).intValue());
                             String tripOption = doc.getString("tripOption");
+                            float totalPayment = doc.getLong("total");
                             float duration = doc.getLong("duration");
                             int days = Math.round(duration);
+
+                            //get current date time for id
+                            String transID = docID.format(Calendar.getInstance().getTime());
+                            //get current date time
+                            String dateTime = fullFormat.format(Calendar.getInstance().getTime());
+
+                            //update transaction history
+                            Map<String,Object> updateTrans = new HashMap<>();
+                            updateTrans.put("transType", "Payment");
+                            updateTrans.put("transAmount", String.format("%.2f", totalPayment));
+                            updateTrans.put("transDateTime", dateTime);
 
                             if(mtvDrivPay.getCurrentTextColor() == -1){
                                 getDrivPay.collection("User Accounts").document(Objects.requireNonNull(tourID)).get()
@@ -277,6 +291,16 @@ public class TouristPayment extends AppCompatActivity {
                                                     am.set(AlarmManager.RTC_WAKEUP, oneDayBefore.getTimeInMillis(), pendingIntent);
 
                                                     sendNotificationToTourist(driID);
+
+                                                    updateHistory.collection("User Accounts").document(tourID).collection("Transaction History").document(transID)
+                                                            .set(updateTrans)
+                                                            .addOnSuccessListener(unused1 -> {
+                                                                Toast.makeText(TouristPayment.this, "Paid Successfully!", Toast.LENGTH_SHORT).show();
+
+                                                                startActivity(new Intent(TouristPayment.this, TouristNavActivity.class));
+                                                                finishAffinity();
+                                                                finish();
+                                                            });
                                                 }
                                             }
                                         });
@@ -342,6 +366,16 @@ public class TouristPayment extends AppCompatActivity {
                                 am.set(AlarmManager.RTC_WAKEUP, oneDayBefore.getTimeInMillis(), pendingIntent);
 
                                 sendNotificationToTourist(driID);
+
+                                updateHistory.collection("User Accounts").document(tourID).collection("Transaction History").document(transID)
+                                        .set(updateTrans)
+                                        .addOnSuccessListener(unused1 -> {
+                                            Toast.makeText(TouristPayment.this, "Paid Successfully!", Toast.LENGTH_SHORT).show();
+
+                                            startActivity(new Intent(TouristPayment.this, TouristNavActivity.class));
+                                            finishAffinity();
+                                            finish();
+                                        });
                             }
                             else{
                                 Toast.makeText(TouristPayment.this, "Please choose a payment method!", Toast.LENGTH_SHORT).show();
@@ -367,12 +401,6 @@ public class TouristPayment extends AppCompatActivity {
                                 token,
                                 "Booking Paid",
                                 "Tourist paid for the booking!");
-
-                        Toast.makeText(TouristPayment.this, "Paid Successfully!", Toast.LENGTH_SHORT).show();
-
-                        startActivity(new Intent(TouristPayment.this, TouristNavActivity.class));
-                        finishAffinity();
-                        finish();
                     }
                 });
     }

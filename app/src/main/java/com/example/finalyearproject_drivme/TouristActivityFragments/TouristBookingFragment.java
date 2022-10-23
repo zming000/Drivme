@@ -104,11 +104,6 @@ public class TouristBookingFragment extends Fragment {
                         }
                     }
 
-                    //if no records found
-                    if(pendingList.size() == 0){
-                        Toast.makeText(v.getContext(), "No pending found!", Toast.LENGTH_SHORT).show();
-                    }
-
                     plAdapter.notifyDataSetChanged();
                 });
     }

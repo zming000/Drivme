@@ -103,11 +103,6 @@ public class DriverRequestFrament extends Fragment {
                         }
                     }
 
-                    //if no records found
-                    if(requestList.size() == 0){
-                        Toast.makeText(v.getContext(), "No request found!", Toast.LENGTH_SHORT).show();
-                    }
-
                     reqlAdapter.notifyDataSetChanged();
                 });
     }

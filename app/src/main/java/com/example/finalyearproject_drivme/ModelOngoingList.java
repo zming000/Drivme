@@ -2,12 +2,12 @@ package com.example.finalyearproject_drivme;
 
 public class ModelOngoingList {
     //declare variables
-    String orderID, touristID, driverID, meetDate, endDate, meetTime, locality, orderStatus, tripOption;
+    String orderID, touristID, driverID, meetDate, endDate, meetTime, locality, orderStatus, tripOption, tripStart;
     float total;
 
     public ModelOngoingList() {/*empty constructor*/}
 
-    public ModelOngoingList(String orderID, String touristID, String driverID, String meetDate, String endDate, String meetTime, String locality, String orderStatus, String tripOption, float total) {
+    public ModelOngoingList(String orderID, String touristID, String driverID, String meetDate, String endDate, String meetTime, String locality, String orderStatus, String tripOption, String tripStart, float total) {
         this.orderID = orderID;
         this.touristID = touristID;
         this.driverID = driverID;
@@ -18,6 +18,7 @@ public class ModelOngoingList {
         this.orderStatus = orderStatus;
         this.tripOption = tripOption;
         this.total = total;
+        this.tripStart = tripStart;
     }
 
     public String getOrderID() {
@@ -98,5 +99,13 @@ public class ModelOngoingList {
 
     public void setTotal(float total) {
         this.total = total;
+    }
+
+    public String getTripStart() {
+        return tripStart;
+    }
+
+    public void setTripStart(String tripStart) {
+        this.tripStart = tripStart;
     }
 }

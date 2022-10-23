@@ -14,7 +14,7 @@ import java.util.Objects;
 public class TouristNavActivity extends AppCompatActivity {
     //declare variables
     BottomNavigationView mbtmTNav;
-    TabLayout mtabActivity;
+    TabLayout mtabTouristActivity;
     ViewPager2 mvpActivity;
     AdapterTouristViewPager tvpAdapter;
 
@@ -25,12 +25,12 @@ public class TouristNavActivity extends AppCompatActivity {
 
         //assign variable
         mbtmTNav = findViewById(R.id.btmTNav);
-        mtabActivity = findViewById(R.id.tabActivity);
+        mtabTouristActivity = findViewById(R.id.tabTouristActivity);
         mvpActivity = findViewById(R.id.vpActivity);
         tvpAdapter = new AdapterTouristViewPager(this);
         mvpActivity.setAdapter(tvpAdapter);
 
-        mtabActivity.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mtabTouristActivity.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mvpActivity.setCurrentItem(tab.getPosition());
@@ -38,12 +38,12 @@ public class TouristNavActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                //nothing
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                //nothing
             }
         });
 
@@ -51,7 +51,7 @@ public class TouristNavActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                Objects.requireNonNull(mtabActivity.getTabAt(position)).select();
+                Objects.requireNonNull(mtabTouristActivity.getTabAt(position)).select();
             }
         });
 

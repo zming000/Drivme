@@ -88,11 +88,6 @@ public class TouristNavCars extends AppCompatActivity {
                         }
                     }
 
-                    //if no records found
-                    if(carList.size() == 0){
-                        Toast.makeText(TouristNavCars.this, "No car!", Toast.LENGTH_SHORT).show();
-                    }
-
                     carAdapter.notifyDataSetChanged();
                 });
     }

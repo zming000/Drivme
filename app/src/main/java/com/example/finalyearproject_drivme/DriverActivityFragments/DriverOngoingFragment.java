@@ -101,11 +101,6 @@ public class DriverOngoingFragment extends Fragment {
                             ongoingOrderList.add(dc.getDocument().toObject(ModelOngoingList.class));
                         }
                     }
-
-                    //if no records found
-                    if(ongoingOrderList.size() == 0){
-                        Toast.makeText(ongoingView.getContext(), "No ongoing orders!", Toast.LENGTH_SHORT).show();
-                    }
                     
                     onlAdapter.notifyDataSetChanged();
                 });

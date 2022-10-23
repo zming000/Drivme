@@ -8,13 +8,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class TouristCarDetails extends AppCompatActivity {
     //declare variables
@@ -75,42 +74,37 @@ public class TouristCarDetails extends AppCompatActivity {
     }
 
     private void manageCar(String touristID, String carPlate) {
+        carID = new ArrayList<>();
+
         checkCar.collection("Trip Details")
                 .whereEqualTo("touristID", touristID)
+                .whereEqualTo("carPlate", carPlate)
                 .whereIn("orderStatus", Arrays.asList("Pending Driver Accept", "Pending Tourist Payment", "Coming Soon", "Trip Ongoing"))
-                .addSnapshotListener((value, error) -> {
-                    if(error != null){
-                        Toast.makeText(TouristCarDetails.this, "Error Loading Car!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
 
-                    //clear list
-                    carID.clear();
+                        //clear list
+                        carID.clear();
 
-                    //use the id to check if the driver available within the duration requested
-                    for(DocumentChange dc : Objects.requireNonNull(value).getDocumentChanges()){
-                        if(dc.getType() == DocumentChange.Type.ADDED || dc.getType() == DocumentChange.Type.MODIFIED) {
-                            carID.add(dc.getDocument().getId());
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            carID.add(document.getId());
                         }
-                    }
-
-                    //if no records found
-                    if(carID.size() == 0){
-                        deleteCar.collection("User Accounts").document(touristID).collection("Car Details").document(carPlate)
-                                .delete()
-                                .addOnSuccessListener(unused -> {
-                                    Toast.makeText(TouristCarDetails.this, "Car Deleted Successfully!", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(TouristCarDetails.this, TouristNavCars.class));
-                                    finishAffinity();
-                                    finish();
-                                })
-                                .addOnFailureListener(e -> Toast.makeText(TouristCarDetails.this, "Unable to delete car!", Toast.LENGTH_SHORT).show());
-                    }
-                    else{
-                        Toast.makeText(TouristCarDetails.this, "Unable to delete car! Car in used!", Toast.LENGTH_SHORT).show();
+                        if(carID.size() != 0){
+                            Toast.makeText(TouristCarDetails.this, "Unable to delete car! Car in used!", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            deleteCar.collection("User Accounts").document(touristID).collection("Car Details").document(carPlate)
+                                    .delete()
+                                    .addOnSuccessListener(unused -> {
+                                        Toast.makeText(TouristCarDetails.this, "Car Deleted Successfully!", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(TouristCarDetails.this, TouristNavCars.class));
+                                        finishAffinity();
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e -> Toast.makeText(TouristCarDetails.this, "Unable to delete car!", Toast.LENGTH_SHORT).show());
+                        }
                     }
                 });
     }
-
-
 }

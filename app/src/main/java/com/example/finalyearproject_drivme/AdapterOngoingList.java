@@ -93,116 +93,94 @@ public class AdapterOngoingList extends RecyclerView.Adapter<AdapterOngoingList.
         holder.mtvOLocation.setText(mol.locality);
         holder.mtvOStatus.setText(mol.orderStatus);
 
-        FirebaseFirestore orderDB = FirebaseFirestore.getInstance();
+        String startStat = mol.tripStart;
+        //get current date
+        String date = slashFormat.format(Calendar.getInstance().getTime());
+        String dateID = stickFormat.format(Calendar.getInstance().getTime());
 
         if(tripOption.equals("Day")) { //by day order
-            orderDB.collection("Trip Details").document(oid).get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot doc = task.getResult();
-                            int startStat = Objects.requireNonNull(doc.getLong("tripStart")).intValue();
-                            int endStat = Objects.requireNonNull(doc.getLong("tripEnd")).intValue();
+            if (startStat.equals("Not yet started")) {
+                //if current date is start date
+                if (date.equals(mol.meetDate)) {
+                    Map<String, Object> start = new HashMap<>();
+                    start.put("tripStart", "Started");
+                    start.put("orderStatus", "Trip Ongoing");
 
-                            //get current date
-                            String date = slashFormat.format(Calendar.getInstance().getTime());
-                            String dateID = stickFormat.format(Calendar.getInstance().getTime());
+                    FirebaseFirestore updateOrderStatus = FirebaseFirestore.getInstance();
+                    updateOrderStatus.collection("Trip Details").document(oid)
+                            .update(start);
 
-                            if (startStat == 0) {
-                                //if current date is start date
-                                if (date.equals(mol.meetDate)) {
-                                    Map<String, Object> start = new HashMap<>();
-                                    start.put("tripStart", 1);
-                                    start.put("orderStatus", "Trip Ongoing");
+                    FirebaseFirestore setDay = FirebaseFirestore.getInstance();
+                    setDay.collection("Trip Details").document(oid).collection("Days").document(dateID).get()
+                            .addOnCompleteListener(task1 -> {
+                                DocumentSnapshot ds = task1.getResult();
+                                int dCheck = Objects.requireNonNull(ds.getLong("driverCheck")).intValue();
+                                int tCheck = Objects.requireNonNull(ds.getLong("touristCheck")).intValue();
 
-                                    FirebaseFirestore updateOrderStatus = FirebaseFirestore.getInstance();
-                                    updateOrderStatus.collection("Trip Details").document(oid)
-                                            .update(start);
+                                holder.mtvODay.setText(String.valueOf(Objects.requireNonNull(ds.getLong("numDay")).intValue()));
 
-                                    FirebaseFirestore setDay = FirebaseFirestore.getInstance();
-                                    setDay.collection("Trip Details").document(oid).collection("Days").document(dateID).get()
-                                            .addOnCompleteListener(task1 -> {
-                                                DocumentSnapshot ds = task1.getResult();
-                                                int dCheck = Objects.requireNonNull(ds.getLong("driverCheck")).intValue();
-                                                int tCheck = Objects.requireNonNull(ds.getLong("touristCheck")).intValue();
-
-                                                holder.mtvODay.setText(String.valueOf(Objects.requireNonNull(ds.getLong("numDay")).intValue()));
-
-                                                //manage button for record
-                                                if (dCheck == 0 && uRole.equals("Driver")) {
-                                                    holder.mbtnHere.setVisibility(View.VISIBLE);
-                                                } else if (dCheck == 1 && tCheck == 0 && uRole.equals("Tourist")) {
-                                                    holder.mbtnStart.setVisibility(View.VISIBLE);
-                                                }
-                                            });
-                                } else {
-                                    holder.mtvODay.setText("-");
+                                //manage button for record
+                                if (dCheck == 0 && uRole.equals("Driver")) {
+                                    holder.mbtnHere.setVisibility(View.VISIBLE);
+                                } else if (dCheck == 1 && tCheck == 0 && uRole.equals("Tourist")) {
+                                    holder.mbtnStart.setVisibility(View.VISIBLE);
                                 }
-                            } else if (startStat == 1 && endStat == 0) {
-                                FirebaseFirestore getDay = FirebaseFirestore.getInstance();
-                                getDay.collection("Trip Details").document(oid).collection("Days").document(dateID).get()
-                                        .addOnCompleteListener(task1 -> {
-                                            DocumentSnapshot ds = task1.getResult();
-                                            int dCheck = Objects.requireNonNull(ds.getLong("driverCheck")).intValue();
-                                            int tCheck = Objects.requireNonNull(ds.getLong("touristCheck")).intValue();
+                            });
+                } else {
+                    holder.mtvODay.setText("-");
+                }
+            } else if (startStat.equals("Started")) {
+                FirebaseFirestore getDay = FirebaseFirestore.getInstance();
+                getDay.collection("Trip Details").document(oid).collection("Days").document(dateID).get()
+                        .addOnCompleteListener(task1 -> {
+                            DocumentSnapshot ds = task1.getResult();
+                            int dCheck = Objects.requireNonNull(ds.getLong("driverCheck")).intValue();
+                            int tCheck = Objects.requireNonNull(ds.getLong("touristCheck")).intValue();
 
-                                            holder.mtvODay.setText(String.valueOf(Objects.requireNonNull(ds.getLong("numDay")).intValue()));
+                            holder.mtvODay.setText(String.valueOf(Objects.requireNonNull(ds.getLong("numDay")).intValue()));
 
-                                            if (dCheck == 0 && uRole.equals("Driver")) {
-                                                holder.mbtnHere.setVisibility(View.VISIBLE);
-                                            } else if (dCheck == 1 && tCheck == 0 && uRole.equals("Tourist")) {
-                                                holder.mbtnStart.setVisibility(View.VISIBLE);
-                                            } else if (dCheck == 1 && tCheck == 1 && uRole.equals("Tourist") && date.equals(mol.endDate)) { //if current date is end date
-                                                holder.mbtnEndTrip.setVisibility(View.VISIBLE);
-                                            }
-                                        });
+                            if (dCheck == 0 && uRole.equals("Driver")) {
+                                holder.mbtnHere.setVisibility(View.VISIBLE);
+                            } else if (dCheck == 1 && tCheck == 0 && uRole.equals("Tourist")) {
+                                holder.mbtnStart.setVisibility(View.VISIBLE);
+                            } else if (dCheck == 1 && tCheck == 1 && uRole.equals("Tourist") && date.equals(mol.endDate)) { //if current date is end date
+                                holder.mbtnEndTrip.setVisibility(View.VISIBLE);
                             }
-                        }
-                    });
+                        });
+            }
         }
         else{ //by hour order
-            orderDB.collection("Trip Details").document(oid).get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot doc = task.getResult();
-                            int startStat = Objects.requireNonNull(doc.getLong("tripStart")).intValue();
+            if (startStat.equals("Not yet started")) {
+                if (date.equals(mol.meetDate)) {
+                    Map<String, Object> start = new HashMap<>();
+                    start.put("tripStart", "Started");
+                    start.put("orderStatus", "Trip Ongoing");
 
-                            //get current date
-                            String date = slashFormat.format(Calendar.getInstance().getTime());
-                            String dateID = stickFormat.format(Calendar.getInstance().getTime());
+                    FirebaseFirestore updateOrderStatus = FirebaseFirestore.getInstance();
+                    updateOrderStatus.collection("Trip Details").document(oid)
+                            .update(start);
 
-                            if (startStat == 0) {
-                                if (date.equals(mol.meetDate)) {
-                                    Map<String, Object> start = new HashMap<>();
-                                    start.put("tripStart", 1);
-                                    start.put("orderStatus", "Trip Ongoing");
+                    FirebaseFirestore getDay = FirebaseFirestore.getInstance();
+                    getDay.collection("Trip Details").document(oid).collection("Days").document(dateID).get()
+                            .addOnCompleteListener(task1 -> {
+                                DocumentSnapshot ds = task1.getResult();
+                                int dCheck = Objects.requireNonNull(ds.getLong("driverCheck")).intValue();
+                                int tCheck = Objects.requireNonNull(ds.getLong("touristCheck")).intValue();
 
-                                    FirebaseFirestore updateOrderStatus = FirebaseFirestore.getInstance();
-                                    updateOrderStatus.collection("Trip Details").document(oid)
-                                            .update(start);
+                                holder.mtvODay.setText(String.valueOf(Objects.requireNonNull(ds.getLong("numDay")).intValue()));
 
-                                    FirebaseFirestore getDay = FirebaseFirestore.getInstance();
-                                    getDay.collection("Trip Details").document(oid).collection("Days").document(dateID).get()
-                                            .addOnCompleteListener(task1 -> {
-                                                DocumentSnapshot ds = task1.getResult();
-                                                int dCheck = Objects.requireNonNull(ds.getLong("driverCheck")).intValue();
-                                                int tCheck = Objects.requireNonNull(ds.getLong("touristCheck")).intValue();
-
-                                                holder.mtvODay.setText(String.valueOf(Objects.requireNonNull(ds.getLong("numDay")).intValue()));
-
-                                                if (dCheck == 0 && uRole.equals("Driver")) {
-                                                    holder.mbtnHere.setVisibility(View.VISIBLE);
-                                                } else if (dCheck == 1 && tCheck == 0 && uRole.equals("Tourist")) {
-                                                    holder.mbtnStart.setVisibility(View.VISIBLE);
-                                                } else if (dCheck == 1 && tCheck == 1 && uRole.equals("Tourist")) {
-                                                    holder.mbtnEndTrip.setVisibility(View.VISIBLE);
-                                                }
-                                            });
-                                } else {
-                                    holder.mtvODay.setText("-");
+                                if (dCheck == 0 && uRole.equals("Driver")) {
+                                    holder.mbtnHere.setVisibility(View.VISIBLE);
+                                } else if (dCheck == 1 && tCheck == 0 && uRole.equals("Tourist")) {
+                                    holder.mbtnStart.setVisibility(View.VISIBLE);
+                                } else if (dCheck == 1 && tCheck == 1 && uRole.equals("Tourist")) {
+                                    holder.mbtnEndTrip.setVisibility(View.VISIBLE);
                                 }
-                            }
-                        }
-                    });
+                            });
+                } else {
+                    holder.mtvODay.setText("-");
+                }
+            }
         }
 
         //to notify tourist driver is here
@@ -210,7 +188,7 @@ public class AdapterOngoingList extends RecyclerView.Adapter<AdapterOngoingList.
             holder.mbtnHere.setVisibility(View.GONE);
 
             //get current date id
-            String dateID = stickFormat.format(Calendar.getInstance().getTime());
+            String dateDriverID = stickFormat.format(Calendar.getInstance().getTime());
             //get current date time
             String dateTime = fullFormat.format(Calendar.getInstance().getTime());
 
@@ -220,7 +198,7 @@ public class AdapterOngoingList extends RecyclerView.Adapter<AdapterOngoingList.
 
             //update driver status in the order
             FirebaseFirestore updateDCheck = FirebaseFirestore.getInstance();
-            updateDCheck.collection("Trip Details").document(oid).collection("Days").document(dateID)
+            updateDCheck.collection("Trip Details").document(oid).collection("Days").document(dateDriverID)
                     .update(checkDriver);
 
             /*send notification to tourist*/
@@ -247,7 +225,7 @@ public class AdapterOngoingList extends RecyclerView.Adapter<AdapterOngoingList.
             holder.mbtnStart.setVisibility(View.GONE);
 
             //get current date id
-            String dateID = stickFormat.format(Calendar.getInstance().getTime());
+            String dateTouristID = stickFormat.format(Calendar.getInstance().getTime());
             //get current date time
             String dateTime = fullFormat.format(Calendar.getInstance().getTime());
 
@@ -256,7 +234,7 @@ public class AdapterOngoingList extends RecyclerView.Adapter<AdapterOngoingList.
             checkTourist.put("touristCheckTime", dateTime);
 
             FirebaseFirestore updateDCheck = FirebaseFirestore.getInstance();
-            updateDCheck.collection("Trip Details").document(oid).collection("Days").document(dateID)
+            updateDCheck.collection("Trip Details").document(oid).collection("Days").document(dateTouristID)
                     .update(checkTourist);
 
             /*send notification to driver*/

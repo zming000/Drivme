@@ -102,11 +102,6 @@ public class DriverHistoryFragment extends Fragment {
                         }
                     }
 
-                    //if no records found
-                    if(historyOrderList.size() == 0){
-                        Toast.makeText(historyView.getContext(), "No history records found!", Toast.LENGTH_SHORT).show();
-                    }
-
                     olAdapter.notifyDataSetChanged();
                 });
     }
