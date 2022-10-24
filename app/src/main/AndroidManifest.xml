@@ -11,60 +11,11 @@
         android:roundIcon="@drawable/app_logo_wheel"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalYearProjectDrivme">
+
+        <!-- Both User -->
         <activity
-            android:name=".UserTransactionHistory"
-            android:exported="false" />
-        <activity
-            android:name=".DriverRequestHourDetails"
-            android:exported="false" />
-        <activity
-            android:name=".TouristBookingHourDetails"
-            android:exported="false" />
-        <activity
-            android:name=".DriverHourMoreDetails"
-            android:exported="false" />
-        <activity
-            android:name=".TouristReload"
-            android:exported="false" />
-        <activity
-            android:name=".DriverAboutUs"
+            android:name=".UserRole"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".TouristAboutUs"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".DriverProfile"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".TouristProfile"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".TouristCarDetails"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".DriverChangePW"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".TouristChangePW"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".TouristRating"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".TouristPayment"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".TouristBookingDayDetails"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".TouristBookSuccess"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".TouristHourTrip"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".DriverRequestDayDetails"
-            android:screenOrientation="portrait" /> <!-- Account UI -->
         <activity
             android:name=".UserResetSuccess"
             android:screenOrientation="portrait" />
@@ -76,7 +27,21 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".UserForgotPassword"
-            android:screenOrientation="portrait" /> <!-- Driver UI -->
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserWelcomeTo"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserWelcomeBack"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserAgreementPolicy"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserTransactionHistory"
+            android:screenOrientation="portrait" />
+
+        <!-- Driver -->
         <activity
             android:name=".DriverOTP"
             android:screenOrientation="portrait" />
@@ -109,7 +74,27 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".DriverNavHomepage"
-            android:screenOrientation="portrait" /> <!-- Tourist UI -->
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverRequestHourDetails"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverHourMoreDetails"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverAboutUs"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverProfile"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverChangePW"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverRequestDayDetails"
+            android:screenOrientation="portrait" />
+
+        <!-- Tourist -->
         <activity
             android:name=".TouristLogin"
             android:screenOrientation="portrait" />
@@ -145,10 +130,42 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".DriverDayMoreDetails"
-            android:screenOrientation="portrait" /> <!-- App UI -->
-        <activity
-            android:name=".UserRole"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristChangePW"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristRating"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristPayment"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristBookingDayDetails"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristBookSuccess"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristHourTrip"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristProfile"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristCarDetails"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristBookingHourDetails"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristReload"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TouristAboutUs"
+            android:screenOrientation="portrait" />
+
+        <!-- App -->
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -159,15 +176,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".UserWelcomeTo"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".UserWelcomeBack"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".UserAgreementPolicy"
-            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -186,5 +194,4 @@
             </intent-filter>
         </service>
     </application>
-
 </manifest>
