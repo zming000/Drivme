@@ -3,6 +3,7 @@ package com.example.finalyearproject_drivme;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,8 @@ public class AdapterOngoingList extends RecyclerView.Adapter<AdapterOngoingList.
         String did = mol.driverID;
         String oid = mol.orderID;
         String tripOption = mol.tripOption;
+        String textStatus = mol.orderStatus;
+
         //get role
         spDrivme = ongoingContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         String uRole = spDrivme.getString(KEY_ROLE, null);
@@ -91,6 +94,14 @@ public class AdapterOngoingList extends RecyclerView.Adapter<AdapterOngoingList.
         }
         holder.mtvOMeetDateTime.setText(mol.meetDate + " " + mol.meetTime);
         holder.mtvOLocation.setText(mol.locality);
+
+        //change text color based on status
+        if(textStatus.equals("Coming Soon")){
+            holder.mtvOStatus.setTextColor(Color.parseColor("#767676"));
+        }
+        else{
+            holder.mtvOStatus.setTextColor(Color.parseColor("#21618C"));
+        }
         holder.mtvOStatus.setText(mol.orderStatus);
 
         String startStat = mol.tripStart;

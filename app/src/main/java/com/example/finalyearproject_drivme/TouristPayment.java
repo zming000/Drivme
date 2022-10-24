@@ -209,6 +209,7 @@ public class TouristPayment extends AppCompatActivity {
                             updateTrans.put("transType", "Payment");
                             updateTrans.put("transAmount", String.format("%.2f", totalPayment));
                             updateTrans.put("transDateTime", dateTime);
+                            updateTrans.put("orderID", orderID);
 
                             if(mtvDrivPay.getCurrentTextColor() == -1){
                                 getDrivPay.collection("User Accounts").document(Objects.requireNonNull(tourID)).get()

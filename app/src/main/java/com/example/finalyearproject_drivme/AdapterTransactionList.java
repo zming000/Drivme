@@ -37,6 +37,7 @@ public class AdapterTransactionList extends RecyclerView.Adapter<AdapterTransact
         String type = mtl.transType;
 
         holder.mtvTransactionType.setText(mtl.transType);
+        holder.mtvOrderID.setText(mtl.orderID);
         holder.mtvDateTime.setText(mtl.transDateTime);
 
         if(type.equals("Payment")) {
@@ -57,7 +58,7 @@ public class AdapterTransactionList extends RecyclerView.Adapter<AdapterTransact
 
     public static class TransactionListViewHolder extends RecyclerView.ViewHolder{
         //declare variables
-        TextView mtvTransactionType, mtvDateTime, mtvAmount;
+        TextView mtvTransactionType, mtvDateTime, mtvAmount, mtvOrderID;
 
         public TransactionListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +67,7 @@ public class AdapterTransactionList extends RecyclerView.Adapter<AdapterTransact
             mtvTransactionType = itemView.findViewById(R.id.tvTransactionType);
             mtvDateTime = itemView.findViewById(R.id.tvDateTime);
             mtvAmount = itemView.findViewById(R.id.tvAmount);
+            mtvOrderID = itemView.findViewById(R.id.tvOrderID);
         }
     }
 }

@@ -230,9 +230,10 @@ public class TouristRating extends AppCompatActivity {
                                                 String dateTime = fullFormat.format(Calendar.getInstance().getTime());
 
                                                 Map<String,Object> updateTrans = new HashMap<>();
-                                                updateTrans.put("transType", "Reload");
+                                                updateTrans.put("transType", "Trip Finished");
                                                 updateTrans.put("transAmount", String.format("%.2f", earn));
                                                 updateTrans.put("transDateTime", dateTime);
+                                                updateTrans.put("orderID", orderID);
 
                                                 updateHistory.collection("User Accounts").document(driverID).collection("Transaction History").document(transID)
                                                         .set(updateTrans)

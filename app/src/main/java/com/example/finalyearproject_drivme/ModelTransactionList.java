@@ -1,15 +1,16 @@
 package com.example.finalyearproject_drivme;
 
 public class ModelTransactionList {
-    String transAmount, transDateTime, transType;
+    String transAmount, transDateTime, transType, orderID;
 
     public ModelTransactionList() {/*empty constructor*/
     }
 
-    public ModelTransactionList(String transAmount, String transDateTime, String transType) {
+    public ModelTransactionList(String transAmount, String transDateTime, String transType, String orderID) {
         this.transAmount = transAmount;
         this.transDateTime = transDateTime;
         this.transType = transType;
+        this.orderID = orderID;
     }
 
     public String getTransAmount() {
@@ -34,5 +35,13 @@ public class ModelTransactionList {
 
     public void setTransType(String transType) {
         this.transType = transType;
+    }
+
+    public String getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(String orderID) {
+        this.orderID = orderID;
     }
 }

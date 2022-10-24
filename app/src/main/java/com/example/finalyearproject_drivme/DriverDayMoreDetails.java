@@ -117,11 +117,11 @@ public class DriverDayMoreDetails extends AppCompatActivity {
 
                         //rating and reviews
                         Pair[] colors = new Pair[]{
-                                new Pair<>(Color.parseColor("#0c96c7"), Color.parseColor("#00fe77")),
-                                new Pair<>(Color.parseColor("#7b0ab4"), Color.parseColor("#ff069c")),
-                                new Pair<>(Color.parseColor("#fe6522"), Color.parseColor("#fdd116")),
-                                new Pair<>(Color.parseColor("#104bff"), Color.parseColor("#67cef6")),
-                                new Pair<>(Color.parseColor("#ff5d9b"), Color.parseColor("#ffaa69"))
+                                new Pair<>(Color.parseColor("#0F7D63"), Color.parseColor("#9FD5B5")),
+                                new Pair<>(Color.parseColor("#0F7D63"), Color.parseColor("#9FD5B5")),
+                                new Pair<>(Color.parseColor("#0F7D63"), Color.parseColor("#9FD5B5")),
+                                new Pair<>(Color.parseColor("#0F7D63"), Color.parseColor("#9FD5B5")),
+                                new Pair<>(Color.parseColor("#0F7D63"), Color.parseColor("#9FD5B5"))
                         };
 
                         int[] raters = new int[]{

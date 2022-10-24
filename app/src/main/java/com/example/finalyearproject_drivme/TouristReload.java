@@ -143,6 +143,7 @@ public class TouristReload extends AppCompatActivity {
                                                 updateTrans.put("transType", "Reload");
                                                 updateTrans.put("transAmount", String.format("%.2f", amount));
                                                 updateTrans.put("transDateTime", dateTime);
+                                                updateTrans.put("orderID", "-");
 
                                                 updateHistory.collection("User Accounts").document(tID).collection("Transaction History").document(transID)
                                                                 .set(updateTrans)

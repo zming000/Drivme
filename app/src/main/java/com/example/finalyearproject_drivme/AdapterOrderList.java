@@ -3,6 +3,7 @@ package com.example.finalyearproject_drivme;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class AdapterOrderList extends RecyclerView.Adapter<AdapterOrderList.Requ
         String tid = mrl.touristID;
         String did = mrl.driverID;
         String tripOpt = mrl.tripOption;
+        String textStatus = mrl.orderStatus;
         //get role
         spDrivme = reqContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         String uRole = spDrivme.getString(KEY_ROLE, null);
@@ -79,6 +81,21 @@ public class AdapterOrderList extends RecyclerView.Adapter<AdapterOrderList.Requ
 
         holder.mtvMeetDateTime.setText(mrl.meetDate + " " + mrl.meetTime);
         holder.mtvLocation.setText(mrl.locality);
+
+        //change text color based on the status
+        if(textStatus.equals("Pending Driver Accept")){
+            holder.mtvStatus.setTextColor(Color.parseColor("#D35400"));
+        }
+        else if(textStatus.equals("Pending Tourist Payment")){
+            holder.mtvStatus.setTextColor(Color.parseColor("#F1C40F"));
+        }
+        else if(textStatus.equals("Trip Finished")){
+            holder.mtvStatus.setTextColor(Color.parseColor("#08F26E"));
+        }
+        else{
+            holder.mtvStatus.setTextColor(Color.parseColor("#FF0000"));
+        }
+
         holder.mtvStatus.setText(mrl.orderStatus);
 
         if(tripOpt.equals("Day")) {

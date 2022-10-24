@@ -102,11 +102,6 @@ public class TouristOngoingFragment extends Fragment {
                         }
                     }
 
-                    //if no records found
-                    if(ongoingList.size() == 0){
-                        Toast.makeText(ongoingView.getContext(), "No ongoing orders!", Toast.LENGTH_SHORT).show();
-                    }
-
                     olAdapter.notifyDataSetChanged();
                 });
     }
