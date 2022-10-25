@@ -400,7 +400,7 @@ public class TouristDayTrip extends AppCompatActivity implements DatePickerDialo
             String getID = spDrivme.getString(KEY_ID, null);
             String carPlate = Objects.requireNonNull(metDCarPlate.getText()).toString();
             //get current date time
-            DateFormat df = new SimpleDateFormat("ddMMyyyyHHmm");
+            DateFormat df = new SimpleDateFormat("ddMMyyyyHHmmss");
             String date = df.format(Calendar.getInstance().getTime());
             String getOrderID = date + carPlate;
             FirebaseFirestore dateDB = FirebaseFirestore.getInstance();
