@@ -64,7 +64,7 @@ public class TouristCarDetails extends AppCompatActivity {
             alertDialogBuilder
                     .setMessage("Do you wish to delete this car?")
                     .setCancelable(false)
-                    .setPositiveButton("Delete Car", (dialog, id) -> manageCar(uID, cP))
+                    .setPositiveButton("Delete Car", (dialog, id) -> deleteCar(uID, cP))
                     .setNegativeButton("No", (dialog, id) -> dialog.cancel());
 
             android.app.AlertDialog alertDialog = alertDialogBuilder.create();
@@ -73,7 +73,7 @@ public class TouristCarDetails extends AppCompatActivity {
         });
     }
 
-    private void manageCar(String touristID, String carPlate) {
+    private void deleteCar(String touristID, String carPlate) {
         carID = new ArrayList<>();
 
         checkCar.collection("Trip Details")
@@ -83,7 +83,6 @@ public class TouristCarDetails extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-
                         //clear list
                         carID.clear();
 
