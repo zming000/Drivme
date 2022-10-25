@@ -356,7 +356,6 @@ public class TouristPayment extends AppCompatActivity {
                                 oneDayBefore.add(Calendar.DATE, -1);
 
                                 Intent intent = new Intent(this, UserReminderReceiver.class);
-                                intent.putExtra("orderID", orderID);
                                 intent.putExtra("driverID", driID);
                                 intent.putExtra("touristID", tourID);
 
