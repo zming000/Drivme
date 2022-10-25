@@ -150,6 +150,7 @@ public class DriverNavSettings extends AppCompatActivity {
             FirebaseFirestore updateStatus = FirebaseFirestore.getInstance();
             Map<String,Object> noToken = new HashMap<>();
             noToken.put("accountStatus", "Offline");
+            noToken.put("notificationToken", "-");
 
             updateStatus.collection("User Accounts").document(id)
                     .update(noToken);
