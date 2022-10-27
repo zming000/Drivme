@@ -217,7 +217,7 @@ public class DriverAvailability extends AppCompatActivity {
             drivingDetails.put("languages", Arrays.asList(lan));
             drivingDetails.put("state", metDState.getText().toString());
             drivingDetails.put("familiarAreas", Arrays.asList(area));
-            drivingDetails.put("Login Status Driver", 1);
+            drivingDetails.put("loginStatusDriver", 1);
 
             drivingDB.collection("User Accounts").document(id)
                     .update(drivingDetails)

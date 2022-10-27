@@ -141,11 +141,11 @@ public class TouristOTP extends AppCompatActivity {
         touristAcc.put("phoneNumber", getIntent().getStringExtra("tPhoneNumber"));
         touristAcc.put("email", getIntent().getStringExtra("tEmail"));
         touristAcc.put("password", getIntent().getStringExtra("tPassword"));
-        touristAcc.put("Login Status Tourist", 0);
-        touristAcc.put("Login Status Driver", 0);
-        touristAcc.put("Account Tourist", 1);
-        touristAcc.put("Account Driver", 0);
-        touristAcc.put("Agreement Check", 1);
+        touristAcc.put("loginStatusTourist", 0);
+        touristAcc.put("loginStatusDriver", 0);
+        touristAcc.put("accountTourist", 1);
+        touristAcc.put("accountDriver", 0);
+        touristAcc.put("agreementCheck", 1);
         touristAcc.put("drivPay", "0.00");
 
         db.collection("User Accounts").document(value)

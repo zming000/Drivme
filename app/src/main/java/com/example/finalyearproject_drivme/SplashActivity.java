@@ -96,7 +96,7 @@ public class SplashActivity extends AppCompatActivity {
                                             alertDialog.show();
                                         }
                                         else {
-                                            int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Tourist")).intValue();
+                                            int loginStat = Objects.requireNonNull(docResult.getLong("loginStatusTourist")).intValue();
 
                                             if (loginStat == 0) {
                                                 startActivity(new Intent(SplashActivity.this, UserWelcomeTo.class));
@@ -120,7 +120,7 @@ public class SplashActivity extends AppCompatActivity {
                                     DocumentSnapshot docResult = task.getResult();
 
                                     if (docResult != null) {
-                                        int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Driver")).intValue();
+                                        int loginStat = Objects.requireNonNull(docResult.getLong("loginStatusDriver")).intValue();
 
                                         if (loginStat == 0){
                                             startActivity(new Intent(SplashActivity.this, UserWelcomeTo.class));

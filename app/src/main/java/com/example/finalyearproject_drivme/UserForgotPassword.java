@@ -114,7 +114,7 @@ public class UserForgotPassword extends AppCompatActivity {
                                     //check the existence of document/tourist ID
                                     if (document.exists()) {
                                         if(character.equals("Tourist")) {
-                                            int semTourist = Objects.requireNonNull(document.getLong("Account Tourist")).intValue();
+                                            int semTourist = Objects.requireNonNull(document.getLong("accountTourist")).intValue();
 
                                             if (semTourist == 1) {
                                                 String phText = document.getString("phoneNumber");
@@ -136,7 +136,7 @@ public class UserForgotPassword extends AppCompatActivity {
                                             }
                                         }
                                         else {
-                                            int semDriver = Objects.requireNonNull(document.getLong("Account Driver")).intValue();
+                                            int semDriver = Objects.requireNonNull(document.getLong("accountDriver")).intValue();
 
                                             if(semDriver == 1) {
                                                 String phText = document.getString("phoneNumber");

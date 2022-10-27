@@ -151,11 +151,11 @@ public class DriverOTP extends AppCompatActivity {
         driverAcc.put("phoneNumber", getIntent().getStringExtra("dPhoneNumber"));
         driverAcc.put("email", getIntent().getStringExtra("dEmail"));
         driverAcc.put("password", getIntent().getStringExtra("dPassword"));
-        driverAcc.put("Login Status Tourist", 0);
-        driverAcc.put("Login Status Driver", 0);
-        driverAcc.put("Account Tourist", 0);
-        driverAcc.put("Account Driver", 1);
-        driverAcc.put("Agreement Check", 1);
+        driverAcc.put("loginStatusTourist", 0);
+        driverAcc.put("loginStatusDriver", 0);
+        driverAcc.put("accountTourist", 0);
+        driverAcc.put("accountDriver", 1);
+        driverAcc.put("agreementCheck", 1);
         driverAcc.put("rating", 5);
         driverAcc.put("5 Stars", 1);
         driverAcc.put("4 Stars", 0);

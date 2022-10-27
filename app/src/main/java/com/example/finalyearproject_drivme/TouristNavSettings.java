@@ -97,7 +97,7 @@ public class TouristNavSettings extends AppCompatActivity {
                                 alertDialog.show();
                             }
                             else {
-                                int driverAcc = Objects.requireNonNull(doc.getLong("Account Driver")).intValue();
+                                int driverAcc = Objects.requireNonNull(doc.getLong("accountDriver")).intValue();
 
                                 if (driverAcc == 0) {
                                     //initialize layout
@@ -162,7 +162,7 @@ public class TouristNavSettings extends AppCompatActivity {
 
                                                                                 Map<String, Object> acc = new HashMap<>();
                                                                                 acc.put("accountStatus", "Driver");
-                                                                                acc.put("Account Driver", 1);
+                                                                                acc.put("accountDriver", 1);
                                                                                 acc.put("rating", 5);
                                                                                 acc.put("5 Stars", 1);
                                                                                 acc.put("4 Stars", 0);

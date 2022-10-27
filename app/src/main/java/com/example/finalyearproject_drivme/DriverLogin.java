@@ -132,11 +132,11 @@ public class DriverLogin extends AppCompatActivity {
                                                     alertDialog.show();
                                                 }
                                                 else{
-                                                    int sem = Objects.requireNonNull(docResult.getLong("Account Driver")).intValue();
+                                                    int sem = Objects.requireNonNull(docResult.getLong("accountDriver")).intValue();
 
                                                     //check if id activated driver role or not
                                                     if (sem == 1) {
-                                                        int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Driver")).intValue();
+                                                        int loginStat = Objects.requireNonNull(docResult.getLong("loginStatusDriver")).intValue();
                                                         String name = Objects.requireNonNull(docResult.getString("firstName"));
 
                                                         //check if driver go through on-boarding or not

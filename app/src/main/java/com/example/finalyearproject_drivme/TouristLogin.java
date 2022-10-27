@@ -129,11 +129,11 @@ public class TouristLogin extends AppCompatActivity {
                                                     alertDialog.show();
                                                 }
                                                 else{
-                                                    int value = Objects.requireNonNull(docResult.getLong("Account Tourist")).intValue();
+                                                    int value = Objects.requireNonNull(docResult.getLong("accountTourist")).intValue();
 
                                                     //check if id activated tourist role or not
                                                     if(value == 1) {
-                                                        int loginStat = Objects.requireNonNull(docResult.getLong("Login Status Tourist")).intValue();
+                                                        int loginStat = Objects.requireNonNull(docResult.getLong("loginStatusTourist")).intValue();
                                                         String name = Objects.requireNonNull(docResult.getString("firstName"));
 
                                                         if (loginStat == 0){

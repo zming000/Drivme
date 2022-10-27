@@ -121,8 +121,8 @@ public class TouristDriverList extends AppCompatActivity {
 
             //search for driver that fulfill requirements with whereEqualTo
             userDB.collection("User Accounts")
-                    .whereEqualTo("Account Driver", 1)
-                    .whereEqualTo("Login Status Driver", 1)
+                    .whereEqualTo("accountDriver", 1)
+                    .whereEqualTo("loginStatusDriver", 1)
                     .whereEqualTo("accountStatus", "Driver")
                     .whereEqualTo("state", getIntent().getStringExtra("state"))
                     .addSnapshotListener((value, error) -> {
@@ -187,8 +187,8 @@ public class TouristDriverList extends AppCompatActivity {
 
             //search for driver that fulfill requirements with whereEqualTo
             userDB.collection("User Accounts")
-                    .whereEqualTo("Account Driver", 1)
-                    .whereEqualTo("Login Status Driver", 1)
+                    .whereEqualTo("accountDriver", 1)
+                    .whereEqualTo("loginStatusDriver", 1)
                     .whereEqualTo("accountStatus", "Driver")
                     .whereEqualTo("state", getIntent().getStringExtra("state"))
                     .addSnapshotListener((value, error) -> {

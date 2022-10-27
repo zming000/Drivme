@@ -88,7 +88,7 @@ public class DriverNavSettings extends AppCompatActivity {
                                 alertDialog.show();
                             }
                             else {
-                                int touristAcc = Objects.requireNonNull(doc.getLong("Account Tourist")).intValue();
+                                int touristAcc = Objects.requireNonNull(doc.getLong("accountTourist")).intValue();
 
                                 if (touristAcc == 0) {
                                     android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
@@ -103,7 +103,7 @@ public class DriverNavSettings extends AppCompatActivity {
 
                                                 Map<String, Object> acc = new HashMap<>();
                                                 acc.put("accountStatus", "Tourist");
-                                                acc.put("Account Tourist", 1);
+                                                acc.put("accountTourist", 1);
 
                                                 updateAcc.collection("User Accounts").document(uID)
                                                         .update(acc);

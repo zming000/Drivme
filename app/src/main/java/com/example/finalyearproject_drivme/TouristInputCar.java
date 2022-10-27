@@ -523,7 +523,7 @@ public class TouristInputCar extends AppCompatActivity {
                                 String carPlate = Objects.requireNonNull(metCPlate.getText()).toString().replaceAll("\\s","").toUpperCase();
 
                                 Map<String,Object> userAcc = new HashMap<>();
-                                userAcc.put("Login Status Tourist", 1);
+                                userAcc.put("loginStatusTourist", 1);
 
                                 Map<String,Object> carDetails = new HashMap<>();
                                 carDetails.put("carPlate", carPlate);
