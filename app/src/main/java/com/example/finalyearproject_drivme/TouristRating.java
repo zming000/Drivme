@@ -159,38 +159,38 @@ public class TouristRating extends AppCompatActivity {
                         .addOnCompleteListener(task -> {
                             if(task.isSuccessful()){
                                 DocumentSnapshot doc = task.getResult();
-                                float oneStar = doc.getLong("1 star");
-                                float twoStar = doc.getLong("2 stars");
-                                float threeStar = doc.getLong("3 stars");
-                                float fourStar = doc.getLong("4 stars");
-                                float fiveStar = doc.getLong("5 stars");
+                                float oneStar = doc.getLong("1star");
+                                float twoStar = doc.getLong("2stars");
+                                float threeStar = doc.getLong("3stars");
+                                float fourStar = doc.getLong("4stars");
+                                float fiveStar = doc.getLong("5stars");
                                 float multiply = 0;
                                 float sum = 0;
                                 Map<String, Object> rating = new HashMap<>();
 
                                 switch (numRate) {
                                     case "1.0":
-                                        rating.put("1 star", oneStar + 1);
+                                        rating.put("1star", oneStar + 1);
                                         multiply = (oneStar + 1) + (twoStar * 2) + (threeStar * 3) + (fourStar * 4) + (fiveStar * 5);
                                         sum = oneStar + twoStar + threeStar + fourStar + fiveStar + 1;
                                         break;
                                     case "2.0":
-                                        rating.put("2 stars", twoStar + 1);
+                                        rating.put("2stars", twoStar + 1);
                                         multiply = oneStar + ((twoStar + 1) * 2) + (threeStar * 3) + (fourStar * 4) + (fiveStar * 5);
                                         sum = oneStar + twoStar + threeStar + fourStar + fiveStar + 1;
                                         break;
                                     case "3.0":
-                                        rating.put("3 stars", threeStar + 1);
+                                        rating.put("3stars", threeStar + 1);
                                         multiply = oneStar + (twoStar * 2) + ((threeStar + 1) * 3) + (fourStar * 4) + (fiveStar * 5);
                                         sum = oneStar + twoStar + threeStar + fourStar + fiveStar + 1;
                                         break;
                                     case "4.0":
-                                        rating.put("4 stars", fourStar + 1);
+                                        rating.put("4stars", fourStar + 1);
                                         multiply = oneStar + (twoStar * 2) + (threeStar * 3) + ((fourStar + 1) * 4) + (fiveStar * 5);
                                         sum = oneStar + twoStar + threeStar + fourStar + fiveStar + 1;
                                         break;
                                     case "5.0":
-                                        rating.put("5 stars", fiveStar + 1);
+                                        rating.put("5stars", fiveStar + 1);
                                         multiply = oneStar + (twoStar * 2) + (threeStar * 3) + (fourStar * 4) + ((fiveStar + 1) * 5);
                                         sum = oneStar + twoStar + threeStar + fourStar + fiveStar + 1;
                                         break;

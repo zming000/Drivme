@@ -102,10 +102,12 @@ public class TouristLogin extends AppCompatActivity {
                                     //check the existence of ID
                                     if (docResult.exists()) {
                                             String pw2 = docResult.getString("password");
+
                                             //check if the password matched
                                             if (pw.matches(Objects.requireNonNull(pw2))) {
                                                 String accStatus = docResult.getString("accountStatus");
 
+                                                //check if account is suspended
                                                 if(Objects.requireNonNull(accStatus).equals("Suspended")) {
                                                     android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
                                                     alertDialogBuilder.setTitle("Account Suspended");
@@ -117,7 +119,7 @@ public class TouristLogin extends AppCompatActivity {
                                                     android.app.AlertDialog alertDialog = alertDialogBuilder.create();
                                                     alertDialog.show();
                                                 }
-                                                else if(!accStatus.equals("Offline")){
+                                                else if(!accStatus.equals("Offline")){ //check if account being logged in
                                                     android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
                                                     alertDialogBuilder.setTitle("Account Logged In");
                                                     alertDialogBuilder

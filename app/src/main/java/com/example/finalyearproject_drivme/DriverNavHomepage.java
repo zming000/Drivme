@@ -79,11 +79,11 @@ public class DriverNavHomepage extends AppCompatActivity {
                         };
 
                         int[] raters = new int[]{
-                                Objects.requireNonNull(doc.getLong("5 stars")).intValue(),
-                                Objects.requireNonNull(doc.getLong("4 stars")).intValue(),
-                                Objects.requireNonNull(doc.getLong("3 stars")).intValue(),
-                                Objects.requireNonNull(doc.getLong("2 stars")).intValue(),
-                                Objects.requireNonNull(doc.getLong("1 star")).intValue()
+                                Objects.requireNonNull(doc.getLong("5stars")).intValue(),
+                                Objects.requireNonNull(doc.getLong("4stars")).intValue(),
+                                Objects.requireNonNull(doc.getLong("3stars")).intValue(),
+                                Objects.requireNonNull(doc.getLong("2stars")).intValue(),
+                                Objects.requireNonNull(doc.getLong("1star")).intValue()
                         };
 
                         mrrHomeDriver.createRatingBars(100, BarLabels.STYPE3, colors, raters);

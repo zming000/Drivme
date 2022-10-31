@@ -145,6 +145,7 @@ public class TouristOTP extends AppCompatActivity {
         touristAcc.put("loginStatusDriver", 0);
         touristAcc.put("accountTourist", 1);
         touristAcc.put("accountDriver", 0);
+        touristAcc.put("accountStatus", "Offline");
         touristAcc.put("agreementCheck", 1);
         touristAcc.put("drivPay", "0.00");
 

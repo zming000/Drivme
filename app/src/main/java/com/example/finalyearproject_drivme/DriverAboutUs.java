@@ -129,7 +129,7 @@ public class DriverAboutUs extends AppCompatActivity {
 
             //display dialog with suitable size
             feedbackDialog.show();
-            feedbackDialog.getWindow().setLayout(650, 550);
+            feedbackDialog.getWindow().setLayout(650, 600);
         });
     }
 

@@ -164,11 +164,11 @@ public class TouristNavSettings extends AppCompatActivity {
                                                                                 acc.put("accountStatus", "Driver");
                                                                                 acc.put("accountDriver", 1);
                                                                                 acc.put("rating", 5);
-                                                                                acc.put("5 Stars", 1);
-                                                                                acc.put("4 Stars", 0);
-                                                                                acc.put("3 Stars", 0);
-                                                                                acc.put("2 Stars", 0);
-                                                                                acc.put("1 Star", 0);
+                                                                                acc.put("5stars", 1);
+                                                                                acc.put("4stars", 0);
+                                                                                acc.put("3stars", 0);
+                                                                                acc.put("2stars", 0);
+                                                                                acc.put("1star", 0);
                                                                                 acc.put("priceDay", 300);
                                                                                 acc.put("priceHour", 15);
 
@@ -193,7 +193,7 @@ public class TouristNavSettings extends AppCompatActivity {
 
                                     //display dialog with suitable size
                                     rcDialog.show();
-                                    rcDialog.getWindow().setLayout(650, 550);
+                                    rcDialog.getWindow().setLayout(650, 600);
                                 } else {
                                     SharedPreferences.Editor spEditor = spDrivme.edit();
                                     spEditor.putString(KEY_ROLE, "Driver");

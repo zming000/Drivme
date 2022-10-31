@@ -109,7 +109,7 @@ public class DriverLogin extends AppCompatActivity {
                                                 String accStatus = docResult.getString("accountStatus");
 
                                                 //check if account is suspended
-                                                if(!Objects.requireNonNull(accStatus).equals("Suspended")) {
+                                                if(Objects.requireNonNull(accStatus).equals("Suspended")) {
                                                     android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
                                                     alertDialogBuilder.setTitle("Account Suspended");
                                                     alertDialogBuilder

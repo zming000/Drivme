@@ -73,7 +73,8 @@ public class DriverSignUp extends AppCompatActivity {
                         (dialog, id) -> {
                             startActivity(new Intent(DriverSignUp.this, DriverLogin.class));
                             finish();
-                        });
+                        })
+                .setNegativeButton("No", (dialog, id) -> dialog.cancel());
 
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
@@ -90,7 +91,8 @@ public class DriverSignUp extends AppCompatActivity {
                         (dialog, id) -> {
                             startActivity(new Intent(DriverSignUp.this, DriverLogin.class));
                             finish();
-                        });
+                        })
+                .setNegativeButton("No", (dialog, id) -> dialog.cancel());
 
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
