@@ -19,21 +19,21 @@ public class AdapterDayDriverList extends RecyclerView.Adapter<AdapterDayDriverL
     //declare variables
     Context driverContext;
     ArrayList<ModelDayDriverList> driverArrayList;
-    String orderID, touristID, startDate, endDate, time, carPlate, locality, address, comment, tripOption, dateID;
+    String orderID, touristID, meetDate, endDate, meetTime, carPlate, locality, address, comment, tripOption, dateID;
     int duration;
 
     //constructor
     public AdapterDayDriverList(Context driverContext, ArrayList<ModelDayDriverList> driverArrayList, String orderID, String touristID, int duration,
-                                String startDate, String endDate, String time, String carPlate, String locality, String address, String comment,
+                                String meetDate, String endDate, String meetTime, String carPlate, String locality, String address, String comment,
                                 String tripOption, String dateID) {
         this.driverContext = driverContext;
         this.driverArrayList = driverArrayList;
         this.orderID = orderID;
         this.touristID = touristID;
         this.duration = duration;
-        this.startDate = startDate;
+        this.meetDate = meetDate;
         this.endDate = endDate;
-        this.time = time;
+        this.meetTime = meetTime;
         this.carPlate = carPlate;
         this.locality = locality;
         this.address = address;
@@ -78,9 +78,9 @@ public class AdapterDayDriverList extends RecyclerView.Adapter<AdapterDayDriverL
             intent.putExtra("orderID", orderID);
             intent.putExtra("touristID", touristID);
             intent.putExtra("duration", duration);
-            intent.putExtra("startDate", startDate);
+            intent.putExtra("meetDate", meetDate);
             intent.putExtra("endDate", endDate);
-            intent.putExtra("time", time);
+            intent.putExtra("meetTime", meetTime);
             intent.putExtra("carPlate", carPlate);
             intent.putExtra("locality", locality);
             intent.putExtra("address", address);

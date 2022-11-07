@@ -30,7 +30,7 @@ public class TouristPayment extends AppCompatActivity {
     //declare variables
     CardView mcvDrivPay, mcvCard, mcvOnline;
     TextView mtvDrivPay, mtvCard, mtvOnline, mtvPTripOption, mtvMeet, mtvPMeet, mtvStart, mtvPStart,
-            mtvEnd, mtvPEnd, mtvPDuration, mtvPrice, mtvPPrice, mtvPTotal, mtvDriverDay, mtvDriverHour, mtvMeal;
+            mtvEnd, mtvPEnd, mtvPDuration, mtvPrice, mtvPPrice, mtvPTotal, mtvDriverDay, mtvMeal;
     Button mbtnPayNow;
     FirebaseFirestore getOrder;
 
@@ -57,7 +57,6 @@ public class TouristPayment extends AppCompatActivity {
         mtvPrice = findViewById(R.id.tvPrice);
         mtvPPrice = findViewById(R.id.tvPPrice);
         mtvDriverDay = findViewById(R.id.tvDriverDay);
-        mtvDriverHour = findViewById(R.id.tvDriverHour);
         mtvMeal = findViewById(R.id.tvMeal);
         mtvPTotal = findViewById(R.id.tvPTotal);
         mbtnPayNow = findViewById(R.id.btnPayNow);
@@ -99,8 +98,7 @@ public class TouristPayment extends AppCompatActivity {
                             }
 
                             mtvPrice.setText("Price per Day:");
-                            mtvDriverDay.setVisibility(View.VISIBLE);
-                            mtvDriverHour.setVisibility(View.GONE);
+                            mtvDriverDay.setText("- Driver's fee per day trip(Services, etc.)");
                             mtvMeal.setVisibility(View.VISIBLE);
                         }
                         else{
@@ -119,8 +117,7 @@ public class TouristPayment extends AppCompatActivity {
                             }
 
                             mtvPrice.setText("Price per Hour:");
-                            mtvDriverDay.setVisibility(View.GONE);
-                            mtvDriverHour.setVisibility(View.VISIBLE);
+                            mtvDriverDay.setText("- Driver's fee per hour trip(Services, etc.)");
                             mtvMeal.setVisibility(View.GONE);
                         }
                     }
@@ -272,26 +269,15 @@ public class TouristPayment extends AppCompatActivity {
 
                                                     //calculate one day before start date
                                                     try {
-                                                        oneDayBefore.setTime(Objects.requireNonNull(fullFormat.parse(doc.getString("meetDate") + " " + doc.getString("MeetTime"))));
+                                                        oneDayBefore.setTime(Objects.requireNonNull(fullFormat.parse(doc.getString("meetDate") + " " + doc.getString("meetTime"))));
                                                     } catch (ParseException e) {
                                                         e.printStackTrace();
                                                     }
 
                                                     //deduct 1 day
-                                                    oneDayBefore.add(Calendar.DATE, -1);
+                                                    oneDayBefore.add(Calendar.DAY_OF_MONTH, -1);
 
-                                                    Intent intent = new Intent(this, UserReminderReceiver.class);
-                                                    intent.putExtra("driverID", driID);
-                                                    intent.putExtra("touristID", tourID);
-
-                                                    //set reminder
-                                                    sendBroadcast(intent);
-                                                    PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                                                            this.getApplicationContext(), 234, intent, 0);
-                                                    AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-                                                    am.set(AlarmManager.RTC_WAKEUP, oneDayBefore.getTimeInMillis(), pendingIntent);
-
-                                                    sendNotificationToTourist(driID);
+                                                    sendNotificationToTourist(driID, tourID, oneDayBefore);
 
                                                     updateHistory.collection("User Accounts").document(tourID).collection("Transaction History").document(transID)
                                                             .set(updateTrans)
@@ -347,25 +333,15 @@ public class TouristPayment extends AppCompatActivity {
 
                                 //calculate one day before start date
                                 try {
-                                    oneDayBefore.setTime(Objects.requireNonNull(fullFormat.parse(doc.getString("meetDate") + " " + doc.getString("MeetTime"))));
+                                    oneDayBefore.setTime(Objects.requireNonNull(fullFormat.parse(doc.getString("meetDate") + " " + doc.getString("meetTime"))));
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
 
                                 //deduct 1 day
-                                oneDayBefore.add(Calendar.DATE, -1);
+                                oneDayBefore.add(Calendar.DAY_OF_MONTH, -1);
 
-                                Intent intent = new Intent(this, UserReminderReceiver.class);
-                                intent.putExtra("driverID", driID);
-                                intent.putExtra("touristID", tourID);
-
-                                sendBroadcast(intent);
-                                PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                                        this.getApplicationContext(), 234, intent, 0);
-                                AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-                                am.set(AlarmManager.RTC_WAKEUP, oneDayBefore.getTimeInMillis(), pendingIntent);
-
-                                sendNotificationToTourist(driID);
+                                sendNotificationToTourist(driID, tourID, oneDayBefore);
 
                                 updateHistory.collection("User Accounts").document(tourID).collection("Transaction History").document(transID)
                                         .set(updateTrans)
@@ -386,7 +362,7 @@ public class TouristPayment extends AppCompatActivity {
         });
     }
 
-    private void sendNotificationToTourist(String dID) {
+    private void sendNotificationToTourist(String dID, String tID, Calendar day) {
         FirebaseFirestore getToken = FirebaseFirestore.getInstance();
 
         /*send notification to tourist*/
@@ -401,6 +377,17 @@ public class TouristPayment extends AppCompatActivity {
                                 token,
                                 "Booking Paid",
                                 "Tourist paid for the booking!");
+
+                        //schedule reminder
+                        Intent intent = new Intent(this, UserReminderReceiver.class);
+                        intent.putExtra("driverID", dID);
+                        intent.putExtra("touristID", tID);
+
+                        sendBroadcast(intent);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                                this.getApplicationContext(), 234, intent, 0);
+                        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+                        am.setExact(AlarmManager.RTC_WAKEUP, day.getTimeInMillis(), pendingIntent);
                     }
                 });
     }

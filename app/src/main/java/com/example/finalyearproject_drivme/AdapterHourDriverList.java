@@ -19,19 +19,19 @@ public class AdapterHourDriverList extends RecyclerView.Adapter<AdapterHourDrive
     //declare variables
     Context driverHourContext;
     ArrayList<ModelHourDriverList> driverArrayList;
-    String orderID, touristID, date, startTime, endTime, carPlate, locality, address, comment, tripOption, dateID;
+    String orderID, touristID, date, meetTime, endTime, carPlate, locality, address, comment, tripOption, dateID;
     int duration, hourStart;
 
     //constructor
     public AdapterHourDriverList(Context driverHourContext, ArrayList<ModelHourDriverList> driverArrayList, String orderID,
-                                 String touristID, String date, String startTime, String endTime, String carPlate, String locality,
+                                 String touristID, String date, String meetTime, String endTime, String carPlate, String locality,
                                  String address, String comment, String tripOption, String dateID, int duration, int hourStart) {
         this.driverHourContext = driverHourContext;
         this.driverArrayList = driverArrayList;
         this.orderID = orderID;
         this.touristID = touristID;
         this.date = date;
-        this.startTime = startTime;
+        this.meetTime = meetTime;
         this.endTime = endTime;
         this.carPlate = carPlate;
         this.locality = locality;
@@ -80,7 +80,7 @@ public class AdapterHourDriverList extends RecyclerView.Adapter<AdapterHourDrive
             intent.putExtra("touristID", touristID);
             intent.putExtra("duration", duration);
             intent.putExtra("date", date);
-            intent.putExtra("startTime", startTime);
+            intent.putExtra("meetTime", meetTime);
             intent.putExtra("endTime", endTime);
             intent.putExtra("carPlate", carPlate);
             intent.putExtra("locality", locality);

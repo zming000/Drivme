@@ -21,8 +21,8 @@ public class DriverSignUp extends AppCompatActivity {
     //declare variables
     TextInputLayout mtilDriverID, mtilDFName, mtilDLName, mtilDEmail, mtilDPassword, mtilDCPassword, mtilDriverRC;
     TextInputEditText metDriverID, metDriverFName, metDriverLName, metDriverEmail, metDriverPassword, metDriverCPassword, metDriverRC;
-    Button mbtnDriverSignUp;
-    Boolean statusDID, statusDFName, statusDLName, statusDEmail, statusDPassword, statusDCPassword, statusDVerification;
+    Button mbtnDriverNext;
+    Boolean statusDID, statusDFName, statusDLName, statusDEmail, statusDPassword, statusDCPassword, statusDRefCode, statusDVerification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +44,12 @@ public class DriverSignUp extends AppCompatActivity {
         metDriverPassword = findViewById(R.id.etSignUpDriverPassword);
         metDriverCPassword = findViewById(R.id.etSignUpDriverCPassword);
         metDriverRC = findViewById(R.id.etSignUpDriverReferenceCode);
-        mbtnDriverSignUp = findViewById(R.id.btnDriverSignUp);
+        mbtnDriverNext = findViewById(R.id.btnDriverNext);
 
         //change error messages
         errorChangeOnEachFields();
 
-        mbtnDriverSignUp.setOnClickListener(v -> {
+        mbtnDriverNext.setOnClickListener(v -> {
             //validate each field
             statusDVerification = validationOnEachFields();
             if(statusDVerification){
@@ -301,7 +301,9 @@ public class DriverSignUp extends AppCompatActivity {
         statusDCPassword = Objects.requireNonNull(metDriverCPassword.getText()).toString()
                 .matches(Objects.requireNonNull(metDriverPassword.getText()).toString());
 
-        return statusDID && statusDFName && statusDLName && statusDEmail && statusDPassword && statusDCPassword;
+        statusDRefCode = !metDriverRC.getText().toString().isEmpty();
+
+        return statusDID && statusDFName && statusDLName && statusDEmail && statusDPassword && statusDCPassword && statusDRefCode;
     }
 
     //check if ID existed

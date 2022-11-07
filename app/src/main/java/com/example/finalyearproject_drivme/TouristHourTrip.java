@@ -332,7 +332,8 @@ public class TouristHourTrip extends AppCompatActivity implements DatePickerDial
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
                 metHState.setText(ModelDriverDetails.getDetailsArrayList().get(value).getDetailsOption());
-
+                metHLocality.setText("");
+                metHAddress.setText("");
                 stateDialog.dismiss();
             });
         });
@@ -435,7 +436,7 @@ public class TouristHourTrip extends AppCompatActivity implements DatePickerDial
                                         intent.putExtra("dateID", dateForID);
                                         intent.putExtra("duration", duration);
                                         intent.putExtra("date", metHDate.getText().toString());
-                                        intent.putExtra("startTime", Objects.requireNonNull(metHStartTime.getText()).toString());
+                                        intent.putExtra("meetTime", Objects.requireNonNull(metHStartTime.getText()).toString());
                                         intent.putExtra("endTime", Objects.requireNonNull(metHEndTime.getText()).toString());
                                         intent.putExtra("hourStart", valueHourStart);
                                         intent.putExtra("carPlate", carPlate);
@@ -465,7 +466,7 @@ public class TouristHourTrip extends AppCompatActivity implements DatePickerDial
                                 intent.putExtra("dateID", dateForID);
                                 intent.putExtra("duration", duration);
                                 intent.putExtra("date", metHDate.getText().toString());
-                                intent.putExtra("startTime", Objects.requireNonNull(metHStartTime.getText()).toString());
+                                intent.putExtra("meetTime", Objects.requireNonNull(metHStartTime.getText()).toString());
                                 intent.putExtra("endTime", Objects.requireNonNull(metHEndTime.getText()).toString());
                                 intent.putExtra("hourStart", valueHourStart);
                                 intent.putExtra("carPlate", carPlate);
@@ -615,12 +616,13 @@ public class TouristHourTrip extends AppCompatActivity implements DatePickerDial
         alertDialogBuilder
                 .setMessage("Do you wish to discard and go back homepage?")
                 .setCancelable(false)
-                .setPositiveButton("DISCARD",
+                .setPositiveButton("Discard",
                         (dialog, id) -> {
                             startActivity(new Intent(TouristHourTrip.this, TouristNavHomepage.class));
                             finishAffinity();
                             finish();
-                        });
+                        })
+                .setNegativeButton("No", (dialog, id) -> dialog.cancel());
 
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();

@@ -68,12 +68,12 @@ public class TouristInputCar extends AppCompatActivity {
         spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);
 
         //dropdown menus
-        brandDropdown();
-        modelDropdown();
-        colourDropdown();
-        transmissionDropdown();
-        companyDropdown();
-        typeDropdown();
+        brandDialog();
+        modelDialog();
+        colourDialog();
+        transmissionDialog();
+        companyDialog();
+        typeDialog();
 
         //disable error
         errorChangeOnEachFields();
@@ -85,7 +85,7 @@ public class TouristInputCar extends AppCompatActivity {
     }
 
     //brand pop out menu
-    private void brandDropdown(){
+    private void brandDialog(){
         metCBrand.setOnClickListener(brandView -> {
             //set layout
             LayoutInflater dialogInflater = getLayoutInflater();
@@ -106,19 +106,22 @@ public class TouristInputCar extends AppCompatActivity {
             mnpPicker.setMinValue(0);
             mnpPicker.setDisplayedValues(ModelCarDetails.detailName());
 
+            //display dialog
             brandDialog.show();
             brandDialog.getWindow().setLayout(450, 580);
 
             mbtnOK.setOnClickListener(view1 -> {
                 int value = mnpPicker.getValue();
                 metCBrand.setText(ModelCarDetails.getModelArrayList().get(value).getModelOption());
+                //clear model
+                metCModel.setText("");
                 brandDialog.dismiss();
             });
         });
     }
 
     //model pop out menu
-    private void modelDropdown(){
+    private void modelDialog(){
         metCModel.setOnClickListener(modelView -> {
             String getBrand = Objects.requireNonNull(metCBrand.getText()).toString().trim();
 
@@ -176,7 +179,7 @@ public class TouristInputCar extends AppCompatActivity {
     }
 
     //colour pop out menu
-    private void colourDropdown(){
+    private void colourDialog(){
         metCColour.setOnClickListener(colourView -> {
             //set layout
             LayoutInflater dialogInflater = getLayoutInflater();
@@ -209,7 +212,7 @@ public class TouristInputCar extends AppCompatActivity {
     }
 
     //transmission pop out menu
-    private void transmissionDropdown(){
+    private void transmissionDialog(){
         metCTransmission.setOnClickListener(transmissionView -> {
             //set layout
             LayoutInflater dialogInflater = getLayoutInflater();
@@ -242,7 +245,7 @@ public class TouristInputCar extends AppCompatActivity {
     }
 
     //car petrol company pop out menu
-    private void companyDropdown(){
+    private void companyDialog(){
         metCPCompany.setOnClickListener(view -> {
             companyItems = new String[]{"Petron", "Petronas", "Shell", "BHP", "Caltex"};
             //sort the petrol companies
@@ -301,7 +304,7 @@ public class TouristInputCar extends AppCompatActivity {
     }
 
     //car petrol type pop out menu
-    private void typeDropdown(){
+    private void typeDialog(){
         metCPType.setOnClickListener(view -> {
             String getCompany = Objects.requireNonNull(metCPCompany.getText()).toString().trim();
 
@@ -354,6 +357,9 @@ public class TouristInputCar extends AppCompatActivity {
                 });
 
                 typeBuilder.show();
+            }
+            else{
+                mtilCPCompany.setError("Please select petrol company!");
             }
         });
     }

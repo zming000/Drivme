@@ -21,7 +21,7 @@ public class UserRole extends AppCompatActivity {
 
         //role(driver) -> driver option
         mbtnDriver.setOnClickListener(v -> {
-            startActivity(new Intent(UserRole.this, DriverOption.class));
+            startActivity(new Intent(UserRole.this, DriverLogin.class));
             finish();
         });
 

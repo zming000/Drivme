@@ -359,18 +359,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/included" />
 
                 <TextView
-                    android:id="@+id/tvDriverHour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="- Driver's fee per hour trip(Services, etc.)"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/included" />
-
-                <TextView
                     android:id="@+id/tvMeal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -380,7 +368,7 @@
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvDriverHour" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvDriverDay" />
 
                 <TextView
                     android:id="@+id/bookingFee"

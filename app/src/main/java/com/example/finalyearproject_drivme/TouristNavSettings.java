@@ -149,6 +149,7 @@ public class TouristNavSettings extends AppCompatActivity {
                                                                 spEditor.putString(KEY_ROLE, "Driver");
                                                                 spEditor.apply();
 
+                                                                //register successfully
                                                                 getName.collection("User Accounts").document(uID).get()
                                                                         .addOnCompleteListener(task1 -> {
                                                                             if (task1.isSuccessful()) {

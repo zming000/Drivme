@@ -9,6 +9,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class UserReminderReceiver extends BroadcastReceiver {
+    public UserReminderReceiver() {/*empty constructor*/}
+
     @Override
     public void onReceive(Context context, Intent intent) {
         String tid = intent.getStringExtra("touristID");

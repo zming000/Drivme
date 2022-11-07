@@ -463,9 +463,9 @@ public class TouristDayTrip extends AppCompatActivity implements DatePickerDialo
                                 intent.putExtra("touristID", getID);
                                 intent.putExtra("dateID", dateForID);
                                 intent.putExtra("duration", duration);
-                                intent.putExtra("startDate", metDStartDate.getText().toString());
+                                intent.putExtra("meetDate", metDStartDate.getText().toString());
                                 intent.putExtra("endDate", Objects.requireNonNull(metDEndDate.getText()).toString());
-                                intent.putExtra("time", metDTime.getText().toString());
+                                intent.putExtra("meetTime", metDTime.getText().toString());
                                 intent.putExtra("carPlate", carPlate);
                                 intent.putExtra("state", metDState.getText().toString());
                                 intent.putExtra("locality", metDLocality.getText().toString());
@@ -617,14 +617,13 @@ public class TouristDayTrip extends AppCompatActivity implements DatePickerDialo
         alertDialogBuilder
                 .setMessage("Do you wish to discard and go back homepage?")
                 .setCancelable(false)
-                .setPositiveButton("DISCARD",
+                .setPositiveButton("Discard",
                         (dialog, id) -> {
                             startActivity(new Intent(TouristDayTrip.this, TouristNavHomepage.class));
                             finishAffinity();
                             finish();
                         })
                 .setNegativeButton("No", (dialog, id) -> dialog.cancel());
-
 
         android.app.AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();

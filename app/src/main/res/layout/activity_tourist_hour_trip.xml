@@ -200,12 +200,14 @@
                 android:layout_height="125dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
+                app:helperText="*Optional"
+                app:helperTextTextColor="@color/red"
                 android:hint="Leave comments or notes to driver">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etHComment"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="100dp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

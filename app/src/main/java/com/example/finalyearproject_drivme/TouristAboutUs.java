@@ -85,10 +85,7 @@ public class TouristAboutUs extends AppCompatActivity {
             AlertDialog feedbackDialog = dialogBuilder.setView(feedbackView).create();
 
             //assign variables
-            ImageView mivClose = feedbackView.findViewById(R.id.ivClose);
             SmileRating mFeedbackRating = feedbackView.findViewById(R.id.feedbackRating);
-
-            mivClose.setOnClickListener(view1 -> feedbackDialog.dismiss());
 
             mFeedbackRating.setOnSmileySelectionListener(smiley -> {
                 spDrivme = getSharedPreferences(SP_NAME, MODE_PRIVATE);

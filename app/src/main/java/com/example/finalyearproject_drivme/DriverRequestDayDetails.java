@@ -256,7 +256,7 @@ public class DriverRequestDayDetails extends AppCompatActivity {
                         DocumentSnapshot doc = task.getResult();
                         String tID = doc.getString("touristID");
                         String dID = doc.getString("driverID");
-                        String startDate = doc.getString("startDate");
+                        String startDate = doc.getString("meetDate");
                         float duration = doc.getLong("duration");
                         int days = Math.round(duration);
 
@@ -349,7 +349,7 @@ public class DriverRequestDayDetails extends AppCompatActivity {
                         DocumentSnapshot doc = task.getResult();
                         String tID = doc.getString("touristID");
                         String dID = doc.getString("driverID");
-                        String startDate = doc.getString("startDate");
+                        String startDate = doc.getString("meetDate");
                         float duration = doc.getLong("duration");
                         int days = Math.round(duration);
 

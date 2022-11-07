@@ -202,7 +202,7 @@ public class DriverLogin extends AppCompatActivity {
     //driver login -> driver option
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(DriverLogin.this, DriverOption.class));
+        startActivity(new Intent(DriverLogin.this, UserRole.class));
         finish();
     }
 

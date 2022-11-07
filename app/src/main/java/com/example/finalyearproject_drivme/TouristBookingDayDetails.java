@@ -203,17 +203,6 @@ public class TouristBookingDayDetails extends AppCompatActivity {
         FirebaseFirestore updateTourist = FirebaseFirestore.getInstance();
         String orderStatus = getIntent().getStringExtra("orderStatus");
 
-        //update order status
-        Map<String,Object> order = new HashMap<>();
-        order.put("orderStatus", "Cancelled by Tourist");
-
-        if(orderStatus.equals("Coming Soon")){
-            order.put("refundStatus", "Refund Needed");
-        }
-
-        updateOrderStatus.collection("Trip Details").document(orderID)
-                .update(order);
-
         //delete date booked
         getTouristID.collection("Trip Details").document(orderID).get()
                 .addOnCompleteListener(task -> {
@@ -221,7 +210,7 @@ public class TouristBookingDayDetails extends AppCompatActivity {
                         DocumentSnapshot doc = task.getResult();
                         String tID = doc.getString("touristID");
                         String dID = doc.getString("driverID");
-                        String startDate = doc.getString("startDate");
+                        String startDate = doc.getString("meetDate");
                         float duration = doc.getLong("duration");
                         int days = Math.round(duration);
 
@@ -282,30 +271,40 @@ public class TouristBookingDayDetails extends AppCompatActivity {
                                                 "Booking Cancelled by Tourist",
                                                 "Tourist have cancelled the booking!");
 
-                                        getAdminToken.collection("User Accounts").document("admin001").get()
-                                                .addOnCompleteListener(task2 -> {
-                                                    if (task2.isSuccessful()) {
-                                                        DocumentSnapshot doc2 = task2.getResult();
-                                                        String adminToken = doc2.getString("notificationToken");
+                                        //update order status
+                                        Map<String,Object> order = new HashMap<>();
+                                        order.put("orderStatus", "Cancelled by Tourist");
 
-                                                        UserFCMSend.pushNotification(
-                                                                TouristBookingDayDetails.this,
-                                                                adminToken,
-                                                                "Refund Needed",
-                                                                "Tourist have cancelled a booking and requested a refund! Please review the order at the refund list!");
+                                        if(orderStatus.equals("Coming Soon")){
+                                            order.put("refundStatus", "Refund Needed");
 
-                                                        if(orderStatus.equals("Coming Soon")){
-                                                            Toast.makeText(TouristBookingDayDetails.this, "Booking cancelled successfully! Refund will be done in 5 working days!", Toast.LENGTH_SHORT).show();
+                                            /*send notification to admin*/
+                                            getAdminToken.collection("User Accounts").document("admin001").get()
+                                                    .addOnCompleteListener(task2 -> {
+                                                        if (task2.isSuccessful()) {
+                                                            DocumentSnapshot doc2 = task2.getResult();
+                                                            String adminToken = doc2.getString("notificationToken");
+
+                                                            UserFCMSend.pushNotification(
+                                                                    TouristBookingDayDetails.this,
+                                                                    adminToken,
+                                                                    "Refund Needed",
+                                                                    "Tourist have cancelled a booking and requested a refund! Please review the order at the refund list!");
                                                         }
-                                                        else {
-                                                            Toast.makeText(TouristBookingDayDetails.this, "Booking cancelled successfully!", Toast.LENGTH_SHORT).show();
-                                                        }
+                                                    });
 
-                                                        startActivity(new Intent(TouristBookingDayDetails.this, TouristNavActivity.class));
-                                                        finishAffinity();
-                                                        finish();
-                                                    }
-                                                });
+                                            Toast.makeText(TouristBookingDayDetails.this, "Booking cancelled successfully! Refund will be done in 5 working days!", Toast.LENGTH_SHORT).show();
+                                        }
+                                        else {
+                                            Toast.makeText(TouristBookingDayDetails.this, "Booking cancelled successfully!", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        updateOrderStatus.collection("Trip Details").document(orderID)
+                                                .update(order);
+
+                                        startActivity(new Intent(TouristBookingDayDetails.this, TouristNavActivity.class));
+                                        finishAffinity();
+                                        finish();
                                     }
                                 });
                     }

@@ -127,6 +127,7 @@ public class AdapterOrderList extends RecyclerView.Adapter<AdapterOrderList.Requ
 
             }
             intent.putExtra("orderID", mrl.orderID);
+            intent.putExtra("orderStatus", mrl.orderStatus);
             reqContext.startActivity(intent);
         });
     }

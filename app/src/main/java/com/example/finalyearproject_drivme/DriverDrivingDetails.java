@@ -27,6 +27,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
     Button mbtnDriverNext, mbtnOK;
     TextView mtvSelect;
     NumberPicker mnpPicker;
+    int ageNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +89,8 @@ public class DriverDrivingDetails extends AppCompatActivity {
             ageDialog.getWindow().setLayout(450, 580);
 
             mbtnOK.setOnClickListener(view1 -> {
-                int value = mnpPicker.getValue();
-                metDAge.setText(String.valueOf(value));
+                ageNum = mnpPicker.getValue();
+                metDAge.setText(String.valueOf(ageNum));
                 ageDialog.dismiss();
             });
         });
@@ -180,7 +181,7 @@ public class DriverDrivingDetails extends AppCompatActivity {
 
             //set the values
             mtvSelect.setText("Select Your Driving Experience");
-            mnpPicker.setMaxValue(42);
+            mnpPicker.setMaxValue(ageNum - 18);
             mnpPicker.setMinValue(3);
             mnpPicker.setValue(3);
 

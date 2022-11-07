@@ -170,7 +170,7 @@ public class DriverHourMoreDetails extends AppCompatActivity {
         tripDetails.put("touristID", getIntent().getStringExtra("touristID"));
         tripDetails.put("duration", getIntent().getIntExtra("duration", 0));
         tripDetails.put("meetDate", getIntent().getStringExtra("date"));
-        tripDetails.put("meetTime", getIntent().getStringExtra("startTime"));
+        tripDetails.put("meetTime", getIntent().getStringExtra("meetTime"));
         tripDetails.put("endTime", getIntent().getStringExtra("endTime"));
         tripDetails.put("carPlate", getIntent().getStringExtra("carPlate"));
         tripDetails.put("locality", getIntent().getStringExtra("locality"));
@@ -179,6 +179,7 @@ public class DriverHourMoreDetails extends AppCompatActivity {
         tripDetails.put("note", getIntent().getStringExtra("comment"));
         tripDetails.put("priceDriver", price);
         tripDetails.put("total", total);
+        tripDetails.put("refundStatus", "None");
         tripDetails.put("orderStatus", "Pending Driver Accept");
         tripDetails.put("tripStart", "Noy yet started");
         tripDetails.put("rateStatus", 0);
