@@ -133,8 +133,6 @@ public class AdapterOngoingList extends RecyclerView.Adapter<AdapterOngoingList.
                                 //manage button for record
                                 if (dCheck == 0 && uRole.equals("Driver")) {
                                     holder.mbtnHere.setVisibility(View.VISIBLE);
-                                } else if (dCheck == 1 && tCheck == 0 && uRole.equals("Tourist")) {
-                                    holder.mbtnStart.setVisibility(View.VISIBLE);
                                 }
                             });
                 } else {
@@ -182,15 +180,30 @@ public class AdapterOngoingList extends RecyclerView.Adapter<AdapterOngoingList.
 
                                 if (dCheck == 0 && uRole.equals("Driver")) {
                                     holder.mbtnHere.setVisibility(View.VISIBLE);
-                                } else if (dCheck == 1 && tCheck == 0 && uRole.equals("Tourist")) {
-                                    holder.mbtnStart.setVisibility(View.VISIBLE);
-                                } else if (dCheck == 1 && tCheck == 1 && uRole.equals("Tourist")) {
-                                    holder.mbtnEndTrip.setVisibility(View.VISIBLE);
                                 }
                             });
                 } else {
                     holder.mtvODay.setText("-");
                 }
+            }
+            else if (startStat.equals("Started")) {
+                FirebaseFirestore getDay = FirebaseFirestore.getInstance();
+                getDay.collection("Trip Details").document(oid).collection("Days").document(dateID).get()
+                        .addOnCompleteListener(task1 -> {
+                            DocumentSnapshot ds = task1.getResult();
+                            int dCheck = Objects.requireNonNull(ds.getLong("driverCheck")).intValue();
+                            int tCheck = Objects.requireNonNull(ds.getLong("touristCheck")).intValue();
+
+                            holder.mtvODay.setText(String.valueOf(Objects.requireNonNull(ds.getLong("numDay")).intValue()));
+
+                            if (dCheck == 0 && uRole.equals("Driver")) {
+                                holder.mbtnHere.setVisibility(View.VISIBLE);
+                            } else if (dCheck == 1 && tCheck == 0 && uRole.equals("Tourist")) {
+                                holder.mbtnStart.setVisibility(View.VISIBLE);
+                            } else if (dCheck == 1 && tCheck == 1 && uRole.equals("Tourist")) {
+                                holder.mbtnEndTrip.setVisibility(View.VISIBLE);
+                            }
+                        });
             }
         }
 

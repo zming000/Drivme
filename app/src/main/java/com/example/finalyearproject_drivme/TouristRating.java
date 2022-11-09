@@ -168,6 +168,7 @@ public class TouristRating extends AppCompatActivity {
                                 float sum = 0;
                                 Map<String, Object> rating = new HashMap<>();
 
+                                //numRate = rating rated by tourist
                                 switch (numRate) {
                                     case "1.0":
                                         rating.put("1star", oneStar + 1);
@@ -235,6 +236,8 @@ public class TouristRating extends AppCompatActivity {
                                                 updateTrans.put("transDateTime", dateTime);
                                                 updateTrans.put("orderID", orderID);
 
+                                                priceScale(driverID, numRate);
+
                                                 updateHistory.collection("User Accounts").document(driverID).collection("Transaction History").document(transID)
                                                         .set(updateTrans)
                                                         .addOnSuccessListener(unused1 -> {
@@ -253,5 +256,77 @@ public class TouristRating extends AppCompatActivity {
                 Toast.makeText(TouristRating.this, "Please rate the rating bar!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void priceScale(String idDriver, String rated) {
+        FirebaseFirestore getNumberRating = FirebaseFirestore.getInstance();
+        FirebaseFirestore updatePrice = FirebaseFirestore.getInstance();
+        Map<String, Object> price = new HashMap<>();
+
+        getNumberRating.collection("User Accounts").document(idDriver).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot doc = task.getResult();
+                        int priceDay = doc.getLong("priceDay").intValue();
+                        int priceHour = doc.getLong("priceHour").intValue();
+
+                        if(rated.equals("1.0") || rated.equals("2.0")){
+                            int oneStar = doc.getLong("1star").intValue();
+                            int twoStar = doc.getLong("2stars").intValue();
+                            int total = oneStar + twoStar;
+
+                            //number of people rating up to 100,000
+                            for(int i = 1; i <= 1000; i++){
+                                //control price per day between RM250 - RM350
+                                //every 100 people rated 1 star / 2 stars -RM10
+                                if(priceDay > 250 && priceDay < 350) {
+                                    if(total == 100 * i){
+                                        priceDay -= 10;
+                                    }
+                                }
+
+                                //control price per hour between RM10 - RM20
+                                //every 100 people rated 1 star / 2 stars -RM1
+                                if(priceHour > 10 && priceHour < 20) {
+                                    if(total == 100 * i){
+                                        priceHour -= 1;
+                                    }
+                                }
+                            }
+                            price.put("priceDay", priceDay);
+                            price.put("priceHour", priceHour);
+
+                            updatePrice.collection("User Accounts").document(idDriver)
+                                    .update(price);
+                        }
+                        else if(rated.equals("5.0")){
+                            int fiveStar = doc.getLong("5stars").intValue();
+
+                            //number of people rating up to 100,000
+                            for(int i = 1; i <= 100; i++){
+                                //control price per day between RM250 - RM350
+                                //every 1000 people rated 5 stars +RM5
+                                if(priceDay > 250 && priceDay < 350) {
+                                    if(fiveStar == 1000 * i){
+                                        priceDay += 5;
+                                    }
+                                }
+
+                                //control price per hour between RM10 - RM20
+                                //every 1000 people rated 5 stars +RM1
+                                if(priceHour > 10 && priceHour < 20) {
+                                    if(fiveStar == 1000 * i){
+                                        priceHour += 1;
+                                    }
+                                }
+                            }
+                            price.put("priceDay", priceDay);
+                            price.put("priceHour", priceHour);
+
+                            updatePrice.collection("User Accounts").document(idDriver)
+                                    .update(price);
+                        }
+                    }
+                });
     }
 }

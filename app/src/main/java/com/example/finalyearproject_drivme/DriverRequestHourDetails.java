@@ -98,10 +98,10 @@ public class DriverRequestHourDetails extends AppCompatActivity {
                         int num = Objects.requireNonNull(doc.getLong("duration")).intValue();
 
                         if(num > 1) {
-                            mtvDuration.setText(num + " days");
+                            mtvDuration.setText(num + " hours");
                         }
                         else{
-                            mtvDuration.setText(num + " day");
+                            mtvDuration.setText(num + " hour");
                         }
 
                         mtvLocality.setText(doc.getString("locality"));

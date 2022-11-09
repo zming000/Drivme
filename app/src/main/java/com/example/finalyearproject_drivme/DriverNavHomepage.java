@@ -86,7 +86,7 @@ public class DriverNavHomepage extends AppCompatActivity {
                                 Objects.requireNonNull(doc.getLong("1star")).intValue()
                         };
 
-                        mrrHomeDriver.createRatingBars(100, BarLabels.STYPE3, colors, raters);
+                        mrrHomeDriver.createRatingBars(10000, BarLabels.STYPE3, colors, raters);
                     }
                 });
     }

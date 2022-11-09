@@ -129,7 +129,7 @@ public class DriverHourMoreDetails extends AppCompatActivity {
                                 Objects.requireNonNull(doc.getLong("1star")).intValue()
                         };
 
-                        mrrDriver.createRatingBars(100, BarLabels.STYPE3, colors, raters);
+                        mrrDriver.createRatingBars(10000, BarLabels.STYPE3, colors, raters);
                     }
                 });
 
@@ -181,7 +181,7 @@ public class DriverHourMoreDetails extends AppCompatActivity {
         tripDetails.put("total", total);
         tripDetails.put("refundStatus", "None");
         tripDetails.put("orderStatus", "Pending Driver Accept");
-        tripDetails.put("tripStart", "Noy yet started");
+        tripDetails.put("tripStart", "Not yet started");
         tripDetails.put("rateStatus", 0);
 
         addOrder.collection("Trip Details").document(orderID)
