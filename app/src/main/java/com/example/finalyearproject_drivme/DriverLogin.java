@@ -120,7 +120,7 @@ public class DriverLogin extends AppCompatActivity {
                                                     android.app.AlertDialog alertDialog = alertDialogBuilder.create();
                                                     alertDialog.show();
                                                 }
-                                                else if(accStatus.equals("Offline")){ //check if account being logged in
+                                                else if(!accStatus.equals("Offline")){ //check if account being logged in
                                                     android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
                                                     alertDialogBuilder.setTitle("Account Logged In");
                                                     alertDialogBuilder
