@@ -1,6 +1,7 @@
 package com.example.finalyearproject_drivme;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import java.util.Objects;
 
 public class UserForgotPassword extends AppCompatActivity {
     //declare variables
+    ConstraintLayout mclText;
     TextInputLayout mtilFpwID, mtilFPWPhoneNumber;
     TextInputEditText metFpwID, metFPWPhoneNumber;
     Button mbtnGetOTP;
@@ -38,6 +40,7 @@ public class UserForgotPassword extends AppCompatActivity {
         setContentView(R.layout.activity_user_forgot_password);
 
         //assign variables
+        mclText = findViewById(R.id.clText);
         mtilFpwID = findViewById(R.id.tilFpwID);
         mtilFPWPhoneNumber = findViewById(R.id.tilFPWPhoneNumber);
         metFpwID = findViewById(R.id.etFpwID);
@@ -54,6 +57,7 @@ public class UserForgotPassword extends AppCompatActivity {
         if(uID != null){
             metFpwID.setText(uID);
             metFpwID.setFocusable(false);
+            mclText.setVisibility(View.GONE);
         }
 
         metFpwID.addTextChangedListener(new TextWatcher() {
